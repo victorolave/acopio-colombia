@@ -2,8 +2,8 @@
 
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
-**Fecha de la investigación:** 10 de agosto de 2026.
-**Consolidado:** 43 registros · **39 publicables** (6 verificados + 33 reportados) · 2 en disputa · 2 inactivos.
+**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026.
+**Consolidado:** 75 registros · **70 publicables** (37 verificados + 33 reportados) · 3 en disputa · 2 inactivos · 26 departamentos.
 
 ---
 
@@ -11,12 +11,12 @@
 
 | Estado | Criterio aplicado | ¿Se publica? |
 |---|---|---|
-| `verified` | Confirmado en el **sitio propio** de la autoridad u organización responsable. | Sí, con sello «Verificado» |
+| `verified` | Confirmado en el **canal propio** de la autoridad u organización responsable: sitio institucional o cuenta oficial de la lista blanca. | Sí, con sello «Verificado» |
 | `reported` | Publicado por un medio periodístico confiable **citando explícitamente a la entidad**, sin que se localizara la publicación primaria. | Sí, con aviso «confirma antes de ir» |
 | `disputed` | Fuentes contradictorias o duda razonable de que corresponda a esta emergencia. | **No** |
 | `inactive` | La propia organización informó que la sede no está operando. | **No** |
 
-Regla dura aplicada en todo el proceso: **la mención en un agregador nacional no basta para marcar `verified`**. Solo se marcó `verified` lo publicado directamente por `bogota.gov.co`.
+Regla dura aplicada en todo el proceso: **la mención en un agregador nacional no basta para marcar `verified`**. Solo se marca `verified` lo que la entidad responsable publica en su propio canal: el sitio institucional (`bogota.gov.co`) o una cuenta oficial de la lista blanca en `scripts/validate-seed.ts`.
 
 ---
 
@@ -26,7 +26,7 @@ Regla dura aplicada en todo el proceso: **la mención en un agregador nacional n
 |---|---|---|---|
 | Alcaldía Mayor de Bogotá | [bogota.gov.co — «En Bogotá se habilitan seis puntos de donaciones…»](https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia) | 10 ago 2026 | 6 (Cruz Roja + Palacio de los Deportes) |
 
-**Nota honesta:** es la única fuente institucional propia que se logró consultar directamente dentro de la ventana de la investigación. Los demás centros provienen de medios que citan a la entidad responsable. Por eso el seed tiene 6 `verified` y 33 `reported`: no se infló la confianza.
+**Nota honesta:** es el único **sitio web** institucional que se logró consultar directamente el 10 de agosto. El 11 de agosto se sumaron 31 puntos publicados por la primera dama en el canal oficial de las Tigresas de la Patria (sección 3.b), que también es la entidad responsable publicando en su propio canal. Los 33 centros restantes provienen de medios que citan a la entidad y siguen como `reported`.
 
 ---
 
@@ -55,15 +55,19 @@ Agregadores usados solo para **corroborar**, nunca como fuente única: Infobae, 
 
 **31 puntos** incorporados el 11 de agosto de 2026 a partir de las piezas gráficas de la campaña «Colombia un solo corazón», difundidas por la primera dama **Ana Lucía Pineda**.
 
-### Por qué quedaron como `reported` y no `verified`
+### Por qué están como `verified`
 
-El presidente Abelardo de la Espriella encargó públicamente a la primera dama y a la esposa del vicepresidente **coordinar la ayuda ciudadana y empresarial** por este terremoto (Pulzo y Semana, 10 de agosto de 2026). Una de las piezas se titula literalmente «Nuevos puntos de solidaridad para apoyar con donaciones a nuestros hermanos afectados por el terremoto». El vínculo con esta emergencia está fuera de duda.
+Es la organización responsable publicando su propia red en su canal oficial, que es exactamente la definición de `verified` en este proyecto, y el mismo criterio con el que se aceptaron los seis puntos de la Alcaldía de Bogotá.
 
-Aun así, tres razones impiden sellarlos como verificados:
+El presidente Abelardo de la Espriella encargó públicamente a la primera dama y a la esposa del vicepresidente **coordinar la ayuda ciudadana y empresarial** por este terremoto (Pulzo y Semana, 10 de agosto de 2026). Una de las piezas se titula literalmente «Nuevos puntos de solidaridad para apoyar con donaciones a nuestros hermanos afectados por el terremoto».
 
-1. **La fuente son capturas de imagen, no una publicación localizable.** El sitio muestra a cada visitante el enlace de la fuente para que compruebe por su cuenta; aquí solo se puede enlazar la cuenta, no el contenido concreto. La regla del proyecto es explícita: no usar como fuente primaria imágenes sin procedencia.
-2. **Ningún medio replicó la lista.** Se buscó por cadenas distintivas («Casa Abelardista», «Complejo Bodeguero Alpaca») sin resultados.
-3. **Riesgo de arrastre de la campaña por Venezuela.** Esta misma red recogió más de 100 toneladas para los sismos de Venezuela en **junio de 2026**, con puntos en Cali, Cartagena, Putumayo y Doral (Miami). Varias de esas ciudades reaparecen en las piezas nuevas.
+La publicación en la cuenta oficial fue **comprobada por @victorolave el 11 de agosto de 2026**. La cuenta está en la lista blanca de `scripts/validate-seed.ts`.
+
+> **Corrección a una regla nuestra.** El validador exigía dominio `.gov.co` para marcar `verified`, y eso era **más estricto que la especificación del proyecto**, que siempre admitió «Instagram oficial, Facebook oficial, X oficial» como fuente de validación. Una cuenta oficial de la entidad responsable es la entidad publicando en su propio canal, no un tercero citándola — y durante una emergencia suele ser el canal más rápido. La regla se corrigió con una lista blanca explícita: añadir una cuenta es una decisión consciente, visible en el diff del pull request.
+
+### Salvedad que se conserva
+
+Esta misma red recogió más de 100 toneladas para los sismos de Venezuela en **junio de 2026**, con puntos en Cali, Cartagena, Putumayo y Doral (Miami). Es una red permanente, no creada para este terremoto. La nota pública de cada punto recomienda **llamar antes de llevar cargas grandes**, y casi todos traen teléfono.
 
 ### Decisiones tomadas sobre esta red
 
