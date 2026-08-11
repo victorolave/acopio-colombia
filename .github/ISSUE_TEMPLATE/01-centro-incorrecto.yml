@@ -1,0 +1,53 @@
+name: "🚨 Centro con información incorrecta"
+description: "Un centro publicado cerró, cambió o tiene datos equivocados. Máxima prioridad."
+title: "[Centro] "
+labels: ["datos", "urgente"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Este es el issue más importante del proyecto. Si alguien está a punto de conducir hasta un lugar que ya no recibe donaciones, esto lo evita.
+
+        **Si es urgente y estás en el sitio**, usa también el botón «¿Información incorrecta? Reportar» en la ficha del centro: llega directo al panel de moderación.
+
+  - type: input
+    id: centro
+    attributes:
+      label: ¿Qué centro?
+      description: Nombre o enlace de la ficha en el sitio.
+      placeholder: "https://emergency-rosy.vercel.app/centros/..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: problema
+    attributes:
+      label: ¿Qué pasa?
+      options:
+        - El centro está cerrado o ya no recibe
+        - Cambió el horario
+        - Ya no reciben esos artículos
+        - La dirección está equivocada
+        - El punto del mapa está en otro lugar
+        - El teléfono no funciona
+        - La información es falsa
+        - Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: detalle
+    attributes:
+      label: Cuéntanos
+      description: Qué encontraste y, si aplica, cuál es el dato correcto.
+    validations:
+      required: true
+
+  - type: input
+    id: fuente
+    attributes:
+      label: ¿Cómo lo sabes?
+      description: "Enlace a un comunicado, publicación oficial o nota de prensa. Si fuiste en persona, dilo y en qué fecha."
+      placeholder: "https://... o «fui el 12 de agosto a las 3 p. m. y estaba cerrado»"
+    validations:
+      required: true

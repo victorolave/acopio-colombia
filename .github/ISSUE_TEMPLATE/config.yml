@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🔒 Reportar un fallo de seguridad
+    url: https://github.com/victorolave/acopio-colombia/security/advisories/new
+    about: "No abras un issue público. Usa este canal privado."
+  - name: 📖 Cómo verificamos la información
+    url: https://emergency-rosy.vercel.app/metodologia
+    about: "Qué significa cada estado de verificación antes de reportar un centro."
+  - name: 📋 Fuentes y datos pendientes de validar
+    url: https://github.com/victorolave/acopio-colombia/blob/main/docs/sources.md
+    about: "La lista de lo que ya sabemos que falta verificar. Empieza por ahí."

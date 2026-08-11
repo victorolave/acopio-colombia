@@ -1,5 +1,11 @@
 # Acopio Colombia
 
+[![CI](https://github.com/victorolave/acopio-colombia/actions/workflows/ci.yml/badge.svg)](https://github.com/victorolave/acopio-colombia/actions/workflows/ci.yml)
+[![Licencia MIT](https://img.shields.io/badge/licencia-MIT-0e5c4a)](LICENSE)
+[![Aportes bienvenidos](https://img.shields.io/badge/aportes-bienvenidos-0e5c4a)](CONTRIBUTING.md)
+
+**→ https://emergency-rosy.vercel.app**
+
 Sitio nacional para encontrar **centros de acopio cercanos** tras el terremoto de magnitud 7,4 del **10 de agosto de 2026** (epicentro: San José del Palmar, Chocó).
 
 Responde en segundos a una sola pregunta: **¿dónde puedo llevar ayuda cerca de mí?**
@@ -174,6 +180,27 @@ docs/           sources.md (trazabilidad completa)
 ```
 
 ---
+
+## Contribuir
+
+Los aportes son bienvenidos. Lee **[CONTRIBUTING.md](CONTRIBUTING.md)** antes de empezar: en este proyecto los aportes de **datos** se revisan con un criterio más estricto que los de **código**, porque una dirección equivocada aquí manda a alguien a conducir dos horas hasta un lugar que no recibe nada.
+
+Lo más útil que puedes hacer ahora mismo: tomar uno de los 33 centros `reported` y confirmarlo contra el sitio propio de la entidad. La lista priorizada está en [`docs/sources.md`](docs/sources.md) §7.
+
+Las reglas de verificación no son solo documentación: están **como código** en `scripts/validate-seed.ts` y corren en CI en cada pull request. Rechazan automáticamente fuentes anteriores al terremoto, `verified` sin fuente institucional, coordenadas fuera de Colombia y duplicados.
+
+```bash
+npm run validate:seed
+```
+
+- [Código de conducta](CODE_OF_CONDUCT.md)
+- [Política de seguridad](SECURITY.md) — los fallos de seguridad **no** van en issues públicos
+
+## Licencia
+
+Código bajo [MIT](LICENSE) — © 2026 Victor Olave ([@victorolave](https://github.com/victorolave)).
+
+Los datos de centros provienen de fuentes públicas de terceros, citadas una por una en [`docs/sources.md`](docs/sources.md); cada fuente conserva sus derechos sobre el contenido original. Si reutilizas este proyecto para otra emergencia, **verifica los datos antes de publicarlos**.
 
 ## Estado y pendientes
 

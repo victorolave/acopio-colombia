@@ -1,0 +1,36 @@
+MIT License
+
+Copyright (c) 2026 Victor Olave (@victorolave)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+NOTA SOBRE LOS DATOS
+
+El código de este repositorio se distribuye bajo la licencia MIT.
+
+Los datos de centros de acopio provienen de fuentes públicas de terceros
+(alcaldías, gobernaciones, organismos de socorro y medios de comunicación),
+citadas una por una en docs/sources.md. Cada fuente conserva sus propios
+derechos sobre el contenido original.
+
+Esos datos se publican con fines humanitarios y pueden estar desactualizados.
+Quien reutilice este proyecto asume la responsabilidad de verificar la
+información antes de difundirla, especialmente durante una emergencia activa.

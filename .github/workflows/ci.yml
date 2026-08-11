@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Permisos mínimos: este workflow solo lee el código.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Tipos, datos y build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # Se ejecuta PRIMERO y a propósito: si un pull request introduce un centro
+      # con fuente anterior al terremoto, o marca «verified» algo que solo tiene
+      # respaldo de prensa, queremos que falle aquí y no en la revisión humana.
+      - name: Validar las reglas de verificación del seed
+        run: npm run validate:seed
+
+      - name: Comprobar tipos
+        run: npm run typecheck
+
+      # El build corre SIN credenciales de Supabase, a propósito: comprueba que
+      # el respaldo con el seed estático sigue funcionando. Es lo que mantiene el
+      # sitio en pie si la base de datos falla durante la emergencia.
+      - name: Build sin base de datos (modo respaldo)
+        run: npm run build
+
+      # El seed generado tiene que corresponder con data/centers.ts. Si alguien
+      # editó supabase/seed.sql a mano, o cambió los datos sin regenerarlo, aquí
+      # se nota.
+      - name: Verificar que el seed generado esté al día
+        run: |
+          npm run seed:build
+          if ! git diff --quiet -- supabase/seed.sql; then
+            echo "::error::supabase/seed.sql está desactualizado respecto a data/centers.ts."
+            echo "Ejecuta 'npm run seed:build' e incluye el resultado en el commit."
+            git diff --stat -- supabase/seed.sql
+            exit 1
+          fi
+          echo "El seed generado coincide con data/centers.ts."

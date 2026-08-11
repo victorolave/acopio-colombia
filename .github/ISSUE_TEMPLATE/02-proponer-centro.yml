@@ -1,0 +1,88 @@
+name: "📍 Proponer un centro de acopio"
+description: "Conoces un centro activo que no está en el mapa."
+title: "[Nuevo centro] "
+labels: ["datos", "centro-nuevo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias. Antes de empezar, dos cosas que ahorran tiempo a todos:
+
+        **Necesitamos una fuente comprobable.** «Yo sé que existe» no basta, no porque no te creamos, sino porque quien lea el sitio tiene que poder verificarlo por su cuenta.
+
+        **Debe ser de ESTA emergencia.** Colombia tuvo una campaña por los sismos de Venezuela en junio de 2026 y varias direcciones se reciclaron. La fuente tiene que ser del **10 de agosto de 2026 o posterior**.
+
+        Si prefieres no usar GitHub, puedes registrarlo desde el sitio en [/registrar](https://emergency-rosy.vercel.app/registrar).
+
+  - type: input
+    id: nombre
+    attributes:
+      label: Nombre del centro
+    validations:
+      required: true
+
+  - type: input
+    id: organizacion
+    attributes:
+      label: Organización responsable
+      placeholder: "Alcaldía de..., Cruz Roja seccional..., Banco de Alimentos de..."
+    validations:
+      required: true
+
+  - type: input
+    id: direccion
+    attributes:
+      label: Dirección completa
+      placeholder: "Carrera 52 #30A-97, barrio Guayabal"
+    validations:
+      required: true
+
+  - type: input
+    id: ciudad
+    attributes:
+      label: Municipio y departamento
+      placeholder: "Medellín, Antioquia"
+    validations:
+      required: true
+
+  - type: textarea
+    id: recibe
+    attributes:
+      label: ¿Qué recibe?
+      description: Y si lo sabes, qué NO recibe. Varios centros rechazan medicamentos o ropa.
+    validations:
+      required: true
+
+  - type: input
+    id: horario
+    attributes:
+      label: Horario
+    validations:
+      required: false
+
+  - type: input
+    id: fuente
+    attributes:
+      label: Enlace de la fuente
+      description: "Sitio de la alcaldía o gobernación, comunicado, cuenta oficial verificada o nota de un medio reconocido. NO sirven cadenas de WhatsApp ni capturas sin procedencia."
+      placeholder: "https://..."
+    validations:
+      required: true
+
+  - type: input
+    id: fecha_fuente
+    attributes:
+      label: Fecha de publicación de esa fuente
+      placeholder: "2026-08-12"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmacion
+    attributes:
+      label: Confirmación
+      options:
+        - label: "La fuente es del 10 de agosto de 2026 o posterior y se refiere a este terremoto."
+          required: true
+        - label: "Es un centro de acopio que recibe donaciones, no un albergue para personas."
+          required: true

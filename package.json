@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "seed:build": "tsx scripts/build-seed.ts"
+    "seed:build": "tsx scripts/build-seed.ts",
+    "validate:seed": "tsx scripts/validate-seed.ts",
+    "geocode": "tsx scripts/geocode.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.2",

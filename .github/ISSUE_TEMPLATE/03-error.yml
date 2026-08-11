@@ -1,0 +1,48 @@
+name: "🐛 Error en la aplicación"
+description: "Algo no funciona: el mapa, un botón, el formulario."
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: que_paso
+    attributes:
+      label: ¿Qué pasó?
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: ¿Qué esperabas que pasara?
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo
+      placeholder: |
+        1. Entré a...
+        2. Toqué...
+        3. Apareció...
+    validations:
+      required: true
+
+  - type: input
+    id: dispositivo
+    attributes:
+      label: Dispositivo y navegador
+      description: La mayoría de la gente entra desde el celular, así que este dato importa.
+      placeholder: "iPhone 13, Safari · o · Android, Chrome · o · Windows, Firefox"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: conexion
+    attributes:
+      label: Contexto
+      options:
+        - label: "Tenía conexión lenta o inestable cuando ocurrió."
+          required: false
+        - label: "El problema impide encontrar o llegar a un centro de acopio."
+          required: false
