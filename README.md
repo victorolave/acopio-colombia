@@ -79,7 +79,8 @@ values ('<uuid-del-usuario>', 'admin@ejemplo.com');
 - El público solo puede **leer** centros con estado `verified` o `reported`.
 - **No existe** política de `INSERT` para usuarios anónimos. Los envíos entran por route handlers del servidor (`/api/submissions`, `/api/reports`) con la service role key, tras validación con Zod, honeypot y rate limiting.
 - Los administradores tienen CRUD completo, controlado por la función `is_admin()`.
-- Datos de quien envía un centro (`submitted_by_*`) nunca se exponen públicamente.
+- **RLS filtra filas, no columnas.** Por eso la migración revoca el `SELECT` de tabla al rol `anon` y le concede solo la lista blanca de columnas públicas. Sin eso, cualquiera con la anon key podía pedir `select=*` a PostgREST y leer el correo y el teléfono de quien envió un centro. Verificado: `select=*` como anónimo devuelve `42501 permission denied`.
+- **Registro público de cuentas desactivado** (`Authentication → Sign In / Providers → Allow new users to sign up` en OFF). De lo contrario cualquiera podría crearse una cuenta, pasar al rol `authenticated` y leer las columnas de moderación. Verificado: `/auth/v1/signup` devuelve `422 signup_disabled`.
 
 ---
 

@@ -206,6 +206,37 @@ create policy "admins leen admin_users"
   to authenticated
   using (public.is_admin());
 
+-- ---------------------------------------------------------------------------
+-- Permisos a nivel de COLUMNA para el rol anónimo
+--
+-- RLS filtra FILAS, no COLUMNAS. Sin esto, cualquiera con la anon key puede
+-- pedir `select=*` contra PostgREST y leer los datos de contacto de la persona
+-- que envió un centro (`submitted_by_*`), aunque la aplicación nunca los
+-- muestre. Es una fuga real de datos personales.
+--
+-- Ojo con el orden: `revoke select (columna)` NO tiene efecto si el rol tiene
+-- el SELECT concedido a nivel de tabla. Hay que revocar la tabla completa y
+-- volver a conceder solo la lista blanca de columnas públicas.
+-- ---------------------------------------------------------------------------
+revoke select on public.collection_centers from anon;
+
+grant select (
+  id, slug, name, organization, type,
+  department, municipality, address,
+  latitude, longitude, location_precision,
+  accepted_items, urgent_needs, rejected_items,
+  schedule_text, starts_at, ends_at,
+  phone, whatsapp, email,
+  source_name, source_url, source_published_at,
+  verification_status, verification_notes, last_verified_at,
+  created_at, updated_at
+) on public.collection_centers to anon;
+
+-- RECORDATORIO OPERATIVO: desactivar el registro público de cuentas en el
+-- proyecto (Authentication → Sign In / Providers → «Allow new users to sign up»
+-- en OFF). De lo contrario cualquiera puede crearse una cuenta, pasar a rol
+-- `authenticated` y leer las columnas que sí conserva ese rol para moderación.
+
 -- NOTA: no existe policy de INSERT para `anon` ni en `collection_centers` ni en
 -- `center_reports`. Los envíos del público entran por route handlers del servidor
 -- usando la service role key, tras validación con Zod, honeypot y rate limiting.

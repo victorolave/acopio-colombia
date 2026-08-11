@@ -13,3 +13,7 @@ next-env.d.ts
 *.tsbuildinfo
 
 .atl
+
+# Secretos locales
+.supabase-db-password.txt
+.supabase-admin-password.txt
