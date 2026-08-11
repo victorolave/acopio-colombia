@@ -60,7 +60,24 @@ const QUERY_OVERRIDES: Record<string, string[]> = {
   ],
   "banco-alimentos-armenia": ["Armenia, Quindío, Colombia"],
   "banco-alimentos-manizales": ["Manizales, Caldas, Colombia"],
-  "banco-arquidiocesano-alimentos-ibague": ["Ibagué, Tolima, Colombia"],
+  // Ya no se fuerza al municipio: las piezas de las Tigresas aportaron la
+  // dirección exacta (Carrera 4 #23-42, sector Estadio).
+
+  // --- Red de las Tigresas: correcciones tras revisar la primera pasada ------
+  // «Carrera 47» resolvió a Teusaquillo (~calle 40); La Castellana está al norte.
+  "tigresas-bogota-gaula": ["Carrera 47, La Castellana, Bogotá, Colombia"],
+  // «Carrera 7» resolvió a La Candelaria (centro); la 7 con 180 está en el extremo norte.
+  "tigresas-bogota-codabas": ["Carrera 7 con Calle 180, Bogotá, Colombia", "Calle 180, Bogotá, Colombia"],
+  // «Carrera 15A» resolvió a Los Mártires (centro); la 15A con 122 está en Usaquén.
+  "tigresas-bogota-122-plaza": ["Carrera 15A con Calle 122, Bogotá, Colombia", "Calle 122, Bogotá, Colombia"],
+  // Los tres puntos de Cartagena caían en el mismo centroide del municipio y
+  // quedaban apilados en el mapa. Se separan por barrio, que sí es dato real
+  // de la fuente: Bocagrande, Crespo y Ternera son zonas distintas.
+  "tigresas-cartagena-perpetuo-socorro": ["Bocagrande, Cartagena de Indias, Bolívar, Colombia"],
+  "tigresas-cartagena-cristo-rey": ["Crespo, Cartagena de Indias, Bolívar, Colombia"],
+  "tigresas-banco-alimentos-cartagena": ["Ternera, Cartagena de Indias, Bolívar, Colombia"],
+  // «Calle 30» resolvió a Bonda, corregimiento rural al oriente de Santa Marta.
+  "tigresas-santa-marta-amor-en-accion": ["Calle 30, Centro, Santa Marta, Magdalena, Colombia"],
   "centro-acopio-barranquillita": [
     "Barranquillita, Barranquilla, Atlántico, Colombia",
     "Carrera 43, Barranquilla, Atlántico, Colombia",
@@ -93,6 +110,16 @@ const MANUAL_OVERRIDES: Record<string, Pick<Entry, "latitude" | "longitude" | "p
     longitude: -72.507821,
     precision: "municipality",
     why: "Centroide administrativo del municipio quedaba a ~20 km del casco urbano; se usa el centro de Cúcuta.",
+  },
+  "tigresas-santa-marta-amor-en-accion": {
+    // Tres consultas distintas resolvieron a Bonda, un corregimiento rural al
+    // oriente, y la última llegó a marcarse «exact» por coincidir con un POI
+    // con nombre propio. Ese es el caso peligroso: pin equivocado con etiqueta
+    // de alta confianza. Se fija el centro de Santa Marta y se degrada.
+    latitude: 11.240454,
+    longitude: -74.206037,
+    precision: "approximate",
+    why: "Las consultas resolvían al corregimiento rural de Bonda; se usa el centro de Santa Marta como aproximación.",
   },
   "acsc-santa-marta": {
     // La consulta enganchó un POI ("Hotel Monterrey") sobre la Calle 11, no la Calle 24.

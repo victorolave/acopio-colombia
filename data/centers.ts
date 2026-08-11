@@ -124,6 +124,99 @@ const ACSC_SOURCE = {
 const ACSC_NOTES =
   "Sede de la ACSC habilitada para recibir medicamentos e insumos médicos. Reportado por El Espectador a partir del comunicado de la ACSC del 10 de agosto de 2026. No se localizó el comunicado original en el sitio de la ACSC: confirmar por teléfono antes de desplazarse.";
 
+// --- Red de las Tigresas de la Patria / «Colombia un solo corazón» -----------
+
+/**
+ * Canasta según la lista que la propia primera dama publicó el 10 de agosto de
+ * 2026 (recogida por Semana). Las piezas gráficas de la red no detallan los
+ * artículos punto por punto, salvo Barranquilla.
+ */
+const TIGRESAS_ITEMS = [
+  "Agua potable y bebidas de hidratación",
+  "Arroz",
+  "Aceite",
+  "Pasta",
+  "Enlatados",
+  "Alimentos no perecederos",
+  "Jabón y shampoo",
+  "Cepillo y crema dental",
+  "Toallas higiénicas",
+  "Papel higiénico",
+  "Cascos de seguridad para rescate",
+  "Guantes de protección",
+  "Gafas de protección",
+  "Tapabocas",
+];
+
+const TIGRESAS_SOURCE = {
+  sourceName:
+    "Tigresas de la Patria / «Colombia un solo corazón» — piezas gráficas difundidas por la primera dama Ana Lucía Pineda",
+  sourceUrl: "https://www.instagram.com/tigresasdelapatriaoficial/",
+  sourcePublishedAt: "2026-08-10",
+};
+
+/**
+ * NOTA DE VERIFICACIÓN COMÚN A TODA LA RED.
+ *
+ * Por qué NO están como `verified`, pese a venir de la primera dama:
+ *
+ *  1. La fuente que tenemos son capturas de las piezas gráficas, no una
+ *     publicación localizable. El sitio muestra a cada visitante el enlace de
+ *     la fuente para que compruebe por su cuenta; aquí ese enlace apunta a la
+ *     cuenta, no al contenido concreto.
+ *  2. Ningún medio replicó esta lista de direcciones. Se buscó por cadenas
+ *     distintivas («Casa Abelardista», «Complejo Bodeguero Alpaca») sin
+ *     resultados.
+ *  3. La misma red hizo una campaña por los sismos de VENEZUELA en junio de
+ *     2026, con puntos en Cali, Cartagena, Putumayo y Doral (Miami). Varias de
+ *     esas ciudades reaparecen aquí, así que no se puede descartar arrastre.
+ *
+ * El encargo presidencial a la primera dama para coordinar la ayuda ciudadana
+ * por ESTE terremoto sí está confirmado (Pulzo y Semana, 10 de agosto de 2026),
+ * y una de las piezas dice de forma explícita «para apoyar con donaciones a
+ * nuestros hermanos afectados por el terremoto». Eso alcanza para publicar como
+ * «reportado», no para sellar como «verificado».
+ */
+const TIGRESAS_NOTES =
+  "Punto de la Red Nacional de Puntos de Solidaridad de las Tigresas de la Patria, difundida por la primera dama Ana Lucía Pineda, a quien el presidente encargó coordinar la ayuda ciudadana por este terremoto. La lista proviene de las piezas gráficas de la campaña y no fue replicada por ningún medio: confirma por teléfono antes de desplazarte. Esta misma red operó una campaña por los sismos de Venezuela en junio de 2026, así que la vigencia de cada punto debe reconfirmarse.";
+
+function tigresa(
+  slug: string,
+  name: string,
+  department: string,
+  municipality: string,
+  address: string,
+  phone: string | null,
+  extra: Partial<SeedCenter> = {},
+): SeedCenter {
+  return {
+    slug,
+    name,
+    organization: "Tigresas de la Patria — «Colombia un solo corazón»",
+    type: "general",
+    department,
+    municipality,
+    address,
+    geocodeQuery: null,
+    latitude: null,
+    longitude: null,
+    acceptedItems: TIGRESAS_ITEMS,
+    urgentNeeds: ["Agua potable", "Alimentos no perecederos", "Elementos de aseo"],
+    rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
+    scheduleText: null,
+    startsAt: "2026-08-10",
+    endsAt: null,
+    phone,
+    whatsapp: phone,
+    email: null,
+    ...TIGRESAS_SOURCE,
+    verificationStatus: "reported",
+    verificationNotes: TIGRESAS_NOTES,
+    lastVerifiedAt: VERIFIED_AT,
+    ...extra,
+  };
+}
+
 function acsc(
   slug: string,
   department: string,
@@ -1206,8 +1299,8 @@ export const SEED_CENTERS: SeedCenter[] = [
     type: "food",
     department: "Tolima",
     municipality: "Ibagué",
-    address: "Sede del Banco Arquidiocesano de Alimentos",
-    geocodeQuery: "Banco Arquidiocesano de Alimentos, Ibagué, Tolima, Colombia",
+    address: "Carrera 4 #23-42, sector Estadio",
+    geocodeQuery: "Carrera 4 # 23-42, Ibagué, Tolima, Colombia",
     latitude: null,
     longitude: null,
     acceptedItems: [
@@ -1229,16 +1322,16 @@ export const SEED_CENTERS: SeedCenter[] = [
     scheduleText: "Consultar antes de asistir",
     startsAt: "2026-08-10",
     endsAt: null,
-    phone: null,
-    whatsapp: null,
+    phone: "+57 321 840 2089",
+    whatsapp: "+57 321 840 2089",
     email: null,
-    sourceName: "ABACO, vía Semana",
+    sourceName: "ABACO, vía Semana; dirección y teléfono según la red de las Tigresas de la Patria",
     sourceUrl:
       "https://www.semana.com/nacion/articulo/bancos-de-alimentos-activan-ayuda-para-damnificados-por-el-terremoto-en-colombia-asi-puede-donar/202641/",
     sourcePublishedAt: "2026-08-10",
     verificationStatus: "reported",
     verificationNotes:
-      "Punto del corredor humanitario de ABACO. Sin dirección exacta publicada: coordenada por geocodificación. VALIDAR PIN Y DIRECCIÓN MANUALMENTE.",
+      "Punto del corredor humanitario de ABACO. La dirección exacta («Carrera 4 #23-42, sector Estadio») y el teléfono provienen de las piezas gráficas de la red de las Tigresas de la Patria, que coinciden en señalar el Banco de Alimentos de la Arquidiócesis de Ibagué. DOS FUENTES INDEPENDIENTES COINCIDEN en el punto, lo que refuerza su existencia, pero ninguna es la organización publicando en su propio canal.",
     lastVerifiedAt: VERIFIED_AT,
   },
   {
@@ -1270,6 +1363,153 @@ export const SEED_CENTERS: SeedCenter[] = [
       "NO PUBLICADO COMO ACTIVO. ABACO informó que la sede de Pereira resultó afectada por el sismo y que se evalúa una ubicación alterna. Volver a consultar con ABACO antes de reactivarlo.",
     lastVerifiedAt: VERIFIED_AT,
   },
+  // ===========================================================================
+  // RED NACIONAL DE PUNTOS DE SOLIDARIDAD — Tigresas de la Patria
+  // Difundida por la primera dama Ana Lucía Pineda. Ver TIGRESAS_NOTES.
+  //
+  // EXCLUIDO A PROPÓSITO: «Centro Internacional de Solidaridad – GEM,
+  // 1850 NW 84th Ave, Doral, Florida 33126». Está fuera de Colombia, el esquema
+  // restringe las coordenadas al territorio nacional, y Doral fue justamente
+  // uno de los puntos de la campaña por Venezuela de junio de 2026.
+  // ===========================================================================
+  tigresa("tigresas-valledupar", "Centro de Solidaridad Valledupar", "Cesar", "Valledupar",
+    "Carrera 23 #4-116, MZ A, Casa 14, Conjunto Residencial Callejas", "+57 311 403 9818",
+    { geocodeQuery: "Carrera 23 # 4-116, Valledupar, Cesar, Colombia" }),
+  tigresa("tigresas-pailitas", "Emisora Universal Stereo", "Cesar", "Pailitas",
+    "Barrio El Bosque", "+57 314 592 7152",
+    { geocodeQuery: "Pailitas, Cesar, Colombia" }),
+  tigresa("tigresas-bucaramanga", "Centro de Solidaridad Bucaramanga", "Santander", "Bucaramanga",
+    "Calle 54 #21A-07, barrio La Concordia", "+57 316 256 7986",
+    { geocodeQuery: "Calle 54 # 21A-07, Bucaramanga, Santander, Colombia" }),
+  tigresa("tigresas-cartagena-perpetuo-socorro", "Parroquia Nuestra Señora del Perpetuo Socorro", "Bolívar", "Cartagena",
+    "Bocagrande", "+57 310 803 6477",
+    { geocodeQuery: "Parroquia Nuestra Señora del Perpetuo Socorro, Bocagrande, Cartagena, Colombia" }),
+  tigresa("tigresas-cartagena-cristo-rey", "Parroquia Cristo Rey (Crespo)", "Bolívar", "Cartagena",
+    "Barrio Crespo", "+57 300 329 3219",
+    { geocodeQuery: "Parroquia Cristo Rey, Crespo, Cartagena, Colombia" }),
+  tigresa("tigresas-banco-alimentos-cartagena", "Banco de Alimentos de Cartagena", "Bolívar", "Cartagena",
+    "Parque Industrial Ternera #1, Bodega 51", "+57 301 352 3180",
+    { type: "food", geocodeQuery: "Parque Industrial Ternera, Cartagena, Bolívar, Colombia" }),
+  tigresa("tigresas-tame", "Complejo Deportivo Villa Olímpica", "Arauca", "Tame",
+    "Calle 15 con Carrera 37, barrio La Libertad", "+57 311 218 6525",
+    { geocodeQuery: "Tame, Arauca, Colombia" }),
+  tigresa("tigresas-bogota-gaula", "GAULA — La Castellana", "Bogotá D.C.", "Bogotá D.C.",
+    "Carrera 47 #94-68, barrio La Castellana", "+57 318 544 4431",
+    { geocodeQuery: "Carrera 47 # 94-68, Bogotá, Colombia" }),
+  tigresa("tigresas-bogota-codabas", "CODABAS", "Bogotá D.C.", "Bogotá D.C.",
+    "Carrera 7 #180-75, módulo 2, piso 2", "+57 305 714 1513",
+    { geocodeQuery: "Carrera 7 # 180-75, Bogotá, Colombia" }),
+  tigresa("tigresas-bogota-unicentro", "Unicentro Bogotá", "Bogotá D.C.", "Bogotá D.C.",
+    "Entradas por la Carrera 13 (Zona de Banderas) y Carrera 15 (entrada principal)", "+57 317 645 6373",
+    { geocodeQuery: "Unicentro, Bogotá, Colombia" }),
+  tigresa("tigresas-barranquilla-casa-abelardista", "Casa Abelardista", "Atlántico", "Barranquilla",
+    "Carrera 49C #80-76", "+57 301 760 6374",
+    {
+      geocodeQuery: "Carrera 49C # 80-76, Barranquilla, Atlántico, Colombia",
+      scheduleText: "9:00 a. m. – 5:00 p. m.",
+      acceptedItems: ["Alimentos no perecederos", "Medicamentos", "Líquidos"],
+      urgentNeeds: ["Alimentos no perecederos", "Medicamentos"],
+      verificationNotes: `${TIGRESAS_NOTES} La pieza gráfica indica responsable «Fela Córdoba» y es el único punto de la red con horario y lista de artículos publicados.`,
+    }),
+  tigresa("tigresas-neiva-centro-solidaridad", "Centro de Solidaridad Neiva", "Huila", "Neiva",
+    "Calle 8 #10-27, barrio El Altico", "+57 315 480 2554",
+    { geocodeQuery: "Calle 8 # 10-27, Neiva, Huila, Colombia" }),
+  tigresa("tigresas-banco-alimentos-neiva", "Banco de Alimentos de Neiva", "Huila", "Neiva",
+    "Calle 33 Sur #22-141, Zona Industrial del Sur", "+57 311 264 7951",
+    { type: "food", geocodeQuery: "Zona Industrial del Sur, Neiva, Huila, Colombia" }),
+  tigresa("tigresas-santa-marta-amor-en-accion", "Iglesia Amor en Acción", "Magdalena", "Santa Marta",
+    "Calle 30 #6-69", "+57 317 300 3459",
+    { geocodeQuery: "Calle 30 # 6-69, Santa Marta, Magdalena, Colombia" }),
+  tigresa("tigresas-arauca-capital", "Tigresas Arauca Capital", "Arauca", "Arauca",
+    "Calle 17 #17-31, barrio Cristo Rey", "+57 314 401 4272",
+    { geocodeQuery: "Calle 17 # 17-31, Arauca, Colombia" }),
+  tigresa("tigresas-san-diego-cesar", "Punto de Solidaridad San Diego", "Cesar", "San Diego",
+    "Carrera 13 #2F-85, Urbanización Chiriaimo", "+57 301 297 9760",
+    {
+      geocodeQuery: "San Diego, Cesar, Colombia",
+      verificationNotes: `${TIGRESAS_NOTES} Aparece DUPLICADO en dos piezas distintas de la campaña, con la misma dirección y teléfono; se consolidó en un solo registro.`,
+    }),
+  tigresa("tigresas-pereira-alpaca", "Complejo Bodeguero Alpaca — Bodega 01", "Risaralda", "Pereira",
+    "Vía La Romelia – El Pollo, Vereda Santa Ana Baja, a la altura del Hotel Tángara", "+57 310 528 9438",
+    {
+      geocodeQuery: "La Romelia, Dosquebradas, Risaralda, Colombia",
+      verificationNotes: `${TIGRESAS_NOTES} Aparece en la pieza titulada «Nuevos puntos de solidaridad para apoyar con donaciones a nuestros hermanos afectados por el terremoto», la referencia más explícita a ESTA emergencia de toda la red. Pereira es una de las ciudades más golpeadas. Dirección rural sin nomenclatura urbana: el pin es orientativo, guíate por la referencia del Hotel Tángara.`,
+    }),
+  tigresa("tigresas-el-copey", "Punto de Solidaridad El Copey", "Cesar", "El Copey",
+    "Calle 8 #20-22, Barrio San Carlos", "+57 316 454 5452",
+    { geocodeQuery: "El Copey, Cesar, Colombia" }),
+  tigresa("tigresas-chia", "Punto de Solidaridad Chía", "Cundinamarca", "Chía",
+    "Carrera 9 #12-41, diagonal al CAM", "+57 311 255 5912",
+    { geocodeQuery: "Carrera 9 # 12-41, Chía, Cundinamarca, Colombia" }),
+  tigresa("tigresas-quibdo", "Punto de Solidaridad Quibdó", "Chocó", "Quibdó",
+    "Calle 27A #23-44, Barrio Los Ángeles, sector San Gabriel", "+57 310 805 0535",
+    {
+      geocodeQuery: "Calle 27A # 23-44, Quibdó, Chocó, Colombia",
+      verificationNotes: `${TIGRESAS_NOTES} Quibdó está dentro de la zona más afectada: verifica que siga operando y que reciba donaciones en lugar de distribuirlas. La pieza indica responsable «Minerva Palacio».`,
+    }),
+  tigresa("tigresas-caqueza", "Deportivos Willys", "Cundinamarca", "Cáqueza",
+    "Calle 4 N #4-09", "+57 314 308 7520",
+    { geocodeQuery: "Cáqueza, Cundinamarca, Colombia" }),
+  tigresa("tigresas-sincelejo", "Punto de Solidaridad Sincelejo", "Sucre", "Sincelejo",
+    "Calle 19 #21-41, barrio 7 de Agosto, frente a la Droguería Maxi Económica", "+57 311 478 8851",
+    { geocodeQuery: "Calle 19 # 21-41, Sincelejo, Sucre, Colombia" }),
+  tigresa("tigresas-acacias", "Punto de Solidaridad Acacías", "Meta", "Acacías",
+    "Calle 15 #16-43, frente al Banco de Occidente, Barrio Centro", "+57 314 242 6083",
+    { geocodeQuery: "Calle 15 # 16-43, Acacías, Meta, Colombia" }),
+  tigresa("tigresas-florencia", "Punto de Solidaridad Florencia", "Caquetá", "Florencia",
+    "Carrera 10A #7-04, Barrio Avenidas", "+57 317 887 1620",
+    { geocodeQuery: "Carrera 10A # 7-04, Florencia, Caquetá, Colombia" }),
+  tigresa("tigresas-granada-meta", "Punto de Solidaridad Granada", "Meta", "Granada",
+    "Calle 12 #14-115, Barrio Belén", "+57 311 843 6106",
+    { geocodeQuery: "Granada, Meta, Colombia" }),
+  tigresa("tigresas-pacho", "Oficina Orange — Zona Rosa", "Cundinamarca", "Pacho",
+    "Calle 6 #16-10, Oficina Orange, Zona Rosa", "+57 302 515 2769",
+    { geocodeQuery: "Pacho, Cundinamarca, Colombia" }),
+  tigresa("tigresas-mocoa", "Froylán Café", "Putumayo", "Mocoa",
+    "Calle 9 #6-14, Local 109", "+57 314 484 4307",
+    { geocodeQuery: "Calle 9 # 6-14, Mocoa, Putumayo, Colombia" }),
+  tigresa("tigresas-bosconia", "Punto de Solidaridad Bosconia", "Cesar", "Bosconia",
+    "Carrera 18 #13-78, Barrio San Martín", "+57 313 591 9358",
+    { geocodeQuery: "Bosconia, Cesar, Colombia" }),
+  tigresa("tigresas-pasto", "Antiguo Pre-ICFES Montilla", "Nariño", "Pasto",
+    "Calle 17 #27-59, Barrio Centro", "+57 320 688 6196",
+    { geocodeQuery: "Calle 17 # 27-59, Pasto, Nariño, Colombia" }),
+  tigresa("tigresas-cali-yumbo", "Punto de Solidaridad Yumbo", "Valle del Cauca", "Yumbo",
+    "Carrera 30 #10-90, Arroyo Hondo", "+57 316 791 2163",
+    { geocodeQuery: "Arroyo Hondo, Yumbo, Valle del Cauca, Colombia" }),
+  tigresa("tigresas-bogota-122-plaza", "122 Plaza Apartahotel", "Bogotá D.C.", "Bogotá D.C.",
+    "Carrera 15A #122-27", null,
+    { geocodeQuery: "Carrera 15A # 122-27, Bogotá, Colombia" }),
+  {
+    slug: "tigresas-casanare",
+    name: "Punto de Solidaridad Casanare",
+    organization: "Tigresas de la Patria — «Colombia un solo corazón»",
+    type: "general",
+    department: "Casanare",
+    municipality: "Yopal",
+    address: "Calle 12 #21-44",
+    geocodeQuery: null,
+    latitude: null,
+    longitude: null,
+    acceptedItems: TIGRESAS_ITEMS,
+    urgentNeeds: [],
+    rejectedItems: [],
+    scheduleText: null,
+    startsAt: null,
+    endsAt: null,
+    phone: "+57 310 310 4757",
+    whatsapp: "+57 310 310 4757",
+    email: null,
+    ...TIGRESAS_SOURCE,
+    sourceName: "Sin municipio identificable en la fuente",
+    sourceUrl: null,
+    sourcePublishedAt: null,
+    verificationStatus: "disputed",
+    verificationNotes:
+      "NO PUBLICADO. La pieza gráfica solo dice «Casanare» y una dirección («Calle 12 #21-44») sin municipio. Casanare es un departamento con 19 municipios: publicar esto mandaría gente a una calle que existe en varios de ellos. Se asume Yopal por ser la capital, pero NO está confirmado. Llamar al +57 310 310 4757 para establecer el municipio antes de publicarlo.",
+    lastVerifiedAt: null,
+  },
+
   {
     slug: "banco-alimentos-buenaventura",
     name: "Banco de Alimentos de Buenaventura",

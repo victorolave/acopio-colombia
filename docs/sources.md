@@ -51,6 +51,47 @@ Agregadores usados solo para **corroborar**, nunca como fuente única: Infobae, 
 
 ---
 
+## 3.b Red Nacional de Puntos de Solidaridad — Tigresas de la Patria
+
+**31 puntos** incorporados el 11 de agosto de 2026 a partir de las piezas gráficas de la campaña «Colombia un solo corazón», difundidas por la primera dama **Ana Lucía Pineda**.
+
+### Por qué quedaron como `reported` y no `verified`
+
+El presidente Abelardo de la Espriella encargó públicamente a la primera dama y a la esposa del vicepresidente **coordinar la ayuda ciudadana y empresarial** por este terremoto (Pulzo y Semana, 10 de agosto de 2026). Una de las piezas se titula literalmente «Nuevos puntos de solidaridad para apoyar con donaciones a nuestros hermanos afectados por el terremoto». El vínculo con esta emergencia está fuera de duda.
+
+Aun así, tres razones impiden sellarlos como verificados:
+
+1. **La fuente son capturas de imagen, no una publicación localizable.** El sitio muestra a cada visitante el enlace de la fuente para que compruebe por su cuenta; aquí solo se puede enlazar la cuenta, no el contenido concreto. La regla del proyecto es explícita: no usar como fuente primaria imágenes sin procedencia.
+2. **Ningún medio replicó la lista.** Se buscó por cadenas distintivas («Casa Abelardista», «Complejo Bodeguero Alpaca») sin resultados.
+3. **Riesgo de arrastre de la campaña por Venezuela.** Esta misma red recogió más de 100 toneladas para los sismos de Venezuela en **junio de 2026**, con puntos en Cali, Cartagena, Putumayo y Doral (Miami). Varias de esas ciudades reaparecen en las piezas nuevas.
+
+### Decisiones tomadas sobre esta red
+
+| Caso | Decisión |
+|---|---|
+| **Miami / Doral, Florida** — «Centro Internacional de Solidaridad – GEM», 1850 NW 84th Ave | **Excluido.** Está fuera de Colombia, el esquema restringe las coordenadas al territorio nacional, y Doral fue uno de los puntos de la campaña por Venezuela de junio. |
+| **San Diego (Cesar)** — Carrera 13 #2F-85 | Aparece **duplicado** en dos piezas distintas con la misma dirección y teléfono. Consolidado en un solo registro. |
+| **Casanare** — «Calle 12 #21-44», sin municipio | **`disputed`, no publicado.** Casanare tiene 19 municipios y esa calle existe en varios. Se asume Yopal, pero sin confirmar. Llamar al +57 310 310 4757. |
+| **Ibagué — Banco de Alimentos** | **Mejorado.** Ya estaba en el seed vía ABACO pero solo con precisión de municipio. Las piezas aportan dirección exacta (Carrera 4 #23-42, sector Estadio) y teléfono. **Dos fuentes independientes coinciden**, lo que refuerza su existencia. |
+| **Quibdó (Chocó)** | Publicado con nota especial: está en la zona más afectada, hay que verificar que reciba donaciones y no que las distribuya. |
+| **Pereira (Risaralda)** | Dirección rural sin nomenclatura urbana («Vía La Romelia – El Pollo, Vereda Santa Ana Baja»). Pin orientativo; la referencia útil es el Hotel Tángara. |
+
+### Correcciones de geocodificación en esta tanda
+
+| Punto | Falla | Corrección |
+|---|---|---|
+| GAULA, Bogotá | «Carrera 47» cayó en Teusaquillo (~calle 40) | Se forzó La Castellana |
+| CODABAS, Bogotá | «Carrera 7» cayó en La Candelaria (centro) | Se forzó Carrera 7 con Calle 180 |
+| 122 Plaza, Bogotá | «Carrera 15A» cayó en Los Mártires (centro) | Se forzó Calle 122, Usaquén |
+| Iglesia Amor en Acción, Santa Marta | Tres consultas cayeron en **Bonda**, corregimiento rural, y la última llegó a marcarse `exact` por coincidir con un POI con nombre propio | Corrección manual al centro de Santa Marta, degradado a `approximate` |
+| 3 puntos de Cartagena | Los tres cayeron en el mismo centroide del municipio y quedaban **apilados** en el mapa | Separados por barrio: Bocagrande, Crespo y Ternera |
+
+> El caso de Santa Marta merece atención: el clasificador etiquetó como `exact` una coordenada **equivocada**, porque el resultado era un POI con nombre propio. Es el modo de fallo más peligroso —pin errado con etiqueta de alta confianza— y la razón por la que la salida del geocodificador se revisa a mano una por una.
+
+**Todos estos 31 puntos requieren confirmación telefónica.** Las piezas traen teléfono para casi todos; es la vía más rápida para promoverlos a `verified` o retirarlos.
+
+---
+
 ## 4. Conflictos de fuentes resueltos
 
 ### 4.1 Barranquilla — Carrera 43 #6-120, Barranquillita → `reported`

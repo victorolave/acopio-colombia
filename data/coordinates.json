@@ -10,16 +10,16 @@
   "samu-norte-cruz-roja-bogota": {
     "slug": "samu-norte-cruz-roja-bogota",
     "query": "Carrera 7B Bis # 132-31, Bogotá, Colombia",
-    "latitude": 4.709944,
-    "longitude": -74.030181,
-    "displayName": "Carrera 7B Bis, Bosque de Medina, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110121, Colombia",
+    "latitude": 4.732576,
+    "longitude": -74.025206,
+    "displayName": "Carrera 7B Bis, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110131, Colombia",
     "precision": "approximate"
   },
   "centro-salvamento-acuatico-cruz-roja-bogota": {
     "slug": "centro-salvamento-acuatico-cruz-roja-bogota",
     "query": "Avenida La Esmeralda # 63-81, Bogotá, Colombia",
-    "latitude": 4.664878,
-    "longitude": -74.085988,
+    "latitude": 4.66086,
+    "longitude": -74.0878,
     "displayName": "Avenida Carrera 60, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111221, Colombia",
     "precision": "approximate"
   },
@@ -138,9 +138,9 @@
   "fundacion-saciar-medellin": {
     "slug": "fundacion-saciar-medellin",
     "query": "Carrera 50, Guayabal, Medellín, Antioquia, Colombia",
-    "latitude": 6.223145,
-    "longitude": -75.577415,
-    "displayName": "Carrera 50, Santa Fé, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050021, Colombia",
+    "latitude": 6.215806,
+    "longitude": -75.578456,
+    "displayName": "Carrera 50, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050021, Colombia",
     "precision": "approximate"
   },
   "parque-principal-itagui": {
@@ -186,8 +186,8 @@
   "acsc-bogota": {
     "slug": "acsc-bogota",
     "query": "Carrera 15A # 120-74, Bogotá, Colombia",
-    "latitude": 4.69929,
-    "longitude": -74.043834,
+    "latitude": 4.695119,
+    "longitude": -74.044322,
     "displayName": "Carrera 15A, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110111, Colombia",
     "precision": "approximate"
   },
@@ -202,8 +202,8 @@
   "acsc-tunja": {
     "slug": "acsc-tunja",
     "query": "Calle 20 # 12-84, Tunja, Boyacá, Colombia",
-    "latitude": 5.53358,
-    "longitude": -73.363438,
+    "latitude": 5.535746,
+    "longitude": -73.371177,
     "displayName": "Calle 20, Tunja, Centro, Boyacá, RAP (Especial) Central, 150001, Colombia",
     "precision": "approximate"
   },
@@ -242,9 +242,9 @@
   "acsc-neiva": {
     "slug": "acsc-neiva",
     "query": "Carrera 5 # 10-49, Neiva, Huila, Colombia",
-    "latitude": 2.958357,
-    "longitude": -75.290777,
-    "displayName": "Carrera 5, El Cortijo, Comuna Nororiental, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410008, Colombia",
+    "latitude": 2.931326,
+    "longitude": -75.290524,
+    "displayName": "Carrera 5, Comuna Centro, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410010, Colombia",
     "precision": "approximate"
   },
   "acsc-santa-marta": {
@@ -260,7 +260,7 @@
     "query": "Centro Comercial Villacentro, Villavicencio, Meta, Colombia",
     "latitude": 4.133308,
     "longitude": -73.637777,
-    "displayName": "Villacentro, Avenida 40, La Esperanza, Comuna 7, Perímetro Urbano Villavicencio, Villavicencio, Meta, RAP (Especial) Central, 500005, Colombia",
+    "displayName": "Villacentro, Avenida 40, La Esperanza, Comuna 2, Perímetro Urbano Villavicencio, Villavicencio, Meta, RAP (Especial) Central, 500001, Colombia",
     "precision": "exact"
   },
   "acsc-pasto": {
@@ -311,12 +311,260 @@
     "displayName": "Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",
     "precision": "municipality"
   },
+  "tigresas-valledupar": {
+    "slug": "tigresas-valledupar",
+    "query": "Carrera 23 # 4-116, Valledupar, Cesar, Colombia",
+    "latitude": 10.441746,
+    "longitude": -73.250483,
+    "displayName": "Carrera 23, Comuna 3, Perímetro Urbano Valledupar, Valledupar, Cesar, RAP Caribe, 200003, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-pailitas": {
+    "slug": "tigresas-pailitas",
+    "query": "Pailitas, Cesar, Colombia",
+    "latitude": 8.95899,
+    "longitude": -73.621694,
+    "displayName": "Pailitas, Cesar, RAP Caribe, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-bucaramanga": {
+    "slug": "tigresas-bucaramanga",
+    "query": "Calle 54 # 21A-07, Bucaramanga, Santander, Colombia",
+    "latitude": 7.110476,
+    "longitude": -73.116758,
+    "displayName": "Calle 54, La Concordia, Comuna 6 - La Concordia, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680005, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-tame": {
+    "slug": "tigresas-tame",
+    "query": "Tame, Arauca, Colombia",
+    "latitude": 6.461518,
+    "longitude": -71.731438,
+    "displayName": "Tame, Arauca, RAP Llanos, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-bogota-unicentro": {
+    "slug": "tigresas-bogota-unicentro",
+    "query": "Unicentro, Bogotá, Colombia",
+    "latitude": 4.702159,
+    "longitude": -74.041281,
+    "displayName": "Unicentro, Carrera 14, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110111, Colombia",
+    "precision": "exact"
+  },
+  "tigresas-barranquilla-casa-abelardista": {
+    "slug": "tigresas-barranquilla-casa-abelardista",
+    "query": "Carrera 49C # 80-76, Barranquilla, Atlántico, Colombia",
+    "latitude": 11.005144,
+    "longitude": -74.822758,
+    "displayName": "Carrera 49C, Altamira, Localidad Riomar, Perímetro Urbano Barranquilla, Barranquilla, Atlántico, RAP Caribe, 080020, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-neiva-centro-solidaridad": {
+    "slug": "tigresas-neiva-centro-solidaridad",
+    "query": "Calle 8 # 10-27, Neiva, Huila, Colombia",
+    "latitude": 2.92925,
+    "longitude": -75.283523,
+    "displayName": "Calle 8, El Altico, Comuna Centro, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410400, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-banco-alimentos-neiva": {
+    "slug": "tigresas-banco-alimentos-neiva",
+    "query": "Neiva, Huila, Colombia",
+    "latitude": 2.925704,
+    "longitude": -75.289394,
+    "displayName": "Neiva, Norte, Huila, RAP (Especial) Central, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-arauca-capital": {
+    "slug": "tigresas-arauca-capital",
+    "query": "Calle 17 # 17-31, Arauca, Colombia",
+    "latitude": 7.082475,
+    "longitude": -70.757417,
+    "displayName": "Calle 17, Arauca, RAP Llanos, 810001, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-san-diego-cesar": {
+    "slug": "tigresas-san-diego-cesar",
+    "query": "San Diego, Cesar, Colombia",
+    "latitude": 10.332633,
+    "longitude": -73.179669,
+    "displayName": "San Diego, Cesar, RAP Caribe, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-pereira-alpaca": {
+    "slug": "tigresas-pereira-alpaca",
+    "query": "La Romelia, Dosquebradas, Risaralda, Colombia",
+    "latitude": 4.85598,
+    "longitude": -75.655741,
+    "displayName": "La Romelia, Dosquebradas, Risaralda, RAP Eje Cafetero, 661001, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-el-copey": {
+    "slug": "tigresas-el-copey",
+    "query": "El Copey, Cesar, Colombia",
+    "latitude": 10.149207,
+    "longitude": -73.961171,
+    "displayName": "El Copey, Cesar, RAP Caribe, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-chia": {
+    "slug": "tigresas-chia",
+    "query": "Carrera 9 # 12-41, Chía, Cundinamarca, Colombia",
+    "latitude": 4.85304,
+    "longitude": -74.061695,
+    "displayName": "Carrera 8, Casco urbano de Chía, Chía, Sabana Centro, Cundinamarca, RAP (Especial) Central, 250001, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-quibdo": {
+    "slug": "tigresas-quibdo",
+    "query": "Calle 27A # 23-44, Quibdó, Chocó, Colombia",
+    "latitude": 5.688732,
+    "longitude": -76.64391,
+    "displayName": "Calle 27A, Los Angeles, Porvenir y Platina, Ciudad de Quibdó, Quibdó, Atrato, Chocó, RAP Pacífico, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-caqueza": {
+    "slug": "tigresas-caqueza",
+    "query": "Cáqueza, Cundinamarca, Colombia",
+    "latitude": 4.40571,
+    "longitude": -73.945921,
+    "displayName": "Cáqueza, Oriente, Cundinamarca, RAP (Especial) Central, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-sincelejo": {
+    "slug": "tigresas-sincelejo",
+    "query": "Calle 19 # 21-41, Sincelejo, Sucre, Colombia",
+    "latitude": 9.303703,
+    "longitude": -75.412298,
+    "displayName": "Calle 19, Las Canarias, Sincelejo, Montes de María, Sucre, RAP Caribe, 700002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-acacias": {
+    "slug": "tigresas-acacias",
+    "query": "Calle 15 # 16-43, Acacías, Meta, Colombia",
+    "latitude": 3.98781,
+    "longitude": -73.761773,
+    "displayName": "Calle 15, Barrio El Dorado, Manuela, Acacías, Piedemonte, Meta, RAP (Especial) Central, 507001, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-florencia": {
+    "slug": "tigresas-florencia",
+    "query": "Carrera 10A # 7-04, Florencia, Caquetá, Colombia",
+    "latitude": 1.610136,
+    "longitude": -75.606504,
+    "displayName": "Carrera 10A, Comuna Suroriental, Perímetro Urbano Florencia, Florencia, Caquetá, RAP Amazonía, 180002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-granada-meta": {
+    "slug": "tigresas-granada-meta",
+    "query": "Granada, Meta, Colombia",
+    "latitude": 3.548259,
+    "longitude": -73.705117,
+    "displayName": "Granada, Subregión Ariari, Meta, RAP (Especial) Central, 504001, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-pacho": {
+    "slug": "tigresas-pacho",
+    "query": "Pacho, Cundinamarca, Colombia",
+    "latitude": 5.130147,
+    "longitude": -74.158313,
+    "displayName": "Pacho, Rionegro, Cundinamarca, RAP (Especial) Central, 254001, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-mocoa": {
+    "slug": "tigresas-mocoa",
+    "query": "Calle 9 # 6-14, Mocoa, Putumayo, Colombia",
+    "latitude": 1.147271,
+    "longitude": -76.647045,
+    "displayName": "Calle 9, Zona Urbana, Mocoa, Putumayo, RAP Amazonía, 860001, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-bosconia": {
+    "slug": "tigresas-bosconia",
+    "query": "Bosconia, Cesar, Colombia",
+    "latitude": 9.928445,
+    "longitude": -73.858715,
+    "displayName": "Bosconia, Cesar, RAP Caribe, 201020, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-pasto": {
+    "slug": "tigresas-pasto",
+    "query": "Calle 17 # 27-59, Pasto, Nariño, Colombia",
+    "latitude": 1.202402,
+    "longitude": -77.273394,
+    "displayName": "Calle 17, Fátima, Comuna 2, Perímetro Urbano Pasto, Pasto, Centro, Nariño, RAP Pacífico, 520006, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-cali-yumbo": {
+    "slug": "tigresas-cali-yumbo",
+    "query": "Yumbo, Valle del Cauca, Colombia",
+    "latitude": 3.583466,
+    "longitude": -76.495222,
+    "displayName": "Yumbo, Sur, Valle del Cauca, RAP Pacífico, Colombia",
+    "precision": "municipality"
+  },
   "banco-arquidiocesano-alimentos-ibague": {
     "slug": "banco-arquidiocesano-alimentos-ibague",
-    "query": "Ibagué, Tolima, Colombia",
-    "latitude": 4.438603,
-    "longitude": -75.210886,
-    "displayName": "Ibagué, Centro, Tolima, RAP (Especial) Central, Colombia",
-    "precision": "municipality"
+    "query": "Carrera 4 # 23-42, Ibagué, Tolima, Colombia",
+    "latitude": 4.509988,
+    "longitude": -75.299083,
+    "displayName": "Carrera 4, Ibagué, Centro, Tolima, RAP (Especial) Central, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-bogota-gaula": {
+    "slug": "tigresas-bogota-gaula",
+    "query": "Carrera 47, La Castellana, Bogotá, Colombia",
+    "latitude": 4.678632,
+    "longitude": -74.060624,
+    "displayName": "Carrera 47, La Castellana, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111211, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-bogota-codabas": {
+    "slug": "tigresas-bogota-codabas",
+    "query": "Calle 180, Bogotá, Colombia",
+    "latitude": 4.762731,
+    "longitude": -74.0569,
+    "displayName": "Calle 180, UPZs de Bogotá, Localidad Suba, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111166, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-bogota-122-plaza": {
+    "slug": "tigresas-bogota-122-plaza",
+    "query": "Calle 122, Bogotá, Colombia",
+    "latitude": 4.702039,
+    "longitude": -74.050661,
+    "displayName": "Calle 122, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110111, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-santa-marta-amor-en-accion": {
+    "slug": "tigresas-santa-marta-amor-en-accion",
+    "query": "Calle 30, Centro, Santa Marta, Magdalena, Colombia",
+    "latitude": 11.240454,
+    "longitude": -74.206037,
+    "displayName": "[corrección manual] Las consultas resolvían al corregimiento rural de Bonda; se usa el centro de Santa Marta como aproximación.",
+    "precision": "approximate"
+  },
+  "tigresas-cartagena-perpetuo-socorro": {
+    "slug": "tigresas-cartagena-perpetuo-socorro",
+    "query": "Bocagrande, Cartagena de Indias, Bolívar, Colombia",
+    "latitude": 10.404093,
+    "longitude": -75.553419,
+    "displayName": "Bocagrande, Cartagena de Indias, Dique, Bolívar, RAP Caribe, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-cartagena-cristo-rey": {
+    "slug": "tigresas-cartagena-cristo-rey",
+    "query": "Crespo, Cartagena de Indias, Bolívar, Colombia",
+    "latitude": 10.445915,
+    "longitude": -75.518647,
+    "displayName": "Crespo, Cartagena de Indias, Dique, Bolívar, RAP Caribe, 130002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-banco-alimentos-cartagena": {
+    "slug": "tigresas-banco-alimentos-cartagena",
+    "query": "Ternera, Cartagena de Indias, Bolívar, Colombia",
+    "latitude": 10.385075,
+    "longitude": -75.466139,
+    "displayName": "Ternera, Cartagena de Indias, Dique, Bolívar, RAP Caribe, Colombia",
+    "precision": "approximate"
   }
 }
