@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Acopio Colombia — sistema visual
+   Estética GovTech humanitaria: fondo claro, alto contraste, sin alarmismo.
+   El rojo se reserva para acciones destructivas, no para la identidad.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  --color-ink-900: #0f172a;
+  --color-ink-700: #334155;
+  --color-ink-500: #64748b;
+  --color-ink-300: #cbd5e1;
+  --color-ink-100: #e2e8f0;
+  --color-ink-50: #f8fafc;
+
+  --color-brand-700: #0e5c4a;
+  --color-brand-600: #12715b;
+  --color-brand-500: #16876c;
+  --color-brand-100: #d5f0e6;
+  --color-brand-50: #eefaf5;
+
+  --color-caution-700: #92400e;
+  --color-caution-100: #fef3c7;
+  --color-caution-50: #fffbeb;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ink-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Objetivos táctiles cómodos en móvil. */
+@media (pointer: coarse) {
+  button,
+  a[role="button"],
+  [data-touch-target] {
+    min-height: 44px;
+  }
+}
+
+/* Foco visible y consistente para navegación por teclado. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* MapLibre: controles y atribución legibles sobre fondo claro. */
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+}
+
+.maplibregl-popup-content {
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgb(15 23 42 / 0.2);
+  overflow: hidden;
+}
+
+.maplibregl-popup-close-button {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
