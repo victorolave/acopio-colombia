@@ -10,6 +10,7 @@
  * Nunca se geocodifica desde el cliente ni en cada build.
  */
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { SEED_CENTERS } from "../data/centers";
 import {
   addressQuery,
@@ -20,7 +21,9 @@ import {
   type GeocodePrecision,
 } from "../lib/geocoding";
 
-const OUT = new URL("../data/coordinates.json", import.meta.url).pathname;
+// `URL.pathname` produce «/C:/…» en Windows y rompe la escritura; fileURLToPath
+// resuelve la ruta nativa en cualquier sistema operativo.
+const OUT = fileURLToPath(new URL("../data/coordinates.json", import.meta.url));
 
 type Precision = GeocodePrecision | "failed";
 

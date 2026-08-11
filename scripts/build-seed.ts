@@ -9,6 +9,7 @@
  * encargan de que no se publiquen.
  */
 import { writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { SEED_CENTERS } from "../data/centers";
 import COORDINATES from "../data/coordinates.json";
 
@@ -144,7 +145,9 @@ on conflict (slug) do update set
   end;
 `;
 
-writeFileSync(new URL("../supabase/seed.sql", import.meta.url).pathname, sql);
+// `URL.pathname` produce «/C:/…» en Windows y rompe la escritura; fileURLToPath
+// resuelve la ruta nativa en cualquier sistema operativo.
+writeFileSync(fileURLToPath(new URL("../supabase/seed.sql", import.meta.url)), sql);
 
 console.log(`supabase/seed.sql escrito con ${rows.length} centros.`);
 if (skipped.length) console.log(`Omitidos por falta de coordenadas: ${skipped.join(", ")}`);
