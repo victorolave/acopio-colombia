@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { TrackCenterView, TrackedLink } from "@/components/analytics-events";
 import { DirectionsButton } from "@/components/centers/directions-button";
 import SingleCenterMap from "@/components/map/lazy-single-map";
 import { PrecisionNotice, VerificationBadge } from "@/components/centers/verification-badge";
@@ -50,6 +51,7 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
+      <TrackCenterView slug={center.slug} />
       <nav aria-label="Migas de pan" className="mb-4 text-sm">
         <Link href="/" className="text-brand-700 underline underline-offset-2">
           ← Todos los centros
@@ -105,14 +107,16 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
         <DirectionsButton center={center} />
         <div className="grid grid-cols-2 gap-2">
           {center.whatsapp && (
-            <a
+            <TrackedLink
+              event="click_whatsapp"
+              centerSlug={center.slug}
               href={whatsappUrl(center.whatsapp, `Hola, escribo por el centro de acopio ${center.name}.`)}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg border border-ink-300 bg-white px-4 py-3 text-center font-medium text-ink-700"
             >
               💬 WhatsApp
-            </a>
+            </TrackedLink>
           )}
           {center.phone && (
             <a

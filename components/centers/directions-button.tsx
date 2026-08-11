@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { googleMapsUrl, wazeUrl } from "@/lib/maps";
 import type { CollectionCenter } from "@/lib/types";
 
@@ -29,6 +30,7 @@ export function DirectionsButton({ center }: { center: CollectionCenter }) {
             href={googleMapsUrl(center)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent("click_directions", center.slug)}
             className="block px-4 py-3 text-ink-700 hover:bg-ink-50"
           >
             Google Maps
@@ -37,6 +39,7 @@ export function DirectionsButton({ center }: { center: CollectionCenter }) {
             href={wazeUrl(center)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent("click_directions", center.slug)}
             className="block border-t border-ink-100 px-4 py-3 text-ink-700 hover:bg-ink-50"
           >
             Waze

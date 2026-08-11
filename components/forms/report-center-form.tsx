@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { REPORT_REASONS } from "@/lib/validation";
 
 type Props = { centerId: string; centerSlug: string };
@@ -42,6 +43,7 @@ export function ReportCenterForm({ centerId, centerSlug }: Props) {
         setStatus("error");
         return;
       }
+      trackEvent("report_center", centerSlug);
       setStatus("done");
     } catch {
       setError("No pudimos enviar el reporte. Revisa tu conexión.");

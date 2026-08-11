@@ -151,7 +151,13 @@ Pensado para conexiones malas durante una emergencia:
 
 ## Privacidad
 
-La ubicación del visitante vive **únicamente en memoria** (`components/centers/use-geolocation.ts`). No se guarda, no se envía al servidor y no entra en analítica. El sitio no incluye analítica de terceros.
+La ubicación del visitante vive **únicamente en memoria** (`components/centers/use-geolocation.ts`). No se guarda, no se envía al servidor y no entra en analítica.
+
+## Analítica
+
+Vercel Analytics (`@vercel/analytics`), sin cookies y sin huella digital del dispositivo. Envuelto en `components/analytics.tsx` con un `beforeSend` que **recorta la URL a la ruta y descarta la cadena de consulta**: hoy los filtros viven en el estado de React, pero si alguien los mueve a query params en el futuro, la búsqueda del visitante no empezaría a viajar a la analítica sin que nadie lo note.
+
+Los eventos son una **lista cerrada y tipada** en `lib/analytics.ts` — `view_center`, `click_directions`, `click_whatsapp`, `submit_center`, `report_center` — y la única propiedad permitida es el `slug` del centro, que es información pública. Cualquier evento fuera de esa lista falla en compilación.
 
 ---
 

@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { DONATION_CATEGORIES } from "@/lib/items";
 import { DEPARTMENTS } from "@/lib/validation";
 import { cn } from "@/lib/utils";
@@ -75,6 +76,7 @@ export function RegisterCenterForm() {
         setStatus("error");
         return;
       }
+      trackEvent("submit_center");
       setStatus("done");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {

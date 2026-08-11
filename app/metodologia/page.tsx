@@ -92,6 +92,13 @@ export default function MetodologiaPage() {
         el mapa. No la guardamos, no la enviamos a nuestros servidores y no la compartimos con
         herramientas de analítica.
       </p>
+      <p className="mt-2 text-ink-700">
+        Sí medimos, de forma anónima y sin cookies, cuántas personas visitan cada página y cuántas
+        pulsan «Cómo llegar» o «WhatsApp». Nos sirve para saber qué centros está usando la gente
+        realmente. No registramos quién eres, ni tu ubicación, ni lo que escribes en el buscador: de
+        cada visita solo se envía la ruta de la página, sin la parte que va después del signo de
+        interrogación.
+      </p>
     </div>
   );
 }
