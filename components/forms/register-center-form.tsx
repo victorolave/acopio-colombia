@@ -1,11 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import type { GeocodePrecision } from "@/lib/geocoding";
 import { DONATION_CATEGORIES } from "@/lib/items";
 import { DEPARTMENTS } from "@/lib/validation";
 import { cn } from "@/lib/utils";
+import type { MapFocus } from "@/components/map/location-picker";
 
 const LocationPicker = dynamic(() => import("@/components/map/location-picker"), {
   ssr: false,
@@ -14,12 +16,43 @@ const LocationPicker = dynamic(() => import("@/components/map/location-picker"),
 
 type Position = { latitude: number; longitude: number };
 
+/** Quién puso el pin. Solo "manual" cuenta como decisión humana. */
+type PinSource = "manual" | "geocoder";
+
+type Lookup =
+  | { status: "idle" }
+  | { status: "searching" }
+  | { status: "found"; displayName: string; precision: GeocodePrecision }
+  | { status: "empty" }
+  | { status: "error"; message: string };
+
+/** A menor confianza del geocodificador, encuadre más abierto: no fingimos precisión. */
+const FOCUS_ZOOM: Record<GeocodePrecision, number> = {
+  exact: 17,
+  approximate: 15.5,
+  municipality: 12.5,
+};
+
+const PRECISION_NOTE: Record<GeocodePrecision, string> = {
+  exact:
+    "Parece una dirección con número, pero verifica el pin: el buscador se equivoca con la nomenclatura colombiana.",
+  approximate:
+    "El punto cayó sobre la vía o el barrio, no sobre el número. Arrastra el pin hasta la entrada del centro.",
+  municipality:
+    "Solo pudimos ubicar el municipio. Arrastra el pin hasta la entrada del centro antes de enviar.",
+};
+
 const FIELD =
   "mt-1 min-h-12 w-full rounded-xl border border-ink-300 bg-white px-3 py-2.5 text-base text-ink-900 placeholder:text-ink-500";
 const LABEL = "block text-sm font-medium text-ink-700";
 
 export function RegisterCenterForm() {
+  const formRef = useRef<HTMLFormElement | null>(null);
   const [position, setPosition] = useState<Position | null>(null);
+  const [pinSource, setPinSource] = useState<PinSource>("manual");
+  const [pinConfirmed, setPinConfirmed] = useState(false);
+  const [focus, setFocus] = useState<MapFocus | null>(null);
+  const [lookup, setLookup] = useState<Lookup>({ status: "idle" });
   const [items, setItems] = useState<string[]>([]);
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -27,12 +60,80 @@ export function RegisterCenterForm() {
   const toggleItem = (label: string) =>
     setItems((prev) => (prev.includes(label) ? prev.filter((i) => i !== label) : [...prev, label]));
 
+  /** Tocar el mapa o arrastrar el pin es un acto humano: ya no hace falta confirmarlo. */
+  const handlePickPosition = (next: Position) => {
+    setPosition(next);
+    setPinSource("manual");
+  };
+
+  async function handleLocateAddress() {
+    const form = formRef.current;
+    if (!form) return;
+
+    const data = new FormData(form);
+    const address = String(data.get("address") ?? "").trim();
+    const municipality = String(data.get("municipality") ?? "").trim();
+    const department = String(data.get("department") ?? "").trim();
+
+    if (!address || !municipality || !department) {
+      setLookup({
+        status: "error",
+        message: "Escribe la dirección, el municipio y el departamento antes de buscar.",
+      });
+      return;
+    }
+
+    setLookup({ status: "searching" });
+
+    try {
+      const res = await fetch("/api/geocode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address, municipality, department }),
+      });
+      const body = await res.json();
+
+      if (!res.ok) {
+        setLookup({ status: "error", message: body.error ?? "No pudimos buscar la dirección." });
+        return;
+      }
+      if (!body.found) {
+        setLookup({ status: "empty" });
+        return;
+      }
+
+      const precision = body.precision as GeocodePrecision;
+      setPosition({ latitude: body.latitude, longitude: body.longitude });
+      setPinSource("geocoder");
+      setPinConfirmed(false);
+      setFocus({
+        latitude: body.latitude,
+        longitude: body.longitude,
+        zoom: FOCUS_ZOOM[precision],
+        nonce: Date.now(),
+      });
+      setLookup({ status: "found", displayName: body.displayName, precision });
+      setError(null);
+    } catch {
+      setLookup({
+        status: "error",
+        message: "No pudimos buscar la dirección. Revisa tu conexión o marca el punto a mano.",
+      });
+    }
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
 
     if (!position) {
       setError("Marca la ubicación del centro en el mapa.");
+      return;
+    }
+    if (pinSource === "geocoder" && !pinConfirmed) {
+      setError(
+        "El pin lo puso el buscador automático. Arrástralo hasta la entrada del centro o confirma que está en el lugar correcto.",
+      );
       return;
     }
     if (items.length === 0) {
@@ -99,7 +200,7 @@ export function RegisterCenterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-8" noValidate>
       {/* Información del centro -------------------------------------------- */}
       <fieldset className="space-y-4">
         <legend className="text-lg font-semibold text-ink-900">Información del centro</legend>
@@ -154,13 +255,52 @@ export function RegisterCenterForm() {
             placeholder="Ej.: Carrera 52 #30A-97, barrio Guayabal"
             className={FIELD}
           />
+          <button
+            type="button"
+            onClick={handleLocateAddress}
+            disabled={lookup.status === "searching"}
+            className="mt-2 min-h-11 w-full rounded-xl border border-brand-600 px-4 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50 disabled:opacity-60 sm:w-auto"
+          >
+            {lookup.status === "searching" ? "Buscando…" : "Ubicar dirección en el mapa"}
+          </button>
+
+          {lookup.status === "found" && (
+            <p className="mt-2 rounded-lg bg-ink-100 px-3 py-2 text-sm text-ink-700">
+              El buscador entendió: <span className="font-medium">{lookup.displayName}</span>.{" "}
+              {PRECISION_NOTE[lookup.precision]}
+            </p>
+          )}
+          {lookup.status === "empty" && (
+            <p className="mt-2 rounded-lg bg-caution-50 px-3 py-2 text-sm text-caution-700">
+              No encontramos esa dirección. Marca el punto tocando el mapa.
+            </p>
+          )}
+          {lookup.status === "error" && (
+            <p role="alert" className="mt-2 rounded-lg bg-caution-50 px-3 py-2 text-sm text-caution-700">
+              {lookup.message}
+            </p>
+          )}
         </div>
 
         <div>
           <span className={LABEL}>Ubicación en el mapa *</span>
           <div className="mt-1">
-            <LocationPicker value={position} onChange={setPosition} />
+            <LocationPicker value={position} onChange={handlePickPosition} focus={focus} />
           </div>
+
+          {pinSource === "geocoder" && position && (
+            <label className="mt-2 flex items-start gap-3 rounded-lg bg-caution-50 px-3 py-2 text-sm text-caution-700">
+              <input
+                type="checkbox"
+                checked={pinConfirmed}
+                onChange={(event) => setPinConfirmed(event.target.checked)}
+                className="mt-0.5 size-5 shrink-0 rounded border-ink-300 accent-brand-600"
+              />
+              <span>
+                Revisé el mapa y el pin está sobre la entrada del centro. *
+              </span>
+            </label>
+          )}
         </div>
 
         <fieldset>
