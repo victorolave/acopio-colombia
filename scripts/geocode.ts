@@ -11,14 +11,18 @@
  */
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { SEED_CENTERS } from "../data/centers";
+import {
+  addressQuery,
+  classifyPrecision,
+  insideColombia,
+  municipalityQuery,
+  searchNominatim,
+  type GeocodePrecision,
+} from "../lib/geocoding";
 
 const OUT = new URL("../data/coordinates.json", import.meta.url).pathname;
-const USER_AGENT = "AcopioColombia/0.1 (proyecto ciudadano de emergencia; contacto: acopiocolombia@proton.me)";
 
-// Caja envolvente aproximada de Colombia continental + insular.
-const CO_BOUNDS = { minLat: -4.3, maxLat: 13.5, minLon: -82.0, maxLon: -66.8 };
-
-type Precision = "exact" | "approximate" | "municipality" | "failed";
+type Precision = GeocodePrecision | "failed";
 
 type Entry = {
   slug: string;
@@ -153,48 +157,7 @@ const MANUAL_OVERRIDES: Record<string, Pick<Entry, "latitude" | "longitude" | "p
   },
 };
 
-/** Municipio de respaldo cuando ninguna consulta resuelve la dirección. */
-function municipalityQuery(municipality: string, department: string) {
-  return `${municipality}, ${department}, Colombia`;
-}
-
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-async function geocode(query: string): Promise<{ lat: number; lon: number; displayName: string; type: string } | null> {
-  const url = new URL("https://nominatim.openstreetmap.org/search");
-  url.searchParams.set("q", query);
-  url.searchParams.set("format", "json");
-  url.searchParams.set("limit", "1");
-  url.searchParams.set("countrycodes", "co");
-  url.searchParams.set("addressdetails", "1");
-
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT, "Accept-Language": "es" } });
-  if (!res.ok) {
-    console.warn(`  ! HTTP ${res.status} para "${query}"`);
-    return null;
-  }
-  const json = (await res.json()) as Array<{
-    lat: string;
-    lon: string;
-    display_name: string;
-    addresstype?: string;
-    type?: string;
-  }>;
-  if (!json.length) return null;
-  const hit = json[0];
-  return {
-    lat: Number(hit.lat),
-    lon: Number(hit.lon),
-    displayName: hit.display_name,
-    type: hit.addresstype ?? hit.type ?? "unknown",
-  };
-}
-
-function insideColombia(lat: number, lon: number) {
-  return (
-    lat >= CO_BOUNDS.minLat && lat <= CO_BOUNDS.maxLat && lon >= CO_BOUNDS.minLon && lon <= CO_BOUNDS.maxLon
-  );
-}
 
 async function main() {
   const existing: Record<string, Entry> = existsSync(OUT)
@@ -206,31 +169,18 @@ async function main() {
   for (const center of targets) {
     const candidates = [
       ...(QUERY_OVERRIDES[center.slug] ?? []),
-      center.geocodeQuery ?? `${center.address}, ${center.municipality}, ${center.department}, Colombia`,
+      center.geocodeQuery ?? addressQuery(center.address, center.municipality, center.department),
     ];
     const fallback = municipalityQuery(center.municipality, center.department);
 
     let resolved: Entry | null = null;
 
     for (const query of candidates) {
-      const hit = await geocode(query);
+      const hit = await searchNominatim(query);
       await sleep(1100); // política de uso de Nominatim: máx. 1 req/s
       if (!hit || !insideColombia(hit.lat, hit.lon)) continue;
 
-      // Clasificación CONSERVADORA: ante la duda, "approximate".
-      // Un pin optimista manda a alguien al lugar equivocado durante una emergencia.
-      const isAdminArea = /^(city|town|village|municipality|administrative|state|county)$/.test(hit.type);
-      const isAreaish = /^(suburb|neighbourhood|quarter|locality|hamlet|residential)$/.test(hit.type);
-      const isStreet = /^(road|primary|secondary|tertiary|unclassified|trunk|living_street)$/.test(hit.type);
-      const hasHouseNumber = /^\d+[^,]*,/.test(hit.displayName);
-
-      const precision: Precision = isAdminArea
-        ? "municipality"
-        : hasHouseNumber
-          ? "exact"
-          : isStreet || isAreaish
-            ? "approximate"
-            : "exact"; // POI con nombre propio (coliseo, universidad, plazoleta, centro comercial)
+      const precision = classifyPrecision(hit);
 
       resolved = {
         slug: center.slug,
@@ -244,7 +194,7 @@ async function main() {
     }
 
     if (!resolved) {
-      const hit = await geocode(fallback);
+      const hit = await searchNominatim(fallback);
       await sleep(1100);
       resolved =
         hit && insideColombia(hit.lat, hit.lon)
