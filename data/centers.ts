@@ -387,6 +387,106 @@ const PARQUES_BIBLIOTECA_MEDELLIN: SeedCenter[] = (
   lastVerifiedAt: VERIFIED_AT_DIA3,
 }));
 
+// -----------------------------------------------------------------------------
+// TANDA CIUDADES GOLPEADAS — 11 de agosto de 2026
+//
+// Las ciudades con más víctimas eran las menos cubiertas del seed (Cali 3,
+// Pereira 2, Manizales 1, frente a 18 de Medellín). Esta tanda incorpora los
+// puntos oficiales publicados el 10-11 de agosto por las alcaldías de Cali,
+// Pereira y Manizales a través de medios locales que las citan (El País,
+// El Diario, La Patria). Quibdó y el Chocó siguen SIN canal oficial anunciado
+// al cierre del 11 de agosto: ver docs/sources.md, §11.
+// -----------------------------------------------------------------------------
+
+/**
+ * Canasta del día 2 de Cali (El País, 11 de agosto, citando a la Alcaldía).
+ * El día 1 la Plazoleta Jairo Varela pedía solo elementos de protección para
+ * búsqueda y rescate; el día 2 la lista se amplió a ayuda humanitaria general.
+ */
+const CALI_DIA2_ITEMS = [
+  "Agua",
+  "Alimentos no perecederos",
+  "Colchonetas",
+  "Sábanas",
+  "Cobijas",
+  "Sánduches preparados",
+  "Dulces",
+  "Suero oral (tipo Electrolit)",
+  "Alcohol",
+  "Gasas",
+  "Vendas",
+  "Ropa en buen estado (adultos y niños)",
+  "Cascos",
+  "Guantes de construcción",
+  "Gafas de protección",
+  "Tapabocas",
+  "Linternas y linternas frontales",
+  "Bolsas",
+  "Baños móviles",
+];
+
+const CALI_DIA2_URGENTES = [
+  "Agua",
+  "Suero oral (tipo Electrolit)",
+  "Cascos",
+  "Guantes de construcción",
+];
+
+/**
+ * Los siete puntos CAFE de la Alcaldía de Pereira.
+ *
+ * El Diario (Pereira) publicó los siete con sus direcciones el 10 de agosto
+ * citando a la administración municipal; Semana corroboró los siete nombres el
+ * 11. La fuente NO publica qué artículos recibe cada punto: se listan las
+ * categorías básicas de la emergencia y la nota lo advierte.
+ */
+const CAFE_PEREIRA_ITEMS = [
+  "Agua potable",
+  "Alimentos no perecederos",
+  "Elementos de aseo",
+  "Cobijas",
+];
+
+const CAFE_PEREIRA_NOTA =
+  "Punto CAFE habilitado por la Alcaldía de Pereira tras la declaratoria de calamidad pública (El Diario, 10 de agosto; Semana corrobora los siete puntos el 11). La fuente no publica la lista de artículos que recibe cada punto: se listan las categorías básicas de esta emergencia — confirma en el punto antes de llevar la donación. ";
+
+function cafePereira(
+  slug: string,
+  name: string,
+  address: string,
+  geocodeQuery: string | null,
+  notaUbicacion: string,
+): SeedCenter {
+  return {
+    slug,
+    name,
+    organization: "Alcaldía de Pereira",
+    type: "general",
+    department: "Risaralda",
+    municipality: "Pereira",
+    address,
+    geocodeQuery,
+    latitude: null,
+    longitude: null,
+    acceptedItems: CAFE_PEREIRA_ITEMS,
+    urgentNeeds: [],
+    rejectedItems: [],
+    scheduleText: null,
+    startsAt: "2026-08-10",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Pereira, vía El Diario (Pereira)",
+    sourceUrl:
+      "https://www.eldiario.com.co/actualidad/pereira-declara-calamidad-publica-y-establece-toque-de-queda-en-tres-sectores/",
+    sourcePublishedAt: "2026-08-10",
+    verificationStatus: "reported",
+    verificationNotes: CAFE_PEREIRA_NOTA + notaUbicacion,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  };
+}
+
 export const SEED_CENTERS: SeedCenter[] = [
   // ===========================================================================
   // BOGOTÁ D.C. — Alcaldía de Bogotá + Cruz Roja Seccional Cundinamarca y Bogotá
@@ -712,21 +812,15 @@ export const SEED_CENTERS: SeedCenter[] = [
     slug: "plazoleta-jairo-varela-cali",
     name: "Plazoleta Jairo Varela",
     organization: "Alcaldía de Santiago de Cali",
-    type: "rescue_supplies",
+    type: "mixed",
     department: "Valle del Cauca",
     municipality: "Cali",
     address: "Avenida 2 Norte #10N-1, frente al Centro Administrativo Municipal (CAM)",
     geocodeQuery: "Plazoleta Jairo Varela, Cali, Colombia",
     latitude: null,
     longitude: null,
-    acceptedItems: [
-      "Agua",
-      "Cascos",
-      "Guantes de construcción",
-      "Gafas de protección",
-      "Colchonetas",
-    ],
-    urgentNeeds: ["Agua", "Cascos", "Guantes de construcción", "Gafas de protección"],
+    acceptedItems: CALI_DIA2_ITEMS,
+    urgentNeeds: CALI_DIA2_URGENTES,
     rejectedItems: ["Productos vencidos"],
     scheduleText: null,
     startsAt: "2026-08-10",
@@ -736,12 +830,12 @@ export const SEED_CENTERS: SeedCenter[] = [
     email: null,
     sourceName: "Alcaldía de Santiago de Cali, vía El País (Cali)",
     sourceUrl:
-      "https://www.elpais.com.co/cali/habilitan-centro-de-acopio-en-cali-tras-fuerte-terremoto-asi-puede-donar-agua-y-elementos-de-seguridad-1047.html",
-    sourcePublishedAt: "2026-08-10",
+      "https://www.elpais.com.co/cali/alcaldia-habilita-nuevos-espacios-para-recibir-ayudas-y-atender-a-afectados-en-cali-1154.html",
+    sourcePublishedAt: "2026-08-11",
     verificationStatus: "reported",
     verificationNotes:
-      "Confirmado por la Alcaldía de Cali como punto de recepción. Prioriza elementos de protección para los equipos de búsqueda y rescate, no ayuda humanitaria general.",
-    lastVerifiedAt: VERIFIED_AT,
+      "Día 1 (10 ago): la Alcaldía lo habilitó priorizando elementos de protección para los equipos de búsqueda y rescate (El País: elpais.com.co/cali/habilitan-centro-de-acopio-en-cali-tras-fuerte-terremoto-asi-puede-donar-agua-y-elementos-de-seguridad-1047.html). Día 2 (11 ago): El País, citando a la Alcaldía, amplía la lista a ayuda humanitaria general —alimentos, cobijas, ropa, botiquín— además de los elementos de rescate; por eso el tipo pasa de «rescue_supplies» a «mixed».",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
   },
   {
     slug: "antigua-licorera-del-valle-cali",
@@ -2409,6 +2503,154 @@ export const SEED_CENTERS: SeedCenter[] = [
     verificationStatus: "disputed",
     verificationNotes:
       "NO PUBLICADO. La pieza lo agrupa bajo «Otros municipios» sin decir cuál. «Calle 23 Sur» con la vía Las Palmas de por medio cae en la frontera entre Medellín y Envigado, y la nomenclatura sur del Valle de Aburrá se repite entre municipios. Se aplica el mismo criterio que con el punto de Casanare: municipio ambiguo no se publica. Resolver antes de activarlo.",
+    lastVerifiedAt: null,
+  },
+
+  // ===========================================================================
+  // TANDA CIUDADES GOLPEADAS — 11 de agosto de 2026
+  // Pereira (7 puntos CAFE) · Cali (2.º punto oficial) · Manizales (Coliseo
+  // Mayor). Fuentes y hallazgos en docs/sources.md, sección 10.
+  // ===========================================================================
+  cafePereira(
+    "cafe-consota-pereira",
+    "CAFE Consota",
+    "Manzanas 7 y 8 de Villa Consota, sector Cuba",
+    "Barrio Cuba, Pereira, Risaralda, Colombia",
+    "El pin marca el sector de Cuba: la fuente ubica el punto en las manzanas 7 y 8 de Villa Consota.",
+  ),
+  cafePereira(
+    "cafe-perla-del-otun-pereira",
+    "CAFE Perla del Otún",
+    "Diagonal a la iglesia de los 2.500 Lotes, sector Cuba",
+    "Perla del Otún, Pereira, Risaralda, Colombia",
+    "El pin marca el barrio Perla del Otún; el punto queda diagonal a la iglesia de los 2.500 Lotes.",
+  ),
+  cafePereira(
+    "cafe-el-remanso-pereira",
+    "CAFE El Remanso",
+    "Avenida principal del barrio El Remanso, junto al Centro de Salud",
+    "Pereira, Risaralda, Colombia",
+    "El barrio no resolvió en el geocodificador: el pin cae en el centroide del municipio. Guíate por la dirección, no por el mapa.",
+  ),
+  cafePereira(
+    "cafe-kennedy-pereira",
+    "CAFE Kennedy",
+    "Parque principal del barrio Kennedy",
+    "Barrio Kennedy, Pereira, Risaralda, Colombia",
+    "El pin marca el barrio Kennedy; el punto es el parque principal, junto a la cancha.",
+  ),
+  cafePereira(
+    "cafe-ormaza-pereira",
+    "CAFE Ormaza",
+    "Calle 3 bis # 5-38, avenida del Río",
+    "Calle 3 bis # 5-38, Pereira, Risaralda, Colombia",
+    "El pin marca el centroide de la calle 3 bis, no el predio exacto.",
+  ),
+  cafePereira(
+    "cafe-san-nicolas-pereira",
+    "CAFE San Nicolás",
+    "Carrera 14 bis # 28-38, antigua Estación de Policía",
+    "Pereira, Risaralda, Colombia",
+    "Ni la dirección ni el barrio resolvieron en el geocodificador: el pin cae en el centroide del municipio. Guíate por la dirección, no por el mapa.",
+  ),
+  cafePereira(
+    "cafe-comuna-del-cafe-pereira",
+    "CAFE Comuna del Café",
+    "Carrera 3 con calle 59 A, sector A del Parque Industrial",
+    "Parque Industrial, Pereira, Risaralda, Colombia",
+    "El pin marca el sector Parque Industrial.",
+  ),
+  {
+    slug: "escuela-nacional-del-deporte-cali",
+    name: "Escuela Nacional del Deporte",
+    organization: "Alcaldía de Santiago de Cali",
+    type: "mixed",
+    department: "Valle del Cauca",
+    municipality: "Cali",
+    address: "Calle 9 # 34-01",
+    geocodeQuery: "Calle 9 # 34-01, Cali, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: [...CALI_DIA2_ITEMS, "Pañales"],
+    urgentNeeds: CALI_DIA2_URGENTES,
+    rejectedItems: ["Productos vencidos"],
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Santiago de Cali, vía El País (Cali)",
+    sourceUrl:
+      "https://www.elpais.com.co/cali/alcaldia-habilita-nuevos-espacios-para-recibir-ayudas-y-atender-a-afectados-en-cali-1154.html",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes:
+      "Segundo punto oficial de recepción de la Alcaldía de Cali, publicado por El País el 11 de agosto citando a la administración. OJO: el mismo 11 de agosto a las 10:43 a. m. el punto fue evacuado temporalmente durante la réplica de magnitud 3,8 (El País: elpais.com.co/cali/fuerte-replica-en-cali-y-otras-regiones-obligan-a-evacuar-edificios-para-prevenir-1113.html) y no se localizó confirmación posterior del horario de operación. Confirma antes de desplazarte.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "coliseo-mayor-jorge-arango-uribe-manizales",
+    name: "Coliseo Mayor Jorge Arango Uribe",
+    organization: "Alcaldía de Manizales",
+    type: "general",
+    department: "Caldas",
+    municipality: "Manizales",
+    address: "Coliseo Mayor Jorge Arango Uribe, carrera 24, barrio Palogrande",
+    geocodeQuery: "Coliseo Mayor, Manizales, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: [
+      "Agua potable",
+      "Alimentos no perecederos",
+      "Implementos de aseo",
+      "Ropa en buen estado",
+      "Cobijas",
+    ],
+    urgentNeeds: ["Agua potable", "Alimentos no perecederos", "Implementos de aseo"],
+    rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
+    scheduleText: null,
+    startsAt: "2026-08-10",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Manizales, vía La Patria (Manizales)",
+    sourceUrl:
+      "https://www.lapatria.com/manizales/el-coliseo-mayor-de-manizales-recibe-los-primeros-damnificados-tras-el-sismo-historias-y",
+    sourcePublishedAt: "2026-08-10",
+    verificationStatus: "reported",
+    verificationNotes:
+      "Es ante todo un ALBERGUE temporal habilitado por la Alcaldía de Manizales (junto con el Coliseo Menor y el SIC de Aranjuez) que además recibe donaciones ciudadanas para las familias que aloja —más de 140 personas al 11 de agosto—. La apertura de los albergues la confirmó la Alcaldía en sus canales; la recepción de donaciones en este punto la reporta La Patria. Si llevas donaciones, entrégalas sin interferir con la operación del albergue.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "coliseo-menor-manizales",
+    name: "Coliseo Menor de Manizales",
+    organization: "Alcaldía de Manizales",
+    type: "general",
+    department: "Caldas",
+    municipality: "Manizales",
+    address: "Coliseo Menor, Manizales",
+    geocodeQuery: "Coliseo Menor, Manizales, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: [],
+    urgentNeeds: [],
+    rejectedItems: [],
+    scheduleText: null,
+    startsAt: "2026-08-10",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Manizales, vía La Patria (Manizales)",
+    sourceUrl:
+      "https://www.lapatria.com/manizales/el-coliseo-mayor-de-manizales-recibe-los-primeros-damnificados-tras-el-sismo-historias-y",
+    sourcePublishedAt: "2026-08-10",
+    verificationStatus: "pending",
+    verificationNotes:
+      "NO PUBLICADO. Es albergue temporal confirmado por la Alcaldía, pero la recepción de donaciones ciudadanas en ESTE punto solo está implícita en la cobertura de La Patria (el llamado explícito a donar es del Coliseo Mayor). Publicar cuando una fuente confirme que recibe donaciones, para no mandar gente a un albergue que no las recibe.",
     lastVerifiedAt: null,
   },
 ];

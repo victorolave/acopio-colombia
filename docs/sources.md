@@ -2,7 +2,7 @@
 
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
-**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d).
+**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
 **Consolidado:** 98 registros · **90 publicables** (67 verificados + 23 reportados) · 3 en disputa · 3 inactivos · 2 pendientes · 26 departamentos.
 
 ---
@@ -449,3 +449,38 @@ Detectados **únicamente al abrir la fuente citada**; las síntesis automáticas
 3. Teléfonos del Banco de Alimentos de Manizales tomados de un artículo de La Patria cuyo contenido real es de **junio de 2020**; la página mostraba una fecha de plantilla de 2026.
 
 ---
+
+---
+
+## 11. Tanda «ciudades golpeadas» — aporte de @Garzu96 — 11 de agosto de 2026
+
+**Motivación.** Al cierre de la tanda anterior, las ciudades con más víctimas eran las menos cubiertas del seed: Cali tenía 3 puntos, Pereira 2, Manizales 1 y Quibdó 1, frente a 18 de Medellín y 15 de Bogotá. Es un sesgo natural (los acopios nacen donde están los donantes y las fuentes consultables), pero deja sin servir justo a quien quiere ayudar a sus vecinos en la zona afectada. Esta tanda incorpora **9 puntos publicables + 1 pendiente**: los 7 CAFE de la Alcaldía de Pereira, el segundo punto oficial de Cali, el Coliseo Mayor de Manizales, y el Coliseo Menor en cola de revisión.
+
+### Fuentes de la tanda
+
+| Medio | URL | Fecha | Entidad citada | Centros |
+|---|---|---|---|---|
+| El Diario (Pereira) | [Pereira declara calamidad pública y establece toque de queda](https://www.eldiario.com.co/actualidad/pereira-declara-calamidad-publica-y-establece-toque-de-queda-en-tres-sectores/) | 10 ago 2026 | Alcaldía de Pereira | 7 (CAFE, con dirección publicada) |
+| Semana | [¿Cómo ayudar a las víctimas del terremoto?](https://www.semana.com/nacion/articulo/como-ayudar-a-las-victimas-del-terremoto-estos-son-los-centros-de-acopio-en-bogota-medellin-y-otras-ciudades/202632/) | 11 ago 2026 | Alcaldía de Pereira | (corrobora los 7 nombres, sin direcciones) |
+| El País (Cali) | [Estos son los nuevos albergues y puntos de acopio habilitados en Cali](https://www.elpais.com.co/cali/alcaldia-habilita-nuevos-espacios-para-recibir-ayudas-y-atender-a-afectados-en-cali-1154.html) | 11 ago 2026 | Alcaldía de Santiago de Cali | 1 nuevo (Escuela Nacional del Deporte) + actualización día 2 de Plazoleta Jairo Varela |
+| El País (Cali) | [Fuerte réplica en Cali obliga a evacuar edificios](https://www.elpais.com.co/cali/fuerte-replica-en-cali-y-otras-regiones-obligan-a-evacuar-edificios-para-prevenir-1113.html) | 11 ago 2026 | — | (salvedad: la Escuela fue evacuada temporalmente durante la réplica de las 10:43 a. m.) |
+| La Patria (Manizales) | [El Coliseo Mayor recibe a los primeros damnificados](https://www.lapatria.com/manizales/el-coliseo-mayor-de-manizales-recibe-los-primeros-damnificados-tras-el-sismo-historias-y) | 10 ago 2026 | Alcaldía de Manizales | 1 (Coliseo Mayor) + 1 pendiente (Coliseo Menor) |
+
+### Decisiones editoriales de la tanda
+
+1. **Todos entran como `reported`**, no `verified`: en ningún caso se localizó la publicación primaria en el canal propio de la alcaldía (cali.gov.co no publicaba la lista al cierre; la cuenta de X @Alcaldiapereira publicó la calamidad pública pero no se localizó el post con los CAFE). Si aparece el canal primario, subir de estado.
+2. **Los CAFE de Pereira no publican lista de artículos.** Se listan las cuatro categorías básicas de la emergencia y cada ficha lo advierte. No se inventaron horarios ni teléfonos.
+3. **Albergues ≠ acopios.** Los albergues de Cali (cancha Miguel Calero, Diamante de Béisbol) y los de Manizales NO se listan como centros, con una excepción documentada: el Coliseo Mayor de Manizales, donde La Patria reporta explícitamente recepción de donaciones ciudadanas; la ficha aclara que es ante todo un albergue. El Coliseo Menor queda `pending` porque la recepción de donaciones solo está implícita.
+4. **Puntos de donación de SANGRE fuera de alcance.** Manizales habilitó donación de sangre (canchas auxiliares junto a Bomberos Palogrande y Hemocentro del Café, vía La Patria/Infobae). No se modelan como acopio porque el modelo de datos es de artículos físicos y un donante de mercado no debe terminar en un banco de sangre. Si el proyecto quiere cubrirlos, conviene un tipo nuevo.
+5. **Precisión de pines degradada a conciencia:** «Perla del Otún» y «Parque Industrial» resolvieron como POI/barrio y se bajaron de `exact` a `approximate` a mano; El Remanso y San Nicolás no resolvieron y quedan en centroide de municipio (comparten coordenada — el aviso `coordenada-repetida` del validador es esperado y honesto).
+
+### Hallazgo: Quibdó y el Chocó siguen sin canal oficial
+
+Al cierre del 11 de agosto, **ni la Alcaldía de Quibdó ni la Gobernación del Chocó habían anunciado un punto de acopio o canal de donación propio**, pese a ser el departamento del epicentro ([Cambio](https://cambiocolombia.com/pais/articulo/2026/8/donde-y-que-puede-donar-para-ayudar-a-los-damnificados-estos-son-los-centros-de-acopio-en-las-ciudades-principales-de-colombia) lo señala expresamente). La ayuda hacia el Chocó se está canalizando por la Cruz Roja y por los acopios de otras ciudades. **Revisar a diario**: cuando aparezca el canal oficial del Chocó, esa tanda tiene prioridad sobre cualquier otra.
+
+### Pendientes que deja esta tanda
+
+1. Localizar la publicación primaria de los CAFE (Alcaldía de Pereira) para subirlos a `verified` y conseguir horarios/teléfonos.
+2. Confirmar si la Escuela Nacional del Deporte (Cali) retomó operación normal tras la evacuación por la réplica del 11 de agosto.
+3. Confirmar si el Coliseo Menor de Manizales recibe donaciones (activaría el registro `pending`).
+4. Vigilar el anuncio del canal oficial del Chocó/Quibdó.
