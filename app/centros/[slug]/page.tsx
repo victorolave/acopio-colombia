@@ -9,8 +9,10 @@ import { PrecisionNotice, VerificationBadge } from "@/components/centers/verific
 import { ReportCenterForm } from "@/components/forms/report-center-form";
 import { Badge } from "@/components/ui/badge";
 import { getAllSlugs, getCenterBySlug } from "@/lib/centers";
-import { formatDate, formatDateTime, hasEnded, isStale, relativeTime } from "@/lib/format";
+import { formatDate, formatDateTime, hasEnded, isStale, relativeTime, staleAfterHours } from "@/lib/format";
 import { CENTER_TYPE_LABELS } from "@/lib/items";
+import { tripAdvisory } from "@/lib/schedule";
+import { cn } from "@/lib/utils";
 
 
 export const revalidate = 300;
@@ -49,6 +51,7 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
   const absolute = formatDateTime(center.last_verified_at);
   const stale = isStale(center.last_verified_at);
   const ended = hasEnded(center.ends_at);
+  const advisory = tripAdvisory(center);
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 pb-28 lg:pb-6">
@@ -85,7 +88,7 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
       {!ended && stale && (
         <p role="status" className="mt-4 rounded-lg bg-caution-50 px-3 py-2 text-sm text-caution-700">
           <IconAlert className="mt-0.5 inline size-4 shrink-0 align-text-top" /> Confirma antes de
-          desplazarte: hace más de 48 horas que no verificamos esta información.
+          desplazarte: hace más de {staleAfterHours()} horas que no verificamos esta información.
         </p>
       )}
 
@@ -116,22 +119,31 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
         )}
       </div>
 
-      {center.schedule_text && (
-        <section className="mt-5 rounded-xl border border-ink-100 bg-white p-4">
-          <h2 className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wide text-ink-500">
-            <IconClock className="size-4" />
-            Horario
-          </h2>
-          <p className="mt-1 text-ink-900">{center.schedule_text}</p>
-          {(center.starts_at || center.ends_at) && (
-            <p className="mt-1 text-sm text-ink-500">
-              {center.starts_at && `Desde el ${formatDate(center.starts_at)}`}
-              {center.starts_at && center.ends_at && " · "}
-              {center.ends_at && `hasta el ${formatDate(center.ends_at)}`}
-            </p>
-          )}
-        </section>
-      )}
+      {/* Esta sección se renderiza SIEMPRE, tenga horario o no.
+          Antes desaparecía cuando `schedule_text` era null, y una sección
+          ausente se lee como «no aplica» en vez de «no lo sabemos»: la persona
+          baja, no ve nada sobre horarios y asume que puede ir cuando quiera. */}
+      <section
+        className={cn(
+          "mt-5 rounded-xl border p-4",
+          advisory.level === "ok" ? "border-ink-100 bg-white" : "border-caution-100 bg-caution-50",
+        )}
+      >
+        <h2 className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wide text-ink-500">
+          <IconClock className="size-4" />
+          Horario
+        </h2>
+        <p className={cn("mt-1", advisory.level === "ok" ? "text-ink-900" : "text-caution-700")}>
+          {advisory.long}
+        </p>
+        {(center.starts_at || center.ends_at) && (
+          <p className="mt-1 text-sm text-ink-500">
+            {center.starts_at && `Desde el ${formatDate(center.starts_at)}`}
+            {center.starts_at && center.ends_at && " · "}
+            {center.ends_at && `hasta el ${formatDate(center.ends_at)}`}
+          </p>
+        )}
+      </section>
 
       {center.urgent_needs.length > 0 && (
         <section className="mt-4 rounded-xl border border-brand-100 bg-brand-50 p-4">

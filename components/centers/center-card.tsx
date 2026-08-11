@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { IconCheck, IconAlert, IconPhone, IconRoute } from "@/components/ui/icons";
+import { IconCheck, IconAlert, IconClock, IconPhone, IconRoute } from "@/components/ui/icons";
 import { trackEvent } from "@/lib/analytics";
 import { formatDistance } from "@/lib/distance";
-import { isStale, relativeTime } from "@/lib/format";
+import { relativeTime } from "@/lib/format";
 import { googleMapsUrl, telUrl } from "@/lib/maps";
+import { tripAdvisory } from "@/lib/schedule";
 import type { CenterWithDistance } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +31,7 @@ type Props = {
 export function CenterCard({ center, selected, onSelect }: Props) {
   const distance = formatDistance(center.distanceKm);
   const updated = relativeTime(center.last_verified_at);
-  const stale = isStale(center.last_verified_at);
+  const advisory = tripAdvisory(center);
   const verified = center.verification_status === "verified";
 
   const items = center.urgent_needs.length > 0 ? center.urgent_needs : center.accepted_items;
@@ -79,11 +80,26 @@ export function CenterCard({ center, selected, onSelect }: Props) {
           </span>
         </div>
 
-        {(stale || updated) && (
-          <p className={cn("mt-1.5 text-xs", stale ? "text-caution-700" : "text-ink-500")}>
-            {stale ? "Confirma antes de desplazarte" : `Verificado ${updated}`}
-          </p>
-        )}
+        {/* El horario decide el viaje más que la distancia: un centro que cierra
+            a las 4 es inútil a las 5. Cuando la fuente no lo publicó se dice
+            así, en lugar de callarlo o de disfrazar de dato un «consultar». */}
+        <p
+          className={cn(
+            "mt-1.5 flex items-start gap-1.5 text-xs",
+            advisory.level === "ok" && "text-ink-700",
+            advisory.level === "caution" && "text-caution-700",
+            advisory.level === "warning" && "font-medium text-caution-700",
+          )}
+        >
+          {advisory.level === "ok" ? (
+            <IconClock className="mt-px size-3.5 shrink-0" />
+          ) : (
+            <IconAlert className="mt-px size-3.5 shrink-0" />
+          )}
+          <span className="min-w-0 truncate">{advisory.short}</span>
+        </p>
+
+        {updated && <p className="mt-1 text-xs text-ink-500">Verificado {updated}</p>}
       </div>
 
       {/* Acciones directas. Altura 44px para cumplir el objetivo táctil mínimo. */}

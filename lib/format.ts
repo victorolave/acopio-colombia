@@ -47,14 +47,47 @@ export function relativeTime(iso: string | null, now: Date = new Date()): string
   return `hace ${diffDays} ${diffDays === 1 ? "día" : "días"}`;
 }
 
-/** Umbral a partir del cual pedimos confirmar antes de desplazarse. */
-export const STALE_AFTER_HOURS = 48;
+/** Momento del sismo, en hora de Bogotá. */
+export const EVENT_AT = "2026-08-10T07:34:00-05:00";
+
+export type Freshness = "fresh" | "aging" | "stale";
+
+/**
+ * Cuántas horas aguanta una verificación antes de considerarse vieja.
+ *
+ * Era una constante de 48 h, y eso tiene un problema que solo se ve con el
+ * calendario en la mano: todos los centros del seed se verificaron el mismo
+ * día, así que con un único corte binario las 94 tarjetas cambian de estado a
+ * la vez y el aviso deja de distinguir nada. Una advertencia universal se lee
+ * igual que ninguna.
+ *
+ * Escalonar por fase de la emergencia NO elimina ese efecto —solo la
+ * reverificación lo hace— pero reparte el aviso en tres niveles en lugar de
+ * encender 94 alarmas idénticas, y ajusta la exigencia al momento: en la fase
+ * aguda los puntos abren y cierran el mismo día; dos semanas después, un dato
+ * de anteayer sigue sirviendo.
+ */
+export function staleAfterHours(now: Date = new Date()): number {
+  const days = (now.getTime() - new Date(EVENT_AT).getTime()) / 86_400_000;
+  if (days <= 3) return 24;
+  if (days <= 10) return 48;
+  return 96;
+}
+
+export function freshness(iso: string | null, now: Date = new Date()): Freshness {
+  if (!iso) return "stale";
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "stale";
+
+  const hours = (now.getTime() - date.getTime()) / 3_600_000;
+  const limit = staleAfterHours(now);
+  if (hours > limit) return "stale";
+  if (hours > limit / 2) return "aging";
+  return "fresh";
+}
 
 export function isStale(iso: string | null, now: Date = new Date()): boolean {
-  if (!iso) return true;
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return true;
-  return now.getTime() - date.getTime() > STALE_AFTER_HOURS * 3600 * 1000;
+  return freshness(iso, now) === "stale";
 }
 
 /** ¿La campaña ya terminó según su fecha de cierre? */
