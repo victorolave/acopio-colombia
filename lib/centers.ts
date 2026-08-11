@@ -2,7 +2,7 @@ import "server-only";
 
 import { SEED_CENTERS } from "@/data/centers";
 import COORDINATES from "@/data/coordinates.json";
-import { createSupabaseServerClient } from "./supabase/server";
+import { createSupabasePublicClient } from "./supabase/public";
 import type { CollectionCenter, LocationPrecision, VerificationStatus } from "./types";
 
 /** Estados que se muestran al público. `pending` y `disputed` nunca salen. */
@@ -68,7 +68,7 @@ function staticCenters(): CollectionCenter[] {
 
 /** Centros publicables (verificados + reportados). Ordenados por estado y nombre. */
 export async function getPublicCenters(): Promise<CollectionCenter[]> {
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabasePublicClient();
 
   if (supabase) {
     const { data, error } = await supabase
@@ -95,7 +95,7 @@ export async function getPublicCenters(): Promise<CollectionCenter[]> {
 }
 
 export async function getCenterBySlug(slug: string): Promise<CollectionCenter | null> {
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabasePublicClient();
 
   if (supabase) {
     const { data, error } = await supabase
