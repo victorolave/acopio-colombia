@@ -30,7 +30,7 @@ Además, la precisión del pin es **un dato explícito** (`exact` / `approximate
 
 | Capa | Tecnología | Por qué |
 |---|---|---|
-| App | Next.js 15 (App Router) + TypeScript | Una sola aplicación, sin backend aparte |
+| App | Next.js 16 (App Router) + TypeScript | Una sola aplicación, sin backend aparte |
 | Estilos | Tailwind CSS v4 | Sin build extra de diseño |
 | Datos | Supabase (Postgres + Auth + Storage + RLS) | Tres servicios administrados en uno |
 | Mapas | MapLibre GL JS + OpenFreeMap | Sin API key, sin cuenta, sin costo |
