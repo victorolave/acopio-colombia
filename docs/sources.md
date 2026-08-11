@@ -2,8 +2,8 @@
 
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
-**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026.
-**Consolidado:** 75 registros · **70 publicables** (37 verificados + 33 reportados) · 3 en disputa · 2 inactivos · 26 departamentos.
+**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia).
+**Consolidado:** 97 registros · **88 publicables** (39 verificados + 49 reportados) · 4 en disputa · 3 inactivos · 2 pendientes · 26 departamentos.
 
 ---
 
@@ -96,6 +96,63 @@ Esta misma red recogió más de 100 toneladas para los sismos de Venezuela en **
 
 ---
 
+## 3.c Tanda del 11 de agosto — día 2 de la emergencia
+
+Investigación de seguimiento. Aportó 21 registros nuevos y, sobre todo, destapó que **una fuente primaria del seed había cambiado** (ver §4.8).
+
+### Bogotá — la Alcaldía republicó su lista
+
+| Punto | Dirección | Horario | Estado |
+|---|---|---|---|
+| Universidad Jorge Tadeo Lozano | Carrera 4 #22-61 | 8:00 – 21:00, L-D | `verified` |
+| Punto Usaquén | Calle 161A #7F-55 | 8:00 – 21:00, L-D | `verified` |
+| Unicentro | Carrera 15 #124-30 | 8:00 – 21:00, L-D | `verified` (fusionado) |
+| Sede administrativa Cruz Roja | Carrera 24 #73-38 | **24 horas** | `verified` (ya estaba) |
+
+Fuentes: pieza oficial «Bogotá se solidariza ante el sismo» (Alcaldía Mayor de Bogotá + Cruz Roja Seccional Cundinamarca y Bogotá), respaldada por [bogota.gov.co](https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia) y por [El Tiempo](https://www.eltiempo.com/bogota/bogota-habilita-cuatro-puntos-de-acopio-para-recibir-donaciones-destinadas-a-los-damnificados-por-el-terremoto-3577540) del 11 de agosto.
+
+**Dos decisiones de modelado:**
+
+- **Unicentro se fusionó en un solo registro.** Ya existía como punto de la red de Tigresas y la Alcaldía lo sumó a su lista. Es un solo lugar físico: dos registros producirían dos pines apilados sobre las mismas coordenadas, el problema que ya hubo que corregir en Cartagena. Se conservó el teléfono de Tigresas, que sigue sirviendo para coordinar cargas grandes.
+- **El punto de Usaquén llegó primero por la comunidad.** Un vecino lo envió por el formulario público citando la cuenta del alcalde, y estaba en la cola como `pending` cuando la fuente oficial lo confirmó. Es el primer caso en que el formulario se adelanta a la investigación.
+
+### Medellín — de 2 a 12 puntos
+
+Dos orígenes, y por eso dos `sourceName` distintos:
+
+| Origen | Puntos | Estado |
+|---|---|---|
+| [El Tiempo](https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553) citando a la Alcaldía de Medellín | Hall de la Alcaldía (La Alpujarra), Terminal del Norte local 9840, U. EAFIT, y los 4 parques biblioteca (Belén, San Javier, Gabriel García Márquez, León de Greiff) | `reported` |
+| Pieza gráfica ciudadana difundida en redes, **sin entidad que la firme** | UdeA (AfroUdeA bloque 9), Simón Coffee, Restaurante Belisario, Remanence, Bodega Guayaquiliando, Librería Rodante Delfos, Fundación El Arte de los Sueños, La Razón, Batallón Girardot | `reported`, con salvedad en cada ficha |
+
+Restricción propia de esta campaña, publicada por El Tiempo: **no se recibe ropa, medicamentos ni alimentos perecederos o vencidos**, por bioseguridad y logística.
+
+> **Excepción declarada.** Los 9 puntos de la pieza ciudadana no tienen URL estable, y la regla `publico-sin-enlace` del validador exige que todo centro publicado sea comprobable. En vez de eliminar la regla —que es la que sostiene la promesa de trazabilidad— se creó una lista de excepciones explícitas en `scripts/validate-seed.ts`, con el mismo criterio que la lista blanca de cuentas oficiales: añadir un slug ahí es una decisión consciente, visible en el diff, y el validador emite un aviso permanente hasta que aparezca el enlace.
+
+### Envigado — municipio nuevo
+
+Pieza oficial «Envigado apoya a las familias afectadas por el terremoto», con escudo de la Alcaldía. **Oficina de Gestión del Riesgo, Carrera 40 #39 sur-59**, lunes a viernes 7:00 – 17:00, tel. (604) 339 4065. `verified`.
+
+Particularidades: los elementos para dormir deben ser **nuevos**; no se recibe ropa (ni nueva ni usada) ni medicamentos; es el único punto del seed que pide explícitamente **alimento para perros y gatos**. El `sourceUrl` apunta al sitio institucional, **no a la pieza**: no se localizó URL estable de la publicación.
+
+### Lo que NO cambió
+
+- **Chocó y Quibdó siguen sin canales oficiales de donación** al 11 de agosto. Ni la Gobernación ni la Alcaldía han publicado puntos. La «lectura del vacío» de §6 se mantiene: la zona golpeada recibe ayuda, no la acopia.
+- **Cali:** sin puntos nuevos. Plazoleta Jairo Varela sigue siendo el único confirmado.
+- **Barranquilla:** el alcalde Char confirmó el 11 de agosto el punto de Barranquillita (Carrera 43 #6-120, 24 horas) vía [Infobae](https://www.infobae.com/colombia/2026/08/11/barranquilla-enviara-45-rescatistas-y-abrira-centro-de-acopio-por-terremoto-en-colombia/). Refuerza §4.1 pero **sigue siendo un medio citando a la entidad**: se mantiene `reported` hasta confirmarlo en `barranquilla.gov.co`.
+
+### Geocodificación de esta tanda
+
+| Punto | Falla | Corrección |
+|---|---|---|
+| `usaquen-usaquen-vl0m` | Cayó en el **centroide de Bogotá**, ~10 km al sur del punto real, en un centro marcado `verified` | Anclado a la Calle 161A, Villa Magdala, Usaquén |
+| `libreria-rodante-delfos-medellin` | Primero cayó en el centroide de Medellín; al forzar «Calle 79, Laureles» enganchó un POI llamado **«Ginger Cocina» en la Calle 35** y lo etiquetó `exact` | Se le quitó la vía y se ancló al barrio Laureles, aceptando precisión baja |
+| `gestion-del-riesgo-envigado` | Centroide de Envigado; la nomenclatura «39 sur» no resuelve en OSM | Anclado a la Carrera 40, San Mateo, Envigado |
+
+> El caso de Delfos repite exactamente el fallo de la iglesia de Santa Marta descrito en §5: **pin equivocado con etiqueta de alta confianza**, porque el resultado tenía nombre propio. Es la segunda vez que ocurre. Cuando la fuente no da una vía inequívoca, la regla correcta es anclar al barrio y aceptar la precisión baja, no dejar que el geocodificador elija por nosotros.
+
+---
+
 ## 4. Conflictos de fuentes resueltos
 
 ### 4.1 Barranquilla — Carrera 43 #6-120, Barranquillita → `reported`
@@ -118,6 +175,43 @@ Aparece en algunas notas, pero como **albergue temporal**, no como centro de aco
 
 ### 4.7 Pereira y Buenaventura (bancos de alimentos ABACO) → `inactive`
 ABACO informó que ambas sedes resultaron **afectadas por el sismo** y que se evalúa ubicación alterna. No se publican como activas.
+
+---
+
+### 4.8 Bogotá — la fuente primaria cambió bajo el seed ⚠️
+
+**El hallazgo más importante del día 2, y no es un centro nuevo.**
+
+`bogota.gov.co` —la **misma URL** que este documento registra en §2 como única fuente primaria del seed— fue **actualizada en sitio**. El 10 de agosto listaba seis puntos. El 11 de agosto lista **cuatro**, y son otros. La URL no cambió; el contenido sí. La fecha de publicación visible en la página tampoco cambió.
+
+Galán, el 11 de agosto: *«A partir de hoy, estos serán los 4 puntos de acopio en los que la Alcaldía de Bogotá estará recibiendo donaciones»*.
+
+De los seis originales **sobrevive uno**: `sede-administrativa-cruz-roja-bogota`. Estos cuatro siguen publicados como `verified` citando una página que ya no los menciona:
+
+| Centro | Estado actual | ¿En la fuente hoy? |
+|---|---|---|
+| `samu-sur-cruz-roja-bogota` | `verified` | No |
+| `centro-salvamento-acuatico-cruz-roja-bogota` | `verified` | No |
+| `bodega-cruz-roja-bogota` | `verified` | No |
+| `palacio-de-los-deportes-bogota` | `verified` | No |
+
+**Decisión tomada el 11 de agosto: no tocarlos todavía.** Ausencia de la lista **no es prueba de cierre** —son sedes propias de la Cruz Roja y pueden seguir recibiendo—, y ocultarlas sin evidencia enviaría a la gente a menos puntos de los que existen. Lo que sí quedó sin respaldo es el **sello de verificado**. Pendiente: llamar a la Cruz Roja Seccional y decidir entre degradar a `reported` o reconfirmar.
+
+**Señal temprana que funcionó.** El único reporte de la comunidad recibido hasta ahora fue sobre SAMU Norte —*«nos dijeron que por salubridad ellos no pueden recibir en este punto, que solo están tratando urgencias»*— y llegó **antes** de que cambiara la página oficial. Ese centro ya estaba marcado `inactive` por esa vía. El crowdsourcing detectó la consolidación antes que la fuente institucional.
+
+> **Lección de método, aplicable a todo el seed.** Las fuentes de emergencia se actualizan en sitio conservando URL y fecha. **Citar una URL no es citar un contenido.** `source_url` por sí solo no detecta esto. Hace falta releer periódicamente las fuentes del seed, o guardar un hash/snapshot del contenido citado para que un job avise del cambio. Es la diferencia entre enterarse revisando y enterarse porque alguien manejó hasta el Palacio de los Deportes con el carro lleno.
+
+### 4.9 Medellín — Terminal y La Alpujarra: disputa resuelta
+
+§4.3 dejó en disputa un registro que agrupaba «Terminal de Transportes» y «La Alpujarra», porque los resúmenes de búsqueda los atribuían a la Alcaldía pero El Colombiano y Telemedellín solo confirmaban FUBAM y Saciar.
+
+El 11 de agosto El Tiempo publica ambos citando a la Alcaldía, y **precisa que la terminal es la del Norte, local 9840** —no una genérica—. Resolución:
+
+- La Alpujarra → se publica como `hall-alcaldia-medellin`.
+- La terminal → se publica como `terminal-del-norte-medellin`.
+- El registro viejo `terminal-transportes-la-alpujarra-medellin` se conserva en disputa, sin coordenadas y sin publicar, con la nota de traza que apunta a los dos nuevos.
+
+También quedó **corroborada la dirección de Fundación Saciar**: la pieza ciudadana coincide en «Carrera 50 #25-261», la versión mayoritaria que ya usaba el seed frente al «Carrera 52» de La Silla Vacía (§4.5). Tercera fuente independiente a favor.
 
 ---
 
@@ -183,6 +277,7 @@ No se modelaron como «centros de acopio» porque no son lugares físicos a los 
 - **Fundación Solidaridad por Colombia** — Bancolombia 167-000109-63, Bre-B `@juntosxcolombia`.
 - **Alcaldía de Cartagena / Minuto de Dios** — Davivienda 0040 0024 0970.
 - **Gobernación de Antioquia** — donaciones económicas articuladas con la Cruz Roja.
+- **Alcaldía de Envigado / Cruz Roja** — Davivienda cuenta corriente 0560455069996490, a nombre de la Sociedad Nacional de la Cruz Roja Colombiana, NIT 899999025-3. Publicada en la pieza oficial de Envigado del 11 de agosto de 2026.
 
 ## 9. Líneas de emergencia
 

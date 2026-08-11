@@ -2,9 +2,9 @@
   "samu-sur-cruz-roja-bogota": {
     "slug": "samu-sur-cruz-roja-bogota",
     "query": "Avenida Carrera 68 # 31-41 sur, Bogotá, Colombia",
-    "latitude": 4.627551,
-    "longitude": -74.122917,
-    "displayName": "Avenida Carrera 68, Pradera Sur, UPZs de Bogotá, Localidad Puente Aranda, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111611, Colombia",
+    "latitude": 4.623314,
+    "longitude": -74.124798,
+    "displayName": "Avenida Carrera 68, La Floresta Sur, UPZs Localidad Kennedy, Localidad Kennedy, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110831, Colombia",
     "precision": "approximate"
   },
   "samu-norte-cruz-roja-bogota": {
@@ -18,8 +18,8 @@
   "centro-salvamento-acuatico-cruz-roja-bogota": {
     "slug": "centro-salvamento-acuatico-cruz-roja-bogota",
     "query": "Avenida La Esmeralda # 63-81, Bogotá, Colombia",
-    "latitude": 4.664958,
-    "longitude": -74.086262,
+    "latitude": 4.66086,
+    "longitude": -74.0878,
     "displayName": "Avenida Carrera 60, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111221, Colombia",
     "precision": "approximate"
   },
@@ -138,9 +138,9 @@
   "fundacion-saciar-medellin": {
     "slug": "fundacion-saciar-medellin",
     "query": "Carrera 50, Guayabal, Medellín, Antioquia, Colombia",
-    "latitude": 6.215806,
-    "longitude": -75.578456,
-    "displayName": "Carrera 50, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050021, Colombia",
+    "latitude": 6.223145,
+    "longitude": -75.577415,
+    "displayName": "Carrera 50, Santa Fé, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050021, Colombia",
     "precision": "approximate"
   },
   "parque-principal-itagui": {
@@ -164,7 +164,7 @@
     "query": "Universidad Industrial de Santander, Bucaramanga, Colombia",
     "latitude": 7.140931,
     "longitude": -73.119865,
-    "displayName": "Universidad Industrial de Santander, 27-01, Calle 9, Universidad, Comuna 3 - San Francisco, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680001, Colombia",
+    "displayName": "Universidad Industrial de Santander, 27-01, Calle 9, Mutualidad, Comuna 3 - San Francisco, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680001, Colombia",
     "precision": "exact"
   },
   "acsc-medellin": {
@@ -178,8 +178,8 @@
   "acsc-barranquilla": {
     "slug": "acsc-barranquilla",
     "query": "Carrera 54 # 68-196, Barranquilla, Atlántico, Colombia",
-    "latitude": 10.994655,
-    "longitude": -74.793659,
+    "latitude": 10.996425,
+    "longitude": -74.796032,
     "displayName": "Carrera 54, El Prado, Localidad Norte - Centro Histórico, Perímetro Urbano Barranquilla, Barranquilla, Atlántico, RAP Caribe, 080002, Colombia",
     "precision": "approximate"
   },
@@ -194,40 +194,40 @@
   "acsc-cartagena": {
     "slug": "acsc-cartagena",
     "query": "Calle 28 # 26-53, Manga, Cartagena, Bolívar, Colombia",
-    "latitude": 10.413831,
-    "longitude": -75.535344,
+    "latitude": 10.407444,
+    "longitude": -75.530461,
     "displayName": "Calle 28, Manga, Cartagena de Indias, Dique, Bolívar, RAP Caribe, 130001, Colombia",
     "precision": "approximate"
   },
   "acsc-tunja": {
     "slug": "acsc-tunja",
     "query": "Calle 20 # 12-84, Tunja, Boyacá, Colombia",
-    "latitude": 5.532612,
-    "longitude": -73.360414,
+    "latitude": 5.535746,
+    "longitude": -73.371177,
     "displayName": "Calle 20, Tunja, Centro, Boyacá, RAP (Especial) Central, 150001, Colombia",
     "precision": "approximate"
   },
   "acsc-popayan": {
     "slug": "acsc-popayan",
     "query": "Carrera 9 Norte, Popayán, Cauca, Colombia",
-    "latitude": 2.473914,
-    "longitude": -76.558288,
-    "displayName": "Carrera 4, Barrio Villa del Norte, Comuna 2, Perímetro Urbano Popayán, Popayán, Centro, Cauca, RAP Pacífico, 190001, Colombia",
+    "latitude": 2.478589,
+    "longitude": -76.560104,
+    "displayName": "Carrera 7B, Villa del Norte o La Paz, Comuna 2, Perímetro Urbano Popayán, Popayán, Centro, Cauca, RAP Pacífico, 190001, Colombia",
     "precision": "approximate"
   },
   "acsc-valledupar": {
     "slug": "acsc-valledupar",
     "query": "Calle 11 # 8-79, Valledupar, Cesar, Colombia",
-    "latitude": 10.474999,
-    "longitude": -73.26125,
+    "latitude": 10.472148,
+    "longitude": -73.270299,
     "displayName": "Calle 11, Comuna 5, Perímetro Urbano Valledupar, Valledupar, Cesar, RAP Caribe, 200005, Colombia",
     "precision": "approximate"
   },
   "acsc-monteria": {
     "slug": "acsc-monteria",
     "query": "Calle 62 # 7-53, Montería, Córdoba, Colombia",
-    "latitude": 8.769233,
-    "longitude": -75.861147,
+    "latitude": 8.771029,
+    "longitude": -75.864035,
     "displayName": "Calle 62, La Castellana, Comuna 8, Perímetro Urbano Montería, Centro, Córdoba, RAP Caribe, 230002, Colombia",
     "precision": "approximate"
   },
@@ -242,9 +242,9 @@
   "acsc-neiva": {
     "slug": "acsc-neiva",
     "query": "Carrera 5 # 10-49, Neiva, Huila, Colombia",
-    "latitude": 2.917441,
-    "longitude": -75.285555,
-    "displayName": "Carrera 5, Andalucía, Comuna Sur, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410006, Colombia",
+    "latitude": 2.919853,
+    "longitude": -75.286257,
+    "displayName": "Carrera 5, Comuna Sur, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410006, Colombia",
     "precision": "approximate"
   },
   "acsc-santa-marta": {
@@ -282,8 +282,8 @@
   "acsc-bucaramanga": {
     "slug": "acsc-bucaramanga",
     "query": "Calle 45 # 28-36, Bucaramanga, Santander, Colombia",
-    "latitude": 7.119347,
-    "longitude": -73.108639,
+    "latitude": 7.119059,
+    "longitude": -73.1103,
     "displayName": "Calle 45, Cabecera del Llano, Comuna 12 - Cabecera del Llano, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680003, Colombia",
     "precision": "approximate"
   },
@@ -314,9 +314,9 @@
   "tigresas-valledupar": {
     "slug": "tigresas-valledupar",
     "query": "Carrera 23 # 4-116, Valledupar, Cesar, Colombia",
-    "latitude": 10.464474,
-    "longitude": -73.266154,
-    "displayName": "Carrera 23, Comuna 4, Perímetro Urbano Valledupar, Valledupar, Cesar, RAP Caribe, 200004, Colombia",
+    "latitude": 10.476636,
+    "longitude": -73.270102,
+    "displayName": "Carrera 23, Comuna 5, Perímetro Urbano Valledupar, Valledupar, Cesar, RAP Caribe, 200005, Colombia",
     "precision": "approximate"
   },
   "tigresas-pailitas": {
@@ -330,9 +330,9 @@
   "tigresas-bucaramanga": {
     "slug": "tigresas-bucaramanga",
     "query": "Calle 54 # 21A-07, Bucaramanga, Santander, Colombia",
-    "latitude": 7.11173,
-    "longitude": -73.114075,
-    "displayName": "Calle 54, Bolarquí, Comuna 12 - Cabecera del Llano, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680003, Colombia",
+    "latitude": 7.110476,
+    "longitude": -73.116758,
+    "displayName": "Calle 54, La Concordia, Comuna 6 - La Concordia, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680005, Colombia",
     "precision": "approximate"
   },
   "tigresas-tame": {
@@ -348,7 +348,7 @@
     "query": "Unicentro, Bogotá, Colombia",
     "latitude": 4.702159,
     "longitude": -74.041281,
-    "displayName": "Unicentro, Avenida Carrera 15, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110111, Colombia",
+    "displayName": "Unicentro, Avenida Calle 127, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110111, Colombia",
     "precision": "exact"
   },
   "tigresas-barranquilla-casa-abelardista": {
@@ -362,9 +362,9 @@
   "tigresas-neiva-centro-solidaridad": {
     "slug": "tigresas-neiva-centro-solidaridad",
     "query": "Calle 8 # 10-27, Neiva, Huila, Colombia",
-    "latitude": 2.92925,
-    "longitude": -75.283523,
-    "displayName": "Calle 8, El Altico, Comuna Centro, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410400, Colombia",
+    "latitude": 2.930417,
+    "longitude": -75.261435,
+    "displayName": "Calle 8, Praderas de Zaragoza, Comuna La Floresta, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410004, Colombia",
     "precision": "approximate"
   },
   "tigresas-banco-alimentos-neiva": {
@@ -434,17 +434,17 @@
   "tigresas-sincelejo": {
     "slug": "tigresas-sincelejo",
     "query": "Calle 19 # 21-41, Sincelejo, Sucre, Colombia",
-    "latitude": 9.303703,
-    "longitude": -75.412298,
-    "displayName": "Calle 19, Las Canarias, Sincelejo, Montes de María, Sucre, RAP Caribe, 700002, Colombia",
+    "latitude": 9.308548,
+    "longitude": -75.384578,
+    "displayName": "Calle 19, Florencia Ii, Sincelejo, Montes de María, Sucre, RAP Caribe, 700020, Colombia",
     "precision": "approximate"
   },
   "tigresas-acacias": {
     "slug": "tigresas-acacias",
     "query": "Calle 15 # 16-43, Acacías, Meta, Colombia",
-    "latitude": 3.98781,
-    "longitude": -73.761773,
-    "displayName": "Calle 15, Barrio El Dorado, Manuela, Acacías, Piedemonte, Meta, RAP (Especial) Central, 507001, Colombia",
+    "latitude": 3.991378,
+    "longitude": -73.779789,
+    "displayName": "Calle 16, Manuela, Acacías, Piedemonte, Meta, RAP (Especial) Central, 507001, Colombia",
     "precision": "approximate"
   },
   "tigresas-florencia": {
@@ -474,8 +474,8 @@
   "tigresas-mocoa": {
     "slug": "tigresas-mocoa",
     "query": "Calle 9 # 6-14, Mocoa, Putumayo, Colombia",
-    "latitude": 1.147271,
-    "longitude": -76.647045,
+    "latitude": 1.145934,
+    "longitude": -76.645013,
     "displayName": "Calle 9, Zona Urbana, Mocoa, Putumayo, RAP Amazonía, 860001, Colombia",
     "precision": "approximate"
   },
@@ -514,17 +514,17 @@
   "tigresas-bogota-gaula": {
     "slug": "tigresas-bogota-gaula",
     "query": "Carrera 47, La Castellana, Bogotá, Colombia",
-    "latitude": 4.6813,
-    "longitude": -74.060199,
+    "latitude": 4.684328,
+    "longitude": -74.059692,
     "displayName": "Carrera 47, La Castellana, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111211, Colombia",
     "precision": "approximate"
   },
   "tigresas-bogota-codabas": {
     "slug": "tigresas-bogota-codabas",
     "query": "Calle 180, Bogotá, Colombia",
-    "latitude": 4.759514,
-    "longitude": -74.051456,
-    "displayName": "Calle 180, Nueva Zelandia, UPZs de Bogotá, Localidad Suba, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111166, Colombia",
+    "latitude": 4.756553,
+    "longitude": -74.033237,
+    "displayName": "Calle 180, San Antonio I, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110141, Colombia",
     "precision": "approximate"
   },
   "tigresas-bogota-122-plaza": {
@@ -582,5 +582,173 @@
     "longitude": -76.302013,
     "displayName": "Buga, Centro, Valle del Cauca, RAP Pacífico, Colombia",
     "precision": "municipality"
+  },
+  "universidad-jorge-tadeo-lozano-bogota": {
+    "slug": "universidad-jorge-tadeo-lozano-bogota",
+    "query": "Universidad Jorge Tadeo Lozano, Bogotá, Colombia",
+    "latitude": 4.606942,
+    "longitude": -74.067926,
+    "displayName": "Universidad Jorge Tadeo Lozano, carrera 4, Calle 22, La Veracruz, UPZs de Bogotá, Localidad Santa Fé, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110311, Colombia",
+    "precision": "exact"
+  },
+  "punto-usaquen-bogota": {
+    "slug": "punto-usaquen-bogota",
+    "query": "Calle 161A, Usaquén, Bogotá, Colombia",
+    "latitude": 4.742384,
+    "longitude": -74.047095,
+    "displayName": "Calle 161A, Villa Magdala, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110131, Colombia",
+    "precision": "approximate"
+  },
+  "hall-alcaldia-medellin": {
+    "slug": "hall-alcaldia-medellin",
+    "query": "Alcaldía de Medellín, La Alpujarra, Medellín, Antioquia, Colombia",
+    "latitude": 6.244698,
+    "longitude": -75.573776,
+    "displayName": "Alcaldía de Medellín, Plazoleta de la Alpujarra, Centro Administrativo La Alpujarra, Comuna 10 - La Candelaria, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050015, Colombia",
+    "precision": "exact"
+  },
+  "universidad-eafit-medellin": {
+    "slug": "universidad-eafit-medellin",
+    "query": "Universidad EAFIT, Medellín, Antioquia, Colombia",
+    "latitude": 6.200202,
+    "longitude": -75.578485,
+    "displayName": "Universidad EAFIT, 7 sur - 50, Carrera 49, La Aguacatala, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050023, Colombia",
+    "precision": "exact"
+  },
+  "udea-afroudea-medellin": {
+    "slug": "udea-afroudea-medellin",
+    "query": "Universidad de Antioquia, Ciudad Universitaria, Medellín, Antioquia, Colombia",
+    "latitude": 6.26798,
+    "longitude": -75.568759,
+    "displayName": "Universidad de Antioquia, 53-108, Calle 67, Ciudad Universitaria, Comuna 4 - Aranjuez, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050010, Colombia",
+    "precision": "exact"
+  },
+  "simon-coffee-medellin": {
+    "slug": "simon-coffee-medellin",
+    "query": "Carrera 37 # 10-54, El Poblado, Medellín, Antioquia, Colombia",
+    "latitude": 6.207655,
+    "longitude": -75.567216,
+    "displayName": "Carrera 37, La Florida, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050003, Colombia",
+    "precision": "approximate"
+  },
+  "restaurante-belisario-medellin": {
+    "slug": "restaurante-belisario-medellin",
+    "query": "Calle 7 # 35-44, El Poblado, Medellín, Antioquia, Colombia",
+    "latitude": 6.20435,
+    "longitude": -75.558621,
+    "displayName": "Calle 7, El Tesoro, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050003, Colombia",
+    "precision": "approximate"
+  },
+  "remanence-medellin": {
+    "slug": "remanence-medellin",
+    "query": "Calle 10B # 35-27, El Poblado, Medellín, Antioquia, Colombia",
+    "latitude": 6.210378,
+    "longitude": -75.55807,
+    "displayName": "Calle 10B, Las Lomas Numero 2, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050003, Colombia",
+    "precision": "approximate"
+  },
+  "bodega-guayaquiliando-medellin": {
+    "slug": "bodega-guayaquiliando-medellin",
+    "query": "Avenida 80 # 52-88, Medellín, Antioquia, Colombia",
+    "latitude": 6.265139,
+    "longitude": -75.59628,
+    "displayName": "Avenida 80, Los Colores, Comuna 11 - Laureles-Estadio, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050035, Colombia",
+    "precision": "approximate"
+  },
+  "libreria-rodante-delfos-medellin": {
+    "slug": "libreria-rodante-delfos-medellin",
+    "query": "Laureles, Medellín, Antioquia, Colombia",
+    "latitude": 6.242,
+    "longitude": -75.595833,
+    "displayName": "Laureles, Comuna 11 - Laureles-Estadio, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050031, Colombia",
+    "precision": "approximate"
+  },
+  "fundacion-el-arte-de-los-suenos-medellin": {
+    "slug": "fundacion-el-arte-de-los-suenos-medellin",
+    "query": "Carrera 48 # 35-47, Perpetuo Socorro, Medellín, Antioquia, Colombia",
+    "latitude": 6.237804,
+    "longitude": -75.571717,
+    "displayName": "Carrera 48, Perpetuo Socorro, Comuna 10 - La Candelaria, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050015, Colombia",
+    "precision": "approximate"
+  },
+  "la-razon-medellin": {
+    "slug": "la-razon-medellin",
+    "query": "Calle 44 # 42-70, Medellín, Antioquia, Colombia",
+    "latitude": 6.245782,
+    "longitude": -75.573249,
+    "displayName": "Calle 44, Guayaquil, Comuna 10 - La Candelaria, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050015, Colombia",
+    "precision": "approximate"
+  },
+  "batallon-girardot-medellin": {
+    "slug": "batallon-girardot-medellin",
+    "query": "Batallón Girardot, Medellín, Antioquia, Colombia",
+    "latitude": 6.259893,
+    "longitude": -75.545604,
+    "displayName": "Batallón Girardot, Comuna 8 - Villa Hermosa, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, Colombia",
+    "precision": "approximate"
+  },
+  "parque-biblioteca-belen-medellin": {
+    "slug": "parque-biblioteca-belen-medellin",
+    "query": "Parque Biblioteca Belén, Medellín, Antioquia, Colombia",
+    "latitude": 6.224016,
+    "longitude": -75.598125,
+    "displayName": "Parque BIblioteca Belén, Comuna 16 - Belén, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050025, Colombia",
+    "precision": "exact"
+  },
+  "parque-biblioteca-san-javier-medellin": {
+    "slug": "parque-biblioteca-san-javier-medellin",
+    "query": "Parque Biblioteca San Javier, Medellín, Antioquia, Colombia",
+    "latitude": 6.254793,
+    "longitude": -75.613572,
+    "displayName": "Parque Biblioteca Presbítero José Luis Arroyave - San Javier, Comuna 12 - La América, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, Colombia",
+    "precision": "exact"
+  },
+  "parque-biblioteca-gabriel-garcia-marquez-medellin": {
+    "slug": "parque-biblioteca-gabriel-garcia-marquez-medellin",
+    "query": "Parque Biblioteca Gabriel García Márquez, Medellín, Antioquia, Colombia",
+    "latitude": 6.304329,
+    "longitude": -75.577759,
+    "displayName": "Parque Biblioteca Gabriel García Marquez (Doce de Octubre), Carrera 80, Santander, Comuna 6 - Doce de Octubre, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 051052, Colombia",
+    "precision": "exact"
+  },
+  "parque-biblioteca-leon-de-greiff-medellin": {
+    "slug": "parque-biblioteca-leon-de-greiff-medellin",
+    "query": "Parque Biblioteca León de Greiff, Medellín, Antioquia, Colombia",
+    "latitude": 6.251453,
+    "longitude": -75.55387,
+    "displayName": "Parque Biblioteca León de Greiff, Calle 59A, La Ladera, Comuna 8 - Villa Hermosa, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050013, Colombia",
+    "precision": "exact"
+  },
+  "casa-eterna-la-explanada": {
+    "slug": "casa-eterna-la-explanada",
+    "query": "Medellín, Antioquia, Colombia",
+    "latitude": 6.269732,
+    "longitude": -75.60256,
+    "displayName": "Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 0500, Colombia",
+    "precision": "municipality"
+  },
+  "terminal-del-norte-medellin": {
+    "slug": "terminal-del-norte-medellin",
+    "query": "Terminal de Transporte del Norte, Medellín, Antioquia, Colombia",
+    "latitude": 6.278643,
+    "longitude": -75.571091,
+    "displayName": "Terminal de Transporte Norte, Avenida Carrera 64C, Oleoducto, Comuna 5 - Castilla, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050040, Colombia",
+    "precision": "exact"
+  },
+  "gestion-del-riesgo-envigado": {
+    "slug": "gestion-del-riesgo-envigado",
+    "query": "Carrera 40, Envigado, Antioquia, Colombia",
+    "latitude": 6.17006,
+    "longitude": -75.585057,
+    "displayName": "Carrera 40, San Mateo, Envigado, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 055422, Colombia",
+    "precision": "approximate"
+  },
+  "usaquen-usaquen-vl0m": {
+    "slug": "usaquen-usaquen-vl0m",
+    "query": "Calle 161A, Usaquén, Bogotá, Colombia",
+    "latitude": 4.742384,
+    "longitude": -74.047095,
+    "displayName": "Calle 161A, Villa Magdala, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110131, Colombia",
+    "precision": "approximate"
   }
 }

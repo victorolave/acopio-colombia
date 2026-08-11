@@ -41,6 +41,29 @@ type Entry = {
  * Motivo de cada override documentado en docs/sources.md.
  */
 const QUERY_OVERRIDES: Record<string, string[]> = {
+  // Cayó en el centroide de Envigado. La nomenclatura «39 sur» del Valle de
+  // Aburrá no resuelve en OSM; se intenta primero la oficina como POI y luego
+  // la vía, antes de rendirse al municipio.
+  "gestion-del-riesgo-envigado": [
+    "Oficina de Gestión del Riesgo, Envigado, Antioquia, Colombia",
+    "Carrera 40, Envigado, Antioquia, Colombia",
+  ],
+  // Cayó en el CENTROIDE DE BOGOTÁ (~4.653), a unos 10 km al sur del punto real.
+  // La Calle 161A es una vía corta del extremo norte y OSM no la resuelve. Un
+  // pin así de errado en un centro «verificado» es el peor modo de fallo del
+  // proyecto, así que se ancla a Usaquén y se degrada la precisión.
+  "usaquen-usaquen-vl0m": [
+    "Calle 161A, Usaquén, Bogotá, Colombia",
+    "Calle 161, Usaquén, Bogotá, Colombia",
+    "Usaquén, Bogotá, Colombia",
+  ],
+  // Cayó primero en el centroide de Medellín. Al forzar «Calle 79, Laureles»
+  // enganchó un POI llamado «Ginger Cocina» en la CALLE 35 y lo etiquetó
+  // `exact`: pin equivocado con sello de alta confianza, el mismo fallo que
+  // hubo con la iglesia de Santa Marta. La pieza escribe «Laureles 79 #52A-23»
+  // sin aclarar si el 79 es calle o carrera, así que NO se le da una vía: se
+  // ancla al barrio y se acepta la precisión baja, que es lo honesto.
+  "libreria-rodante-delfos-medellin": ["Laureles, Medellín, Antioquia, Colombia"],
   // Cayó en Ciudad Bolívar (Carrera 24 existe en varias localidades). La sede está en Barrios Unidos.
   "sede-administrativa-cruz-roja-bogota": [
     "Cruz Roja Colombiana Seccional Cundinamarca y Bogotá, Bogotá, Colombia",

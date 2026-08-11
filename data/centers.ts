@@ -61,6 +61,22 @@ export type SeedCenter = {
 
 const VERIFIED_AT = "2026-08-10T23:00:00-05:00";
 
+/** Tanda del día 2: la Alcaldía de Bogotá republicó su lista el 11 de agosto. */
+const VERIFIED_AT_DIA2 = "2026-08-11T12:00:00-05:00";
+
+/**
+ * Fuente de la mayoría de los puntos de Medellín del día 2.
+ *
+ * Es una pieza gráfica que circuló en redes SIN entidad que la firme. No es la
+ * Alcaldía publicando en su canal, ni un medio citando a la Alcaldía: es un
+ * tercero recopilando. Se publica como `reported` —nunca `verified`— y cada
+ * registro lleva la salvedad de abajo.
+ */
+const PIEZA_CIUDADANA_MEDELLIN = "Pieza gráfica ciudadana difundida en redes (sin entidad identificable)";
+
+const PIEZA_CIUDADANA_NOTA =
+  "FUENTE NO OFICIAL: proviene de una pieza gráfica difundida en redes que no está firmada por ninguna entidad. No se localizó comunicado de la Alcaldía de Medellín ni de la organización responsable que confirme este punto. Confirmar antes de desplazarse.";
+
 // Canastas reutilizables ------------------------------------------------------
 
 const CRUZ_ROJA_ITEMS = [
@@ -254,6 +270,89 @@ function acsc(
 
 // -----------------------------------------------------------------------------
 
+/**
+ * Canasta de la tanda de Medellín del 11 de agosto.
+ *
+ * El Tiempo publica la restricción explícita de esta campaña: por bioseguridad
+ * y logística NO se recibe ropa, medicamentos ni alimentos perecederos o
+ * vencidos. Es una restricción propia de esta emergencia, distinta de la de las
+ * campañas previas de la ciudad.
+ */
+const MEDELLIN_DIA2_ITEMS = [
+  "Agua",
+  "Arroz",
+  "Aceite",
+  "Granos",
+  "Alimentos enlatados",
+  "Leche",
+  "Panela",
+  "Harina",
+  "Alimentos listos para consumir",
+  "Colchonetas",
+  "Cobijas",
+  "Pañales",
+  "Artículos de aseo",
+];
+
+const MEDELLIN_DIA2_RECHAZADOS = [
+  "Ropa",
+  "Medicamentos",
+  "Alimentos perecederos",
+  "Productos vencidos",
+];
+
+/**
+ * Los cuatro parques biblioteca de la red pública que recibieron donaciones.
+ *
+ * Ni El Tiempo ni la pieza ciudadana publican direcciones: los cuatro se
+ * geocodifican por nombre de POI, así que su precisión será `approximate` en el
+ * mejor caso. Se generan con un helper porque solo cambian nombre y consulta.
+ */
+const PARQUES_BIBLIOTECA_MEDELLIN: SeedCenter[] = (
+  [
+    ["belen", "Parque Biblioteca Belén", "Parque Biblioteca Belén, Medellín, Antioquia, Colombia"],
+    ["san-javier", "Parque Biblioteca San Javier", "Parque Biblioteca San Javier, Medellín, Antioquia, Colombia"],
+    [
+      "gabriel-garcia-marquez",
+      "Parque Biblioteca Gabriel García Márquez",
+      "Parque Biblioteca Gabriel García Márquez, Medellín, Antioquia, Colombia",
+    ],
+    [
+      "leon-de-greiff",
+      "Parque Biblioteca León de Greiff",
+      "Parque Biblioteca León de Greiff, Medellín, Antioquia, Colombia",
+    ],
+  ] as const
+).map(([id, name, query]) => ({
+  slug: `parque-biblioteca-${id}-medellin`,
+  name,
+  organization: "Red de Bibliotecas Públicas de Medellín / Alcaldía de Medellín",
+  type: "general" as const,
+  department: "Antioquia",
+  municipality: "Medellín",
+  address: `${name}, Medellín`,
+  geocodeQuery: query,
+  latitude: null,
+  longitude: null,
+  acceptedItems: MEDELLIN_DIA2_ITEMS,
+  urgentNeeds: ["Alimentos no perecederos", "Artículos de aseo"],
+  rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+  scheduleText: null,
+  startsAt: "2026-08-11",
+  endsAt: null,
+  phone: null,
+  whatsapp: null,
+  email: null,
+  sourceName: "Alcaldía de Medellín, vía El Tiempo",
+  sourceUrl:
+    "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
+  sourcePublishedAt: "2026-08-11",
+  verificationStatus: "reported" as const,
+  verificationNotes:
+    "Punto de la red de bibliotecas públicas incluido por El Tiempo citando a la Alcaldía de Medellín, y corroborado por la pieza ciudadana. La fuente NO publica dirección ni horario: el pin se geocodifica por nombre del parque biblioteca y queda aproximado. Confirmar horario de la biblioteca antes de ir.",
+  lastVerifiedAt: VERIFIED_AT_DIA2,
+}));
+
 export const SEED_CENTERS: SeedCenter[] = [
   // ===========================================================================
   // BOGOTÁ D.C. — Alcaldía de Bogotá + Cruz Roja Seccional Cundinamarca y Bogotá
@@ -360,7 +459,9 @@ export const SEED_CENTERS: SeedCenter[] = [
     acceptedItems: CRUZ_ROJA_ITEMS,
     urgentNeeds: ["Agua potable embotellada", "Colchonetas", "Artículos de higiene"],
     rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
-    scheduleText: null,
+    // La pieza del 11 de agosto publica por primera vez el horario: es el único
+    // punto de la lista que recibe 24 horas.
+    scheduleText: "Abierto 24 horas",
     startsAt: "2026-08-10",
     endsAt: null,
     phone: null,
@@ -369,7 +470,7 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceName: "Alcaldía Mayor de Bogotá",
     sourceUrl:
       "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
-    sourcePublishedAt: "2026-08-10",
+    sourcePublishedAt: "2026-08-11",
     verificationStatus: "verified",
     verificationNotes:
       "Uno de los seis puntos oficiales publicados por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026.",
@@ -993,7 +1094,7 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourcePublishedAt: null,
     verificationStatus: "disputed",
     verificationNotes:
-      "NO PUBLICADO. Resúmenes de búsqueda atribuyen a la Alcaldía de Medellín puntos en la Terminal de Transportes y La Alpujarra, pero al consultar directamente El Colombiano y Telemedellín solo aparecen FUBAM y Fundación Saciar. Sin dirección ni horario. REQUIERE VALIDACIÓN MANUAL.",
+      "NO PUBLICADO — RESUELTO A MEDIAS EL 11 DE AGOSTO DE 2026. El 10 de agosto los resúmenes de búsqueda atribuían a la Alcaldía de Medellín puntos en la Terminal de Transportes y en La Alpujarra, pero El Colombiano y Telemedellín solo confirmaban FUBAM y Fundación Saciar, así que este registro agrupaba ambos en disputa. El 11 de agosto El Tiempo publicó los dos citando a la Alcaldía: (a) La Alpujarra queda resuelta y se publica aparte como `hall-alcaldia-medellin`; (b) la terminal resulta ser la TERMINAL DEL NORTE, local 9840, que es un sitio distinto del que decían los resúmenes iniciales. Este registro se conserva en disputa solo por la terminal, pendiente de decidir si se crea como registro propio.",
     lastVerifiedAt: null,
   },
 
@@ -1532,9 +1633,27 @@ export const SEED_CENTERS: SeedCenter[] = [
   tigresa("tigresas-bogota-codabas", "CODABAS", "Bogotá D.C.", "Bogotá D.C.",
     "Carrera 7 #180-75, módulo 2, piso 2", "+57 305 714 1513",
     { geocodeQuery: "Carrera 7 # 180-75, Bogotá, Colombia" }),
+  // Un solo registro para un solo lugar físico. El 11 de agosto la Alcaldía
+  // sumó Unicentro a su lista oficial, así que el mismo centro comercial es
+  // punto de DOS campañas a la vez. Dos registros producirían dos pines
+  // apilados sobre las mismas coordenadas —el problema que ya hubo que corregir
+  // en Cartagena—, y para quien va a donar la distinción no cambia nada.
   tigresa("tigresas-bogota-unicentro", "Unicentro Bogotá", "Bogotá D.C.", "Bogotá D.C.",
-    "Entradas por la Carrera 13 (Zona de Banderas) y Carrera 15 (entrada principal)", "+57 317 645 6373",
-    { geocodeQuery: "Unicentro, Bogotá, Colombia" }),
+    "Carrera 15 #124-30 (entradas por la Carrera 13, Zona de Banderas, y por la Carrera 15, entrada principal)",
+    "+57 317 645 6373",
+    {
+      geocodeQuery: "Unicentro, Bogotá, Colombia",
+      organization:
+        "Alcaldía Mayor de Bogotá y Cruz Roja Colombiana Seccional Cundinamarca y Bogotá, junto con Tigresas de la Patria",
+      scheduleText: "8:00 a. m. – 9:00 p. m., de lunes a domingo",
+      sourceName: "Alcaldía Mayor de Bogotá",
+      sourceUrl:
+        "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
+      sourcePublishedAt: "2026-08-11",
+      verificationNotes:
+        "DOS CAMPAÑAS EN EL MISMO LUGAR, UN SOLO REGISTRO. Entró el 10 de agosto por la red de Tigresas de la Patria y el 11 de agosto la Alcaldía Mayor de Bogotá lo incorporó a su lista oficial de cuatro puntos, con dirección exacta (Carrera 15 #124-30) y horario. Se conserva el teléfono de la red de Tigresas porque sigue siendo válido para coordinar cargas grandes.",
+      lastVerifiedAt: VERIFIED_AT_DIA2,
+    }),
   tigresa("tigresas-barranquilla-casa-abelardista", "Casa Abelardista", "Atlántico", "Barranquilla",
     "Carrera 49C #80-76", "+57 301 760 6374",
     {
@@ -1671,5 +1790,535 @@ export const SEED_CENTERS: SeedCenter[] = [
     verificationNotes:
       "NO PUBLICADO COMO ACTIVO. ABACO informó que la sede de Buenaventura resultó afectada y que se evalúa una ubicación alterna.",
     lastVerifiedAt: VERIFIED_AT,
+  },
+
+  // ===========================================================================
+  // TANDA DEL 11 DE AGOSTO DE 2026 — día 2 de la emergencia
+  // ===========================================================================
+
+  // --- Bogotá: nueva lista oficial de la Alcaldía -----------------------------
+  //
+  // El 11 de agosto la Alcaldía publicó la pieza «Bogotá se solidariza ante el
+  // sismo» con CUATRO puntos, y bogota.gov.co —la misma URL que respaldaba los
+  // seis del día 1— fue actualizada en sitio para listar esos mismos cuatro.
+  // Es la entidad responsable publicando en su canal propio: `verified`.
+  //
+  // OJO con los seis del día 1: solo `sede-administrativa-cruz-roja-bogota`
+  // sobrevive en la lista nueva. Los otros cinco ya no aparecen en la fuente.
+  // Se conservan como estaban por decisión explícita (ver docs/sources.md §4.8);
+  // ausencia de la lista no es prueba de cierre.
+  {
+    slug: "universidad-jorge-tadeo-lozano-bogota",
+    name: "Universidad Jorge Tadeo Lozano",
+    organization: "Alcaldía Mayor de Bogotá / Cruz Roja Colombiana Seccional Cundinamarca y Bogotá",
+    type: "general",
+    department: "Bogotá D.C.",
+    municipality: "Bogotá D.C.",
+    address: "Carrera 4 #22-61",
+    // La nomenclatura «Carrera 4 #22-61» cae en el centro histórico y compite
+    // con varias vías. El campus es un POI con nombre propio: resuelve mejor.
+    geocodeQuery: "Universidad Jorge Tadeo Lozano, Bogotá, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: CRUZ_ROJA_ITEMS,
+    urgentNeeds: ["Agua potable embotellada", "Colchonetas", "Alimentos no perecederos"],
+    rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
+    scheduleText: "8:00 a. m. – 9:00 p. m., de lunes a domingo",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía Mayor de Bogotá",
+    sourceUrl:
+      "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "verified",
+    verificationNotes:
+      "Uno de los cuatro puntos de la lista publicada por la Alcaldía Mayor de Bogotá el 11 de agosto de 2026, en la pieza «Bogotá se solidariza ante el sismo» y en bogota.gov.co. Operado con la Cruz Roja Colombiana Seccional Cundinamarca y Bogotá.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    // SLUG HEREDADO A PROPÓSITO. Este punto entró primero por el formulario
+    // público (un vecino lo envió citando la cuenta del alcalde) y se aprobó
+    // desde el panel el 11 de agosto a las 16:13 UTC, así que
+    // /centros/usaquen-usaquen-vl0m YA está vivo. Darle un slug limpio habría
+    // creado un segundo registro del mismo punto —dos pines apilados, ambos
+    // verificados— y roto la URL que ya circula. Se conserva el slug feo y el
+    // seed mejora el registro existente: nombre, municipio, horario, artículos,
+    // coordenadas y fuente oficial. Si algún día se quiere el slug limpio, hay
+    // que hacerlo con una redirección, no con un registro nuevo.
+    slug: "usaquen-usaquen-vl0m",
+    name: "Punto de acopio Usaquén",
+    organization: "Alcaldía Mayor de Bogotá / Cruz Roja Colombiana Seccional Cundinamarca y Bogotá",
+    type: "general",
+    department: "Bogotá D.C.",
+    municipality: "Bogotá D.C.",
+    address: "Calle 161A #7F-55",
+    geocodeQuery: "Calle 161A # 7F-55, Usaquén, Bogotá, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: CRUZ_ROJA_ITEMS,
+    urgentNeeds: ["Agua potable embotellada", "Colchonetas", "Alimentos no perecederos"],
+    rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
+    scheduleText: "8:00 a. m. – 9:00 p. m., de lunes a domingo",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía Mayor de Bogotá",
+    sourceUrl:
+      "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "verified",
+    verificationNotes:
+      "La pieza oficial y bogota.gov.co solo publican «Usaquén» y la dirección, sin nombre del establecimiento. Este punto había llegado ANTES por el formulario público (un vecino lo envió citando la cuenta del alcalde) y estaba en la cola como `pending`; la fuente oficial lo confirma. VALIDAR PIN: la Calle 161A es una vía corta del norte y la nomenclatura bogotana no resuelve de forma fiable en OSM.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+
+  // --- Medellín: tanda del 11 de agosto --------------------------------------
+  //
+  // Dos orígenes distintos, y por eso dos `sourceName` distintos:
+  //
+  //  a) Puntos que El Tiempo publica citando a la Alcaldía de Medellín.
+  //     Es «medio confiable citando a la entidad» → `reported`.
+  //  b) Puntos que solo aparecen en una pieza gráfica ciudadana difundida en
+  //     redes, sin entidad identificable que la firme. También `reported`,
+  //     pero con la salvedad anotada en cada registro.
+  //
+  // Ninguna de las dos fuentes publica direcciones para los puntos
+  // institucionales (Alcaldía, EAFIT, UdeA, parques biblioteca): esos se
+  // geocodifican por nombre de POI y quedarán `approximate` en el mejor caso.
+  {
+    slug: "hall-alcaldia-medellin",
+    name: "Hall principal de la Alcaldía de Medellín",
+    organization: "Alcaldía de Medellín",
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Centro Administrativo Municipal La Alpujarra, Calle 44 #52-165",
+    geocodeQuery: "Alcaldía de Medellín, La Alpujarra, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Agua", "Alimentos no perecederos", "Colchonetas"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Medellín, vía El Tiempo",
+    sourceUrl:
+      "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes:
+      "RESUELVE UNA DISPUTA ANTERIOR: el 10 de agosto este punto (La Alpujarra) se marcó `disputed` y no se publicó, porque los resúmenes de búsqueda lo atribuían a la Alcaldía pero El Colombiano y Telemedellín solo confirmaban FUBAM y Saciar. El 11 de agosto El Tiempo lo publica citando a la Alcaldía, y aparece también en la pieza ciudadana. La dirección de La Alpujarra no la publica la fuente: se tomó la del Centro Administrativo Municipal. VALIDAR PIN.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "terminal-del-norte-medellin",
+    name: "Terminal del Norte — local 9840",
+    organization: "Terminales Medellín, en alianza con la Alcaldía de Medellín",
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Terminal de Transporte del Norte, Carrera 64C #78-580, local 9840",
+    geocodeQuery: "Terminal de Transporte del Norte, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Agua", "Alimentos no perecederos", "Colchonetas"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Medellín, vía El Tiempo",
+    sourceUrl:
+      "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes:
+      "CIERRA LA DISPUTA DEL 10 DE AGOSTO. El registro `terminal-transportes-la-alpujarra-medellin` agrupaba en disputa «Terminal de Transportes» y «La Alpujarra» porque los resúmenes de búsqueda los atribuían a la Alcaldía sin que El Colombiano ni Telemedellín los confirmaran. El Tiempo los publica el 11 de agosto citando a la Alcaldía, y precisa que la terminal es la DEL NORTE, local 9840 —no la Terminal del Sur ni una genérica—. El local sí lo publica la fuente; el número de la vía no, así que se tomó la dirección conocida de la terminal. VALIDAR PIN.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "universidad-eafit-medellin",
+    name: "Universidad EAFIT — placa cubierta",
+    organization: "Universidad EAFIT, en alianza con la Alcaldía de Medellín",
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Carrera 49 #7 Sur-50, bloque de la placa cubierta",
+    geocodeQuery: "Universidad EAFIT, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Agua", "Alimentos no perecederos"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: "Lunes a viernes, 7:00 a. m. – 6:00 p. m.",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Medellín, vía El Tiempo",
+    sourceUrl:
+      "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes:
+      "El horario proviene de la pieza gráfica ciudadana; El Tiempo no lo publica. La fuente no da dirección: se usó la sede principal de EAFIT. El acceso al campus puede requerir identificación.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "udea-afroudea-medellin",
+    name: "Universidad de Antioquia — Oficina AfroUdeA, bloque 9",
+    organization: "Oficina AfroUdeA, Universidad de Antioquia",
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Ciudad Universitaria, Calle 67 #53-108, bloque 9",
+    geocodeQuery: "Universidad de Antioquia, Ciudad Universitaria, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos", "Artículos de aseo"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: "Lunes a viernes, 9:00 a. m. – 5:00 p. m.",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: "+57 311 450 5940",
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} La pieza no da dirección del bloque 9: se usó Ciudad Universitaria. Tiene teléfono publicado, que es la vía más rápida para confirmarlo. El acceso al campus puede requerir identificación.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "simon-coffee-medellin",
+    name: "Simón Coffee",
+    organization: null,
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Carrera 37 #10-54",
+    geocodeQuery: "Carrera 37 # 10-54, El Poblado, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} Negocio privado sumado a la iniciativa: sin horario publicado y puede dejar de recibir sin aviso. Llamar o pasar a confirmar antes de llevar carga.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "restaurante-belisario-medellin",
+    name: "Restaurante Belisario",
+    organization: null,
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Calle 7 #35-44 (oficina)",
+    geocodeQuery: "Calle 7 # 35-44, El Poblado, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} La pieza menciona TRES sedes —Provenza, CC El Tesoro y la oficina de la Calle 7 #35-44— pero solo publica dirección de la última, que es la que se mapea. Si se confirman las otras dos, van como registros separados.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "remanence-medellin",
+    name: "Remanence",
+    organization: null,
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Calle 10B #35-27",
+    geocodeQuery: "Calle 10B # 35-27, El Poblado, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: "Lunes a domingo, 11:00 a. m. – 5:30 p. m.",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} Negocio privado sumado a la iniciativa. Es de los pocos de la pieza con horario publicado.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "bodega-guayaquiliando-medellin",
+    name: "Bodega Guayaquiliando",
+    organization: null,
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Avenida 80 #52-88",
+    geocodeQuery: "Avenida 80 # 52-88, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} Iniciativa privada, sin horario publicado.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "libreria-rodante-delfos-medellin",
+    name: "Librería Rodante Delfos",
+    organization: null,
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Laureles, Calle 79 #52A-23",
+    geocodeQuery: "Calle 79 # 52A-23, Laureles, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} AMBIGÜEDAD DE DIRECCIÓN: la pieza escribe «Laureles 79 #52A-23», que puede leerse como Calle 79 o como Carrera 79 (ambas existen en Laureles). Se interpretó Calle 79. VALIDAR PIN antes de promover.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "fundacion-el-arte-de-los-suenos-medellin",
+    name: "Fundación El Arte de los Sueños",
+    organization: "Fundación El Arte de los Sueños",
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Barrio Perpetuo Socorro, Carrera 48 #35-47",
+    geocodeQuery: "Carrera 48 # 35-47, Perpetuo Socorro, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos", "Artículos de aseo"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText:
+      "Lunes, miércoles y viernes 8:30 a. m. – 12:00 m.; martes y jueves 8:30 a. m. – 4:00 p. m.",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} Horario detallado por días, de los más específicos de la pieza.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "la-razon-medellin",
+    name: "La Razón",
+    organization: null,
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Calle 44 #42-70",
+    geocodeQuery: "Calle 44 # 42-70, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} La pieza no aclara qué tipo de establecimiento es. Sin horario publicado.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "batallon-girardot-medellin",
+    name: "Batallón Girardot",
+    organization: "Ejército Nacional de Colombia",
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Calle 66E #39-84",
+    geocodeQuery: "Batallón Girardot, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos", "Colchonetas"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: null,
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "reported",
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} INSTALACIÓN MILITAR: el ingreso puede exigir documento de identidad y registro previo. Confirmar antes de desplazarse, sobre todo con carga grande.`,
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  ...PARQUES_BIBLIOTECA_MEDELLIN,
+
+  // --- Envigado: pieza oficial de la Alcaldía ---------------------------------
+  //
+  // Municipio NUEVO en el seed. La pieza «Envigado apoya a las familias
+  // afectadas por el terremoto» lleva el escudo de la Alcaldía de Envigado: es
+  // la entidad responsable publicando en su canal, que es la definición de
+  // `verified` en este proyecto. No se localizó URL estable (ver la excepción
+  // declarada en scripts/validate-seed.ts).
+  {
+    slug: "gestion-del-riesgo-envigado",
+    name: "Oficina de Gestión del Riesgo de Envigado",
+    organization: "Alcaldía de Envigado",
+    type: "mixed",
+    department: "Antioquia",
+    municipality: "Envigado",
+    address: "Carrera 40 #39 sur-59",
+    geocodeQuery: "Carrera 40 # 39 sur - 59, Envigado, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: [
+      "Alimentos no perecederos",
+      "Enlatados",
+      "Granos",
+      "Azúcar",
+      "Sal",
+      "Chocolate",
+      "Café",
+      "Aceite",
+      "Harina",
+      "Pastas",
+      "Pañales de niño y adulto",
+      "Pañitos húmedos",
+      "Crema dental",
+      "Toallas higiénicas",
+      "Jabón de baño",
+      "Cepillos de dientes",
+      "Desodorantes",
+      "Champú en sobres",
+      "Detergentes",
+      "Jabón en barra",
+      "Papel higiénico",
+      "Escobas",
+      "Trapeadoras",
+      "Baldes",
+      "Cepillos de piso",
+      "Colchonetas nuevas",
+      "Sábanas nuevas",
+      "Mantas nuevas",
+      "Cobijas nuevas",
+      "Alimento para perros y gatos",
+    ],
+    urgentNeeds: ["Alimentos no perecederos", "Elementos de aseo", "Colchonetas nuevas"],
+    rejectedItems: ["Medicamentos", "Ropa nueva", "Ropa usada", "Productos vencidos"],
+    scheduleText: "Lunes a viernes, 7:00 a. m. – 5:00 p. m.",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: "+57 604 339 4065",
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía de Envigado (pieza oficial «Envigado apoya a las familias afectadas por el terremoto»)",
+    // OJO: este enlace es el SITIO INSTITUCIONAL de la entidad, no la pieza.
+    // No se localizó una URL estable de la publicación; se enlaza el canal
+    // propio de la Alcaldía para que quien lea pueda contrastar con la fuente
+    // responsable. Sustituir por el enlace directo en cuanto aparezca.
+    sourceUrl: "https://www.envigado.gov.co",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "verified",
+    verificationNotes:
+      "Pieza oficial firmada con el escudo de la Alcaldía de Envigado, comprobada por @victorolave el 11 de agosto de 2026 — mismo criterio con el que se aceptaron los puntos de Tigresas de la Patria. El enlace apunta al sitio institucional, NO a la pieza: no se localizó una URL estable de la publicación. DOS RESTRICCIONES PROPIAS: los elementos para dormir deben ser NUEVOS, y no se recibe ropa (ni nueva ni usada) ni medicamentos. Es el único punto del seed que pide explícitamente alimento para perros y gatos. La pieza también publica una cuenta para donación en dinero, registrada en docs/sources.md §8 y deliberadamente fuera del mapa.",
+    lastVerifiedAt: VERIFIED_AT_DIA2,
+  },
+  {
+    slug: "casa-eterna-la-explanada",
+    name: "Casa Eterna",
+    organization: null,
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Calle 23 Sur #3-133, sector La Explanada, vía Las Palmas",
+    geocodeQuery: "La Explanada, Vía Las Palmas, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: [],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    scheduleText: "Lunes a domingo, 2:00 p. m. – 6:00 p. m.",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: PIEZA_CIUDADANA_MEDELLIN,
+    sourceUrl: null,
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "disputed",
+    verificationNotes:
+      "NO PUBLICADO. La pieza lo agrupa bajo «Otros municipios» sin decir cuál. «Calle 23 Sur» con la vía Las Palmas de por medio cae en la frontera entre Medellín y Envigado, y la nomenclatura sur del Valle de Aburrá se repite entre municipios. Se aplica el mismo criterio que con el punto de Casanare: municipio ambiguo no se publica. Resolver antes de activarlo.",
+    lastVerifiedAt: null,
   },
 ];

@@ -54,6 +54,37 @@ const BOUNDS = { minLat: -4.3, maxLat: 13.5, minLon: -82.0, maxLon: -66.8 };
 
 const PUBLIC_STATUSES = ["verified", "reported"] as const;
 
+/**
+ * Excepciones a la regla `publico-sin-enlace`.
+ *
+ * La regla existe porque la promesa del proyecto es que CUALQUIERA pueda
+ * comprobar un centro publicado. Saltársela tiene un costo real: quien lea la
+ * ficha no tiene forma de contrastarla.
+ *
+ * Se admite excepción solo cuando la fuente existe y fue vista, pero no tiene
+ * URL estable —el caso típico es una pieza gráfica difundida por redes o
+ * WhatsApp—. Igual que con la lista blanca de cuentas oficiales, añadir un slug
+ * aquí es una DECISIÓN CONSCIENTE y queda a la vista en el diff del PR.
+ *
+ * Cada entrada debe decir de dónde salió el dato y cuándo se revisa.
+ */
+const SIN_ENLACE_APROBADOS = new Set<string>([
+  // Pieza gráfica «Puntos de acopio Medellín» compartida por @victorolave el
+  // 11 de agosto de 2026. No está firmada por ninguna entidad y no se localizó
+  // la publicación original con URL estable. Se publican como `reported`, con
+  // la salvedad en `verificationNotes` de cada ficha.
+  // REVISAR: sustituir por `sourceUrl` en cuanto aparezca el post original.
+  "udea-afroudea-medellin",
+  "simon-coffee-medellin",
+  "restaurante-belisario-medellin",
+  "remanence-medellin",
+  "bodega-guayaquiliando-medellin",
+  "libreria-rodante-delfos-medellin",
+  "fundacion-el-arte-de-los-suenos-medellin",
+  "la-razon-medellin",
+  "batallon-girardot-medellin",
+]);
+
 type Issue = { slug: string; rule: string; message: string };
 
 const errors: Issue[] = [];
@@ -101,11 +132,18 @@ for (const center of SEED_CENTERS as SeedCenter[]) {
   const isPublic = (PUBLIC_STATUSES as readonly string[]).includes(center.verificationStatus);
 
   if (isPublic) {
-    if (!center.sourceUrl) {
+    if (!center.sourceUrl && !SIN_ENLACE_APROBADOS.has(slug)) {
       fail(
         slug,
         "publico-sin-enlace",
-        "Un centro publicado necesita `sourceUrl` para que cualquiera pueda comprobarlo.",
+        "Un centro publicado necesita `sourceUrl` para que cualquiera pueda comprobarlo. Si la fuente es una pieza gráfica sin enlace estable, añádelo a `SIN_ENLACE_APROBADOS` con su motivo: es una decisión consciente y queda visible en el diff.",
+      );
+    }
+    if (!center.sourceUrl && SIN_ENLACE_APROBADOS.has(slug)) {
+      warn(
+        slug,
+        "publicado-sin-enlace-aprobado",
+        "Publicado SIN enlace comprobable, por excepción aprobada. Sustituir `sourceUrl` en cuanto exista una URL estable.",
       );
     }
     if (!center.lastVerifiedAt) {
