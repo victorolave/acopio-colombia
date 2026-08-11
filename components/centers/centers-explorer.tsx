@@ -17,6 +17,7 @@ import { BottomSheet, type SnapPoint } from "@/components/ui/bottom-sheet";
 import { IconAlert, IconCrosshair } from "@/components/ui/icons";
 import { calculateDistance } from "@/lib/distance";
 import { centerAcceptsCategory } from "@/lib/items";
+import { canConfirmBeforeGoing } from "@/lib/schedule";
 import type { CenterWithDistance, CollectionCenter } from "@/lib/types";
 import { normalize } from "@/lib/utils";
 
@@ -72,6 +73,7 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
     const q = normalize(filters.query.trim());
     return withDistance.filter((center) => {
       if (filters.onlyVerified && center.verification_status !== "verified") return false;
+      if (filters.onlyConfirmable && !canConfirmBeforeGoing(center)) return false;
       if (filters.department && center.department !== filters.department) return false;
       if (
         filters.categories.length > 0 &&

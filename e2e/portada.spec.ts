@@ -42,6 +42,38 @@ test.describe("Portada", () => {
     await expect(contador).toContainText(String(total));
   });
 
+  test("«Solo los que puedo confirmar» reduce la lista y se puede deshacer", async ({ page }) => {
+    // La completitud del dato es un FILTRO, no un orden oculto: la persona debe
+    // ver cambiar el contador para saber qué acaba de sacrificar.
+    await page.goto("/");
+
+    const contador = page.locator("[aria-live=polite]").first();
+    const total = Number((await contador.textContent())?.match(/\d+/)?.[0] ?? 0);
+    expect(total).toBeGreaterThan(0);
+
+    await page.getByRole("button", { name: "Filtros" }).click();
+    await page.getByRole("checkbox", { name: /Solo los que puedo confirmar/ }).check();
+    await page.getByRole("button", { name: /^Ver \d+ centros?$/ }).click();
+
+    const filtrado = Number((await contador.textContent())?.match(/\d+/)?.[0] ?? 0);
+    expect(filtrado).toBeGreaterThan(0);
+    expect(filtrado).toBeLessThan(total);
+
+    await page.getByRole("button", { name: /Puedo confirmar antes de ir/ }).first().click();
+    await expect(contador).toContainText(String(total));
+  });
+
+  test("el orden por defecto no abre con un centro incomunicado", async ({ page }) => {
+    // REGRESIÓN: el orden era alfabético por nombre, así que el primer resultado
+    // del país era «122 Plaza Apartahotel» —sin horario y sin teléfono— porque
+    // el «1» ordena antes que las letras.
+    await page.goto("/");
+
+    const primera = page.locator("li[data-slug]").first();
+    await expect(primera).toBeVisible();
+    await expect(primera.getByText("Sin horario ni teléfono")).toHaveCount(0);
+  });
+
   test("«Ver centros cerca de mí» ordena la lista por distancia", async ({ page, context }) => {
     // REGRESIÓN: mismo origen que el botón de filtros. Aquí además se comprueba
     // el efecto real: que aparezcan distancias y que la lista quede ordenada.

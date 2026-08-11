@@ -22,6 +22,19 @@ export function classifySchedule(text: string | null | undefined): ScheduleKind 
   return ASK_PATTERN.test(text) ? "ask" : "hours";
 }
 
+/**
+ * ¿Puede la persona averiguar si vale la pena ir, SIN ir?
+ *
+ * Con horas publicadas mira el reloj; con teléfono o WhatsApp, llama. Sin
+ * ninguna de las dos, la única forma de saberlo es desplazarse hasta allá, que
+ * es justo el viaje que la herramienta existe para evitar.
+ */
+export function canConfirmBeforeGoing(center: AdvisoryInput): boolean {
+  return (
+    classifySchedule(center.schedule_text) === "hours" || Boolean(center.phone || center.whatsapp)
+  );
+}
+
 export type AdvisoryLevel = "ok" | "caution" | "warning";
 
 export type TripAdvisory = {

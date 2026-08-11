@@ -2,6 +2,7 @@ import "server-only";
 
 import { SEED_CENTERS } from "@/data/centers";
 import COORDINATES from "@/data/coordinates.json";
+import { canConfirmBeforeGoing } from "./schedule";
 import { createSupabasePublicClient } from "./supabase/public";
 import type { CollectionCenter, LocationPrecision, VerificationStatus } from "./types";
 
@@ -66,7 +67,35 @@ function staticCenters(): CollectionCenter[] {
   });
 }
 
-/** Centros publicables (verificados + reportados). Ordenados por estado y nombre. */
+/**
+ * Orden por defecto: el que ve quien NO comparte su ubicación.
+ *
+ * Antes era alfabético por nombre, y eso no optimiza nada. El primer resultado
+ * del país era «122 Plaza Apartahotel» porque el «1» ordena antes que las
+ * letras: un centro sin horario y sin teléfono. Alfabético no era una decisión
+ * de producto, era el orden que quedó.
+ *
+ * Sin ubicación NINGÚN orden global es correcto —una lista de los centros mejor
+ * documentados del país le sirve poco a alguien en Pasto, y para eso están los
+ * atajos de ciudad—, pero sí se puede evitar abrir con un punto al que nadie
+ * puede llamar. Verificados primero, luego los que se pueden confirmar sin
+ * viajar, y alfabético dentro de cada grupo para que el orden siga siendo
+ * predecible.
+ *
+ * Ojo: esto NO ordena por completitud del dato. Hacerlo hundiría la red mejor
+ * verificada del seed —30 de los 44 `verified` vienen de una pieza gráfica que
+ * no publicó horarios— y eso sería ordenar por calidad del comunicado de
+ * prensa, no por utilidad. La completitud es un filtro que el usuario activa,
+ * no un peso oculto.
+ */
+function byDefaultRelevance(a: CollectionCenter, b: CollectionCenter): number {
+  const rank = (c: CollectionCenter) =>
+    (c.verification_status === "verified" ? 0 : 2) + (canConfirmBeforeGoing(c) ? 0 : 1);
+
+  return rank(a) - rank(b) || a.name.localeCompare(b.name, "es");
+}
+
+/** Centros publicables (verificados + reportados), en el orden por defecto. */
 export async function getPublicCenters(): Promise<CollectionCenter[]> {
   const supabase = createSupabasePublicClient();
 
@@ -75,23 +104,16 @@ export async function getPublicCenters(): Promise<CollectionCenter[]> {
       .from("collection_centers")
       .select(COLUMNS)
       .in("verification_status", PUBLIC_STATUSES)
-      .order("verification_status", { ascending: true })
       .order("name", { ascending: true });
 
-    if (!error && data) return data as CollectionCenter[];
+    if (!error && data) return (data as CollectionCenter[]).sort(byDefaultRelevance);
     // Si Supabase falla durante una emergencia, es mejor servir el seed que una página en blanco.
     console.error("[centers] Supabase no respondió, usando seed estático:", error?.message);
   }
 
   return staticCenters()
     .filter((c) => PUBLIC_STATUSES.includes(c.verification_status))
-    .sort((a, b) =>
-      a.verification_status === b.verification_status
-        ? a.name.localeCompare(b.name, "es")
-        : a.verification_status === "verified"
-          ? -1
-          : 1,
-    );
+    .sort(byDefaultRelevance);
 }
 
 export async function getCenterBySlug(slug: string): Promise<CollectionCenter | null> {

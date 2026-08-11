@@ -10,6 +10,8 @@ export type FilterState = {
   department: string;
   categories: string[];
   onlyVerified: boolean;
+  /** Solo centros con horario publicado o con un número al que llamar. */
+  onlyConfirmable: boolean;
 };
 
 export const EMPTY_FILTERS: FilterState = {
@@ -17,10 +19,16 @@ export const EMPTY_FILTERS: FilterState = {
   department: "",
   categories: [],
   onlyVerified: false,
+  onlyConfirmable: false,
 };
 
 export function countActiveFilters(value: FilterState): number {
-  return value.categories.length + (value.department ? 1 : 0) + (value.onlyVerified ? 1 : 0);
+  return (
+    value.categories.length +
+    (value.department ? 1 : 0) +
+    (value.onlyVerified ? 1 : 0) +
+    (value.onlyConfirmable ? 1 : 0)
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -101,6 +109,13 @@ export function ActiveFilterChips({
       key: "ver",
       label: "Solo verificados",
       clear: () => onChange({ ...value, onlyVerified: false }),
+    });
+  }
+  if (value.onlyConfirmable) {
+    chips.push({
+      key: "conf",
+      label: "Puedo confirmar antes de ir",
+      clear: () => onChange({ ...value, onlyConfirmable: false }),
     });
   }
   for (const id of value.categories) {
@@ -260,17 +275,40 @@ export function FiltersSheet({
 
           <div>
             <span className="text-sm font-semibold text-ink-900">Verificación</span>
-            <label className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-ink-300 px-3">
+            <label className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-ink-300 px-3 py-2">
               <input
                 type="checkbox"
                 checked={value.onlyVerified}
                 onChange={(e) => onChange({ ...value, onlyVerified: e.target.checked })}
-                className="size-5 rounded border-ink-300 accent-brand-600"
+                className="size-5 shrink-0 rounded border-ink-300 accent-brand-600"
               />
               <span className="text-sm text-ink-700">
                 Solo centros verificados
                 <span className="block text-xs text-ink-500">
                   Oculta los reportados, que no hemos podido confirmar con la entidad.
+                </span>
+              </span>
+            </label>
+          </div>
+
+          {/* Completitud del dato como FILTRO, nunca como orden oculto.
+              Con un ranking la persona no distingue si un centro no existe o
+              solo quedó enterrado; con un filtro ve cambiar el contador y sabe
+              exactamente qué acaba de sacrificar. */}
+          <div>
+            <span className="text-sm font-semibold text-ink-900">Antes de desplazarte</span>
+            <label className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-ink-300 px-3 py-2">
+              <input
+                type="checkbox"
+                checked={value.onlyConfirmable}
+                onChange={(e) => onChange({ ...value, onlyConfirmable: e.target.checked })}
+                className="size-5 shrink-0 rounded border-ink-300 accent-brand-600"
+              />
+              <span className="text-sm text-ink-700">
+                Solo los que puedo confirmar
+                <span className="block text-xs text-ink-500">
+                  Con horario publicado o con un número al que llamar. Oculta los centros a los que
+                  solo se puede averiguar yendo.
                 </span>
               </span>
             </label>
