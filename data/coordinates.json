@@ -1,0 +1,322 @@
+{
+  "samu-sur-cruz-roja-bogota": {
+    "slug": "samu-sur-cruz-roja-bogota",
+    "query": "Avenida Carrera 68 # 31-41 sur, Bogotá, Colombia",
+    "latitude": 4.627551,
+    "longitude": -74.122917,
+    "displayName": "Avenida Carrera 68, Pradera Sur, UPZs de Bogotá, Localidad Puente Aranda, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111611, Colombia",
+    "precision": "approximate"
+  },
+  "samu-norte-cruz-roja-bogota": {
+    "slug": "samu-norte-cruz-roja-bogota",
+    "query": "Carrera 7B Bis # 132-31, Bogotá, Colombia",
+    "latitude": 4.709944,
+    "longitude": -74.030181,
+    "displayName": "Carrera 7B Bis, Bosque de Medina, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110121, Colombia",
+    "precision": "approximate"
+  },
+  "centro-salvamento-acuatico-cruz-roja-bogota": {
+    "slug": "centro-salvamento-acuatico-cruz-roja-bogota",
+    "query": "Avenida La Esmeralda # 63-81, Bogotá, Colombia",
+    "latitude": 4.664878,
+    "longitude": -74.085988,
+    "displayName": "Avenida Carrera 60, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111221, Colombia",
+    "precision": "approximate"
+  },
+  "sede-administrativa-cruz-roja-bogota": {
+    "slug": "sede-administrativa-cruz-roja-bogota",
+    "query": "Cruz Roja Colombiana Seccional Cundinamarca y Bogotá, Bogotá, Colombia",
+    "latitude": 4.664031,
+    "longitude": -74.066011,
+    "displayName": "Cruz Roja Colombiana Seccional Cundinamarca Y Bogota, 73-19, Carrera 23, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111211, Colombia",
+    "precision": "exact"
+  },
+  "bodega-cruz-roja-bogota": {
+    "slug": "bodega-cruz-roja-bogota",
+    "query": "Diagonal 79B # 62-53, Bogotá, Colombia",
+    "latitude": 4.678527,
+    "longitude": -74.076555,
+    "displayName": "Diagonal 79B, Jorge Eliécer Gaitán, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111211, Colombia",
+    "precision": "approximate"
+  },
+  "palacio-de-los-deportes-bogota": {
+    "slug": "palacio-de-los-deportes-bogota",
+    "query": "Palacio de los Deportes, Bogotá, Colombia",
+    "latitude": 4.655319,
+    "longitude": -74.084058,
+    "displayName": "Palacio de los Deportes, Avenida Calle 63, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111221, Colombia",
+    "precision": "exact"
+  },
+  "gobernacion-cundinamarca-plaza-de-la-paz": {
+    "slug": "gobernacion-cundinamarca-plaza-de-la-paz",
+    "query": "Gobernación de Cundinamarca, Calle 26, Bogotá, Colombia",
+    "latitude": 4.640803,
+    "longitude": -74.096969,
+    "displayName": "Gobernación de Cundinamarca, Avenida Calle 26, Salitre Oriental, UPZs de Bogotá, Localidad Teusaquillo, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111321, Colombia",
+    "precision": "exact"
+  },
+  "empresa-licores-cundinamarca": {
+    "slug": "empresa-licores-cundinamarca",
+    "query": "Siberia, Cota, Cundinamarca, Colombia",
+    "latitude": 4.7519,
+    "longitude": -74.148447,
+    "displayName": "Siberia, Cota, Sabana Occidente, Cundinamarca, RAP (Especial) Central, Colombia",
+    "precision": "approximate"
+  },
+  "plazoleta-jairo-varela-cali": {
+    "slug": "plazoleta-jairo-varela-cali",
+    "query": "Plazoleta Jairo Varela, Cali, Colombia",
+    "latitude": 3.455019,
+    "longitude": -76.534801,
+    "displayName": "Plazoleta Jairo Varela, Centenario, Comuna 2, Cali ciudad, Cali, Sur, Valle del Cauca, RAP Pacífico, Colombia",
+    "precision": "exact"
+  },
+  "antigua-licorera-del-valle-cali": {
+    "slug": "antigua-licorera-del-valle-cali",
+    "query": "Antigua Licorera del Valle, Cali, Colombia",
+    "latitude": 3.462763,
+    "longitude": -76.519477,
+    "displayName": "Antigua Licorera del Valle, Comuna 4, Cali ciudad, Cali, Sur, Valle del Cauca, RAP Pacífico, Colombia",
+    "precision": "exact"
+  },
+  "casa-del-valle-bogota": {
+    "slug": "casa-del-valle-bogota",
+    "query": "Calle 34 # 5-50, Bogotá, Colombia",
+    "latitude": 4.620462,
+    "longitude": -74.065703,
+    "displayName": "Diagonal 34, La Merced, UPZs de Bogotá, Localidad Santa Fé, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110311, Colombia",
+    "precision": "approximate"
+  },
+  "banco-de-alimentos-cali": {
+    "slug": "banco-de-alimentos-cali",
+    "query": "Calle 24 # 6-103, Cali, Valle del Cauca, Colombia",
+    "latitude": 3.431974,
+    "longitude": -76.519965,
+    "displayName": "Calle 24, San Cristobal, Comuna 10, Cali ciudad, Cali, Sur, Valle del Cauca, RAP Pacífico, 760010, Colombia",
+    "precision": "approximate"
+  },
+  "centro-acopio-barranquillita": {
+    "slug": "centro-acopio-barranquillita",
+    "query": "Barranquillita, Barranquilla, Atlántico, Colombia",
+    "latitude": 10.981391,
+    "longitude": -74.772622,
+    "displayName": "Barranquillita, Localidad Norte - Centro Histórico, Perímetro Urbano Barranquilla, Barranquilla, Atlántico, RAP Caribe, 080003, Colombia",
+    "precision": "approximate"
+  },
+  "coliseo-bernardo-caraballo-cartagena": {
+    "slug": "coliseo-bernardo-caraballo-cartagena",
+    "query": "Coliseo Bernardo Caraballo, Cartagena, Colombia",
+    "latitude": 10.425236,
+    "longitude": -75.536682,
+    "displayName": "Coliseo Bernardo Caraballo, Calle 35A, Torices, Cartagena de Indias, Dique, Bolívar, RAP Caribe, 130015, Colombia",
+    "precision": "exact"
+  },
+  "ogricc-santa-marta": {
+    "slug": "ogricc-santa-marta",
+    "query": "Calle 16, Centro, Santa Marta, Magdalena, Colombia",
+    "latitude": 11.24372,
+    "longitude": -74.210826,
+    "displayName": "Calle 16, Centro Histórico de Santa Marta, Localidad 2 Histórica - Rodrigo de Bastidas, Perímetro Urbano Santa Marta, Santa Marta, Magdalena, RAP Caribe, 470004, Colombia",
+    "precision": "approximate"
+  },
+  "antiguo-hospital-san-juan-de-dios-santa-marta": {
+    "slug": "antiguo-hospital-san-juan-de-dios-santa-marta",
+    "query": "Santa Marta, Magdalena, Colombia",
+    "latitude": 11.232094,
+    "longitude": -74.195092,
+    "displayName": "Perímetro Urbano Santa Marta, Santa Marta, Magdalena, RAP Caribe, Colombia",
+    "precision": "municipality"
+  },
+  "fubam-banco-arquidiocesano-alimentos-medellin": {
+    "slug": "fubam-banco-arquidiocesano-alimentos-medellin",
+    "query": "Carrera 52, Guayabal, Medellín, Antioquia, Colombia",
+    "latitude": 6.227401,
+    "longitude": -75.577795,
+    "displayName": "Carrera 52, Tenche, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050015, Colombia",
+    "precision": "approximate"
+  },
+  "fundacion-saciar-medellin": {
+    "slug": "fundacion-saciar-medellin",
+    "query": "Carrera 50, Guayabal, Medellín, Antioquia, Colombia",
+    "latitude": 6.223145,
+    "longitude": -75.577415,
+    "displayName": "Carrera 50, Santa Fé, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050021, Colombia",
+    "precision": "approximate"
+  },
+  "parque-principal-itagui": {
+    "slug": "parque-principal-itagui",
+    "query": "Parque Principal Itagüí, Antioquia, Colombia",
+    "latitude": 6.172386,
+    "longitude": -75.609416,
+    "displayName": "Parque Principal Itagüí, Itagüí, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, Colombia",
+    "precision": "exact"
+  },
+  "consejo-municipal-juventudes-bucaramanga": {
+    "slug": "consejo-municipal-juventudes-bucaramanga",
+    "query": "Conjunto Plaza Mayor, Bucaramanga, Santander, Colombia",
+    "latitude": 7.103625,
+    "longitude": -73.124337,
+    "displayName": "Conjunto Residencial Plaza Mayor, Comuna 7 - La Ciudadela, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, Colombia",
+    "precision": "approximate"
+  },
+  "uis-arbol-ceiba-bucaramanga": {
+    "slug": "uis-arbol-ceiba-bucaramanga",
+    "query": "Universidad Industrial de Santander, Bucaramanga, Colombia",
+    "latitude": 7.140931,
+    "longitude": -73.119865,
+    "displayName": "Universidad Industrial de Santander, 27-01, Calle 9, Universidad, Comuna 3 - San Francisco, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680001, Colombia",
+    "precision": "exact"
+  },
+  "acsc-medellin": {
+    "slug": "acsc-medellin",
+    "query": "Carrera 43A # 1 Sur 100, Medellín, Antioquia, Colombia",
+    "latitude": 6.203025,
+    "longitude": -75.571614,
+    "displayName": "1 Sur - 100, Carrera 43A, Patio Bonito, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050003, Colombia",
+    "precision": "exact"
+  },
+  "acsc-barranquilla": {
+    "slug": "acsc-barranquilla",
+    "query": "Carrera 54 # 68-196, Barranquilla, Atlántico, Colombia",
+    "latitude": 10.993286,
+    "longitude": -74.786909,
+    "displayName": "Carrera 54, Montecristo, Localidad Norte - Centro Histórico, Perímetro Urbano Barranquilla, Barranquilla, Atlántico, RAP Caribe, 080003, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-bogota": {
+    "slug": "acsc-bogota",
+    "query": "Carrera 15A # 120-74, Bogotá, Colombia",
+    "latitude": 4.69929,
+    "longitude": -74.043834,
+    "displayName": "Carrera 15A, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110111, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-cartagena": {
+    "slug": "acsc-cartagena",
+    "query": "Calle 28 # 26-53, Manga, Cartagena, Bolívar, Colombia",
+    "latitude": 10.407444,
+    "longitude": -75.530461,
+    "displayName": "Calle 28, Manga, Cartagena de Indias, Dique, Bolívar, RAP Caribe, 130001, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-tunja": {
+    "slug": "acsc-tunja",
+    "query": "Calle 20 # 12-84, Tunja, Boyacá, Colombia",
+    "latitude": 5.53358,
+    "longitude": -73.363438,
+    "displayName": "Calle 20, Tunja, Centro, Boyacá, RAP (Especial) Central, 150001, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-popayan": {
+    "slug": "acsc-popayan",
+    "query": "Carrera 9 Norte, Popayán, Cauca, Colombia",
+    "latitude": 2.47755,
+    "longitude": -76.559493,
+    "displayName": "Carrera 6A, Villa del Norte o La Paz, Comuna 2, Perímetro Urbano Popayán, Popayán, Centro, Cauca, RAP Pacífico, 190001, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-valledupar": {
+    "slug": "acsc-valledupar",
+    "query": "Calle 11 # 8-79, Valledupar, Cesar, Colombia",
+    "latitude": 10.472148,
+    "longitude": -73.270299,
+    "displayName": "Calle 11, Comuna 5, Perímetro Urbano Valledupar, Valledupar, Cesar, RAP Caribe, 200005, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-monteria": {
+    "slug": "acsc-monteria",
+    "query": "Calle 62 # 7-53, Montería, Córdoba, Colombia",
+    "latitude": 8.771868,
+    "longitude": -75.86539,
+    "displayName": "Calle 62, La Castellana, Comuna 8, Perímetro Urbano Montería, Centro, Córdoba, RAP Caribe, 230002, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-riohacha": {
+    "slug": "acsc-riohacha",
+    "query": "Calle 7, Centro, Riohacha, La Guajira, Colombia",
+    "latitude": 11.549879,
+    "longitude": -72.908908,
+    "displayName": "Calle 7, El Arriba, Comuna 1 Centro Histórico, Riohacha, La Guajira, RAP Caribe, 440001, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-neiva": {
+    "slug": "acsc-neiva",
+    "query": "Carrera 5 # 10-49, Neiva, Huila, Colombia",
+    "latitude": 2.958357,
+    "longitude": -75.290777,
+    "displayName": "Carrera 5, El Cortijo, Comuna Nororiental, Perímetro Urbano Neiva, Neiva, Norte, Huila, RAP (Especial) Central, 410008, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-santa-marta": {
+    "slug": "acsc-santa-marta",
+    "query": "Calle 24, Centro, Santa Marta, Magdalena, Colombia",
+    "latitude": 11.240454,
+    "longitude": -74.206037,
+    "displayName": "[corrección manual] El geocodificador devolvió un POI en otra vía; se usa el centro histórico de Santa Marta como aproximación.",
+    "precision": "approximate"
+  },
+  "acsc-villavicencio": {
+    "slug": "acsc-villavicencio",
+    "query": "Centro Comercial Villacentro, Villavicencio, Meta, Colombia",
+    "latitude": 4.133308,
+    "longitude": -73.637777,
+    "displayName": "Villacentro, Avenida 40, La Esperanza, Comuna 7, Perímetro Urbano Villavicencio, Villavicencio, Meta, RAP (Especial) Central, 500005, Colombia",
+    "precision": "exact"
+  },
+  "acsc-pasto": {
+    "slug": "acsc-pasto",
+    "query": "Carrera 25 # 15-62, Pasto, Nariño, Colombia",
+    "latitude": 1.216043,
+    "longitude": -77.276218,
+    "displayName": "Carrera 25, Hullaguanga, Comuna 1, Perímetro Urbano Pasto, Pasto, Centro, Nariño, RAP Pacífico, 520002, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-cucuta": {
+    "slug": "acsc-cucuta",
+    "query": "Cúcuta, Norte de Santander, Colombia",
+    "latitude": 7.893909,
+    "longitude": -72.507821,
+    "displayName": "[corrección manual] Centroide administrativo del municipio quedaba a ~20 km del casco urbano; se usa el centro de Cúcuta.",
+    "precision": "municipality"
+  },
+  "acsc-bucaramanga": {
+    "slug": "acsc-bucaramanga",
+    "query": "Calle 45 # 28-36, Bucaramanga, Santander, Colombia",
+    "latitude": 7.119059,
+    "longitude": -73.1103,
+    "displayName": "Calle 45, Cabecera del Llano, Comuna 12 - Cabecera del Llano, Perímetro Urbano Bucaramanga, Bucaramanga, Metropolitana, Santander, RAP Gran Santander, 680003, Colombia",
+    "precision": "approximate"
+  },
+  "acsc-sincelejo": {
+    "slug": "acsc-sincelejo",
+    "query": "Parque Comercial Guacarí, Sincelejo, Sucre, Colombia",
+    "latitude": 9.301313,
+    "longitude": -75.382746,
+    "displayName": "Centro y parque Comercial Guacarí, Sincelejo, Montes de María, Sucre, RAP Caribe, Colombia",
+    "precision": "exact"
+  },
+  "banco-alimentos-armenia": {
+    "slug": "banco-alimentos-armenia",
+    "query": "Armenia, Quindío, Colombia",
+    "latitude": 4.491989,
+    "longitude": -75.741396,
+    "displayName": "Armenia, Capital, Quindío, RAP Eje Cafetero, Colombia",
+    "precision": "municipality"
+  },
+  "banco-alimentos-manizales": {
+    "slug": "banco-alimentos-manizales",
+    "query": "Manizales, Caldas, Colombia",
+    "latitude": 5.074369,
+    "longitude": -75.508117,
+    "displayName": "Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",
+    "precision": "municipality"
+  },
+  "banco-arquidiocesano-alimentos-ibague": {
+    "slug": "banco-arquidiocesano-alimentos-ibague",
+    "query": "Ibagué, Tolima, Colombia",
+    "latitude": 4.438603,
+    "longitude": -75.210886,
+    "displayName": "Ibagué, Centro, Tolima, RAP (Especial) Central, Colombia",
+    "precision": "municipality"
+  }
+}
