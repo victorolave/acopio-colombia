@@ -19,18 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-NOTA SOBRE LOS DATOS
-
-El código de este repositorio se distribuye bajo la licencia MIT.
-
-Los datos de centros de acopio provienen de fuentes públicas de terceros
-(alcaldías, gobernaciones, organismos de socorro y medios de comunicación),
-citadas una por una en docs/sources.md. Cada fuente conserva sus propios
-derechos sobre el contenido original.
-
-Esos datos se publican con fines humanitarios y pueden estar desactualizados.
-Quien reutilice este proyecto asume la responsabilidad de verificar la
-información antes de difundirla, especialmente durante una emergencia activa.

@@ -200,7 +200,7 @@ npm run validate:seed
 
 Código bajo [MIT](LICENSE) — © 2026 Victor Olave ([@victorolave](https://github.com/victorolave)).
 
-Los datos de centros provienen de fuentes públicas de terceros, citadas una por una en [`docs/sources.md`](docs/sources.md); cada fuente conserva sus derechos sobre el contenido original. Si reutilizas este proyecto para otra emergencia, **verifica los datos antes de publicarlos**.
+Los **datos** son otra cosa: ver [DATOS.md](DATOS.md). Resumen — provienen de fuentes públicas de terceros citadas en [`docs/sources.md`](docs/sources.md), solo 6 de 39 centros están confirmados contra el sitio propio de la entidad, y 28 de 39 pines no son exactos. Si reutilizas este proyecto, **verifica los datos antes de publicarlos**.
 
 ## Estado y pendientes
 
