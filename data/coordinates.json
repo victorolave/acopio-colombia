@@ -766,5 +766,77 @@
     "longitude": -74.026046,
     "displayName": "[corrección manual] El pin de Google corrobora la Calle 161A #7F-55; el centroide de la vía quedaba a 2,4 km en un centro verificado.",
     "precision": "exact"
+  },
+  "cafe-consota-pereira": {
+    "slug": "cafe-consota-pereira",
+    "query": "Barrio Cuba, Pereira, Risaralda, Colombia",
+    "latitude": 4.8048206,
+    "longitude": -75.7402289,
+    "displayName": "Cuba, Perimetro Urbano Pereira, Pereira, Risaralda, RAP Eje Cafetero, 660006, Colombia",
+    "precision": "approximate"
+  },
+  "cafe-perla-del-otun-pereira": {
+    "slug": "cafe-perla-del-otun-pereira",
+    "query": "Perla del Otún, Pereira, Risaralda, Colombia",
+    "latitude": 4.7960063,
+    "longitude": -75.7293737,
+    "displayName": "Perla del Otún, AMCO, Area Metropolitana Centro Occidente, Pereira, Risaralda, RAP Eje Cafetero, Colombia",
+    "precision": "approximate"
+  },
+  "cafe-el-remanso-pereira": {
+    "slug": "cafe-el-remanso-pereira",
+    "query": "Pereira, Risaralda, Colombia",
+    "latitude": 4.7854606,
+    "longitude": -75.788322,
+    "displayName": "Pereira, Risaralda, RAP Eje Cafetero, Colombia",
+    "precision": "municipality"
+  },
+  "cafe-kennedy-pereira": {
+    "slug": "cafe-kennedy-pereira",
+    "query": "Barrio Kennedy, Pereira, Risaralda, Colombia",
+    "latitude": 4.8089486,
+    "longitude": -75.6725749,
+    "displayName": "Kennedy, Oriente, AMCO, Area Metropolitana Centro Occidente, Pereira, Risaralda, RAP Eje Cafetero, Colombia",
+    "precision": "approximate"
+  },
+  "cafe-ormaza-pereira": {
+    "slug": "cafe-ormaza-pereira",
+    "query": "Calle 3 bis # 5-38, Pereira, Risaralda, Colombia",
+    "latitude": 4.8075179,
+    "longitude": -75.6815428,
+    "displayName": "Calle 3 Bis, Popular Modelo, Universidad, AMCO, Area Metropolitana Centro Occidente, Pereira, Risaralda, RAP Eje Cafetero, 660003, Colombia",
+    "precision": "approximate"
+  },
+  "cafe-san-nicolas-pereira": {
+    "slug": "cafe-san-nicolas-pereira",
+    "query": "Pereira, Risaralda, Colombia",
+    "latitude": 4.7854606,
+    "longitude": -75.788322,
+    "displayName": "Pereira, Risaralda, RAP Eje Cafetero, Colombia",
+    "precision": "municipality"
+  },
+  "cafe-comuna-del-cafe-pereira": {
+    "slug": "cafe-comuna-del-cafe-pereira",
+    "query": "Parque Industrial, Pereira, Risaralda, Colombia",
+    "latitude": 4.8231452,
+    "longitude": -75.7310568,
+    "displayName": "Parque Industrial, AMCO, Area Metropolitana Centro Occidente, Pereira, Risaralda, RAP Eje Cafetero, Colombia",
+    "precision": "approximate"
+  },
+  "escuela-nacional-del-deporte-cali": {
+    "slug": "escuela-nacional-del-deporte-cali",
+    "query": "Calle 9 # 34-01, Cali, Colombia",
+    "latitude": 3.4265535,
+    "longitude": -76.536693,
+    "displayName": "34-01, Calle 9, Champagnat, Comuna 19, Cali ciudad, Cali, Sur, Valle del Cauca, RAP Pacífico, 720025, Colombia",
+    "precision": "exact"
+  },
+  "coliseo-mayor-jorge-arango-uribe-manizales": {
+    "slug": "coliseo-mayor-jorge-arango-uribe-manizales",
+    "query": "Coliseo Mayor, Manizales, Colombia",
+    "latitude": 5.0580013,
+    "longitude": -75.4884494,
+    "displayName": "Coliseo Mayor, Carrera 24, Palogrande, Comuna Palogrande, Perímetro Urbano Manizales, Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",
+    "precision": "exact"
   }
 }
