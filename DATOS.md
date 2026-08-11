@@ -14,7 +14,7 @@ Cada fuente conserva sus propios derechos sobre el contenido original. Este proy
 
 **Verifícalos antes de publicarlos.** Esto no es una fórmula legal defensiva: es la advertencia más importante del repositorio.
 
-De los 39 centros publicados, solo **6** están confirmados contra el sitio propio de la entidad responsable. Los otros 33 provienen de medios que citan a la entidad, y están marcados como `reported` precisamente por eso. Además, **28 de los 39 pines del mapa no son exactos**: la nomenclatura colombiana no resuelve bien contra OpenStreetMap, y el campo `location_precision` lo declara centro por centro.
+De los 70 centros publicados, **37** están confirmados en el canal propio de la entidad responsable. Los otros 33 provienen de medios que citan a la entidad, y están marcados como `reported` precisamente por eso. Además, **la mayoría de los pines del mapa no son exactos**: la nomenclatura colombiana no resuelve bien contra OpenStreetMap, y el campo `location_precision` lo declara centro por centro.
 
 Un dato de emergencia envejece en horas. Un centro que existía el 10 de agosto puede haber cerrado, llenado su bodega o cambiado de necesidades. Publicar esta información sin revalidarla, o presentarla con más certeza de la que tiene, hace daño real: manda gente a conducir hasta lugares que ya no reciben nada.
 
