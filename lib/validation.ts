@@ -48,7 +48,7 @@ export const submissionSchema = z
   .object({
     name: trimmed(160).min(3, "El nombre del centro es obligatorio"),
     organization: trimmed(160).min(2, "Indica la organización responsable"),
-    department: z.enum(DEPARTMENTS, { errorMap: () => ({ message: "Selecciona un departamento" }) }),
+    department: z.enum(DEPARTMENTS, { error: () => "Selecciona un departamento" }),
     municipality: trimmed(120).min(2, "Indica el municipio"),
     address: trimmed(240).min(5, "Indica la dirección"),
 
@@ -76,7 +76,8 @@ export const submissionSchema = z
     evidenceUrl: optionalText(500),
 
     consent: z.literal(true, {
-      errorMap: () => ({ message: "Debes confirmar la autorización para publicar los datos" }),
+      // zod 4 reemplazó `errorMap` por `error`.
+      error: () => "Debes confirmar la autorización para publicar los datos",
     }),
 
     /**
