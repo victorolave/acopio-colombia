@@ -254,3 +254,21 @@ create policy "admins leen evidencia"
   on storage.objects for select
   to authenticated
   using (bucket_id = 'center-evidence' and public.is_admin());
+
+-- ---------------------------------------------------------------------------
+-- Huella de moderación humana
+--
+-- Sin esto, el seed pisa las decisiones del panel: un administrador marca un
+-- centro como inactivo porque cerró, alguien vuelve a correr `seed.sql` y el
+-- centro reaparece publicado como verificado. En este proyecto eso significa
+-- mandar gente a un sitio que ya no recibe donaciones.
+--
+-- `moderated_at` se sella en CADA acción del panel, no solo al verificar, y el
+-- seed respeta cualquier registro que la tenga.
+-- ---------------------------------------------------------------------------
+alter table public.collection_centers
+  add column if not exists moderated_at timestamptz;
+
+create index if not exists collection_centers_moderated_idx
+  on public.collection_centers (moderated_at)
+  where moderated_at is not null;

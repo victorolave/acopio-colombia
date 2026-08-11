@@ -128,6 +128,20 @@ En `/admin`:
 
 Verificar o editar un centro actualiza automáticamente `last_verified_at` y registra qué administrador lo hizo (`verified_by`). Los reportes de la comunidad llegan a `/admin/reportes` y **nunca modifican el centro automáticamente**.
 
+### Las decisiones del panel le ganan al seed
+
+Toda acción del panel sella `moderated_at`, y el `on conflict` de `supabase/seed.sql` respeta cualquier registro que la tenga.
+
+Sin esa guarda, el seed era destructivo: un administrador marcaba un centro como inactivo porque cerró, alguien volvía a correr `seed.sql` y el centro **reaparecía publicado como verificado**, mandando gente a un sitio que ya no recibe donaciones.
+
+El seed sigue actualizando lo descriptivo —dirección, artículos, teléfono, fuente— en todos los registros. Lo único que no pisa es el estado de verificación, sus notas y la fecha de última verificación de lo que un humano ya revisó.
+
+Si necesitas que el seed vuelva a mandar sobre un registro concreto:
+
+```sql
+update public.collection_centers set moderated_at = null where slug = '<slug>';
+```
+
 ---
 
 ## Deploy

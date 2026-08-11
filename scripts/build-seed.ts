@@ -124,9 +124,24 @@ on conflict (slug) do update set
   source_name = excluded.source_name,
   source_url = excluded.source_url,
   source_published_at = excluded.source_published_at,
-  verification_status = excluded.verification_status,
-  verification_notes = excluded.verification_notes,
-  last_verified_at = excluded.last_verified_at;
+  -- El estado NO se pisa si un administrador ya moderó el registro desde el
+  -- panel. Sin esta guarda, un centro marcado inactivo porque cerró volvería a
+  -- publicarse como verificado en la siguiente ejecución del seed.
+  verification_status = case
+    when public.collection_centers.moderated_at is not null
+      then public.collection_centers.verification_status
+    else excluded.verification_status
+  end,
+  verification_notes = case
+    when public.collection_centers.moderated_at is not null
+      then public.collection_centers.verification_notes
+    else excluded.verification_notes
+  end,
+  last_verified_at = case
+    when public.collection_centers.moderated_at is not null
+      then public.collection_centers.last_verified_at
+    else excluded.last_verified_at
+  end;
 `;
 
 writeFileSync(new URL("../supabase/seed.sql", import.meta.url).pathname, sql);

@@ -45,7 +45,12 @@ export async function setVerificationStatus(formData: FormData): Promise<void> {
   const status = String(formData.get("status") ?? "") as VerificationStatus;
   if (!id || !status) return;
 
-  const patch: Record<string, unknown> = { verification_status: status };
+  // `moderated_at` se sella SIEMPRE, no solo al verificar: es la marca que
+  // impide que el seed vuelva a pisar esta decisión.
+  const patch: Record<string, unknown> = {
+    verification_status: status,
+    moderated_at: new Date().toISOString(),
+  };
   if (status === "verified") {
     patch.last_verified_at = new Date().toISOString();
     patch.verified_by = session.userId;
@@ -93,6 +98,7 @@ export async function updateCenter(_prev: ActionState, formData: FormData): Prom
       verification_notes: String(formData.get("verification_notes") ?? "").trim() || null,
       // Editar la información equivale a volver a verificarla.
       last_verified_at: new Date().toISOString(),
+      moderated_at: new Date().toISOString(),
       verified_by: session.userId,
     })
     .eq("id", id);

@@ -312,9 +312,9 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl:
       "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
     sourcePublishedAt: "2026-08-10",
-    verificationStatus: "verified",
+    verificationStatus: "inactive",
     verificationNotes:
-      "Uno de los seis puntos oficiales publicados por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026.",
+      "NO PUBLICADO. Fue uno de los seis puntos oficiales de la Alcaldía Mayor de Bogotá del 10 de agosto de 2026, pero se marcó INACTIVO desde el panel de administración el 11 de agosto de 2026. En la base de datos la decisión queda protegida por `moderated_at`; aquí se replica para que el respaldo estático no lo muestre como activo si Supabase deja de responder.",
     lastVerifiedAt: VERIFIED_AT,
   },
   {
