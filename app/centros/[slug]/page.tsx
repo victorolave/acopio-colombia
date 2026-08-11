@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { TrackCenterView, TrackedLink } from "@/components/analytics-events";
-import { DirectionsButton } from "@/components/centers/directions-button";
+import { TrackCenterView } from "@/components/analytics-events";
+import { IconAlert, IconArrowLeft, IconClock, IconClose } from "@/components/ui/icons";
+import { CenterActionBar } from "@/components/centers/center-action-bar";
 import SingleCenterMap from "@/components/map/lazy-single-map";
 import { PrecisionNotice, VerificationBadge } from "@/components/centers/verification-badge";
 import { ReportCenterForm } from "@/components/forms/report-center-form";
@@ -10,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { getAllSlugs, getCenterBySlug } from "@/lib/centers";
 import { formatDate, formatDateTime, hasEnded, isStale, relativeTime } from "@/lib/format";
 import { CENTER_TYPE_LABELS } from "@/lib/items";
-import { telUrl, whatsappUrl } from "@/lib/maps";
+
 
 export const revalidate = 300;
 
@@ -50,11 +51,15 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
   const ended = hasEnded(center.ends_at);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
+    <div className="mx-auto max-w-2xl px-4 py-6 pb-28 lg:pb-6">
       <TrackCenterView slug={center.slug} />
       <nav aria-label="Migas de pan" className="mb-4 text-sm">
-        <Link href="/" className="text-brand-700 underline underline-offset-2">
-          ← Todos los centros
+        <Link
+          href="/"
+          className="inline-flex min-h-11 items-center gap-1.5 text-brand-700 hover:underline"
+        >
+          <IconArrowLeft className="size-4" />
+          Todos los centros
         </Link>
       </nav>
 
@@ -73,13 +78,14 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
 
       {ended && (
         <p role="status" className="mt-4 rounded-lg bg-caution-50 px-3 py-2 text-sm text-caution-700">
-          ⚠ La campaña publicada terminaba el {formatDate(center.ends_at)}. Confirma con la organización
-          antes de desplazarte.
+          <IconAlert className="mt-0.5 inline size-4 shrink-0 align-text-top" /> La campaña publicada
+          terminaba el {formatDate(center.ends_at)}. Confirma con la organización antes de desplazarte.
         </p>
       )}
       {!ended && stale && (
         <p role="status" className="mt-4 rounded-lg bg-caution-50 px-3 py-2 text-sm text-caution-700">
-          ⚠ Confirma antes de desplazarte: hace más de 48 horas que no verificamos esta información.
+          <IconAlert className="mt-0.5 inline size-4 shrink-0 align-text-top" /> Confirma antes de
+          desplazarte: hace más de 48 horas que no verificamos esta información.
         </p>
       )}
 
@@ -103,38 +109,19 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
         />
       </div>
 
-      <div className="mt-4 space-y-2">
-        <DirectionsButton center={center} />
-        <div className="grid grid-cols-2 gap-2">
-          {center.whatsapp && (
-            <TrackedLink
-              event="click_whatsapp"
-              centerSlug={center.slug}
-              href={whatsappUrl(center.whatsapp, `Hola, escribo por el centro de acopio ${center.name}.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-ink-300 bg-white px-4 py-3 text-center font-medium text-ink-700"
-            >
-              💬 WhatsApp
-            </TrackedLink>
-          )}
-          {center.phone && (
-            <a
-              href={telUrl(center.phone)}
-              className="rounded-lg border border-ink-300 bg-white px-4 py-3 text-center font-medium text-ink-700"
-            >
-              📞 Llamar
-            </a>
-          )}
-        </div>
+      <div className="mt-4">
+        <CenterActionBar center={center} />
         {center.phone && (
-          <p className="text-center text-sm text-ink-500">{center.phone}</p>
+          <p className="mt-2 text-center text-sm text-ink-500 lg:text-left">{center.phone}</p>
         )}
       </div>
 
       {center.schedule_text && (
         <section className="mt-5 rounded-xl border border-ink-100 bg-white p-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-500">Horario</h2>
+          <h2 className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wide text-ink-500">
+            <IconClock className="size-4" />
+            Horario
+          </h2>
           <p className="mt-1 text-ink-900">{center.schedule_text}</p>
           {(center.starts_at || center.ends_at) && (
             <p className="mt-1 text-sm text-ink-500">
@@ -173,7 +160,10 @@ export default async function CenterDetailPage({ params }: { params: Promise<{ s
           <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-500">Qué NO recibe</h2>
           <ul className="mt-2 space-y-1 text-ink-700">
             {center.rejected_items.map((item) => (
-              <li key={item}>✕ {item}</li>
+              <li key={item} className="flex items-start gap-1.5">
+                <IconClose className="mt-0.5 size-4 shrink-0 text-caution-700" />
+                {item}
+              </li>
             ))}
           </ul>
         </section>

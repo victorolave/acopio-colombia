@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { IconAlert, IconCheck, IconPin } from "@/components/ui/icons";
 import type { VerificationStatus } from "@/lib/types";
 
 /**
@@ -9,7 +10,7 @@ export function VerificationBadge({ status }: { status: VerificationStatus }) {
   if (status === "verified") {
     return (
       <Badge tone="brand">
-        <span aria-hidden="true">✓</span> Verificado
+        <IconCheck className="size-3.5" /> Verificado
       </Badge>
     );
   }
@@ -17,19 +18,13 @@ export function VerificationBadge({ status }: { status: VerificationStatus }) {
   if (status === "reported") {
     return (
       <Badge tone="caution">
-        <span aria-hidden="true">!</span> Reportado — confirma antes de ir
+        <IconAlert className="size-3.5" /> Reportado — confirma antes de ir
       </Badge>
     );
   }
 
-  if (status === "inactive") {
-    return <Badge tone="muted">Inactivo</Badge>;
-  }
-
-  if (status === "disputed") {
-    return <Badge tone="caution">Fuentes contradictorias</Badge>;
-  }
-
+  if (status === "inactive") return <Badge tone="muted">Inactivo</Badge>;
+  if (status === "disputed") return <Badge tone="caution">Fuentes contradictorias</Badge>;
   return <Badge tone="muted">Pendiente de revisión</Badge>;
 }
 
@@ -44,7 +39,7 @@ export function PrecisionNotice({ precision }: { precision: "exact" | "approxima
 
   return (
     <p className="flex items-start gap-1.5 text-xs text-caution-700">
-      <span aria-hidden="true">◎</span>
+      <IconPin className="mt-px size-3.5 shrink-0" />
       <span>{text}</span>
     </p>
   );

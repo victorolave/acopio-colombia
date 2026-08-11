@@ -37,14 +37,43 @@ body {
   color: var(--color-ink-900);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  /* Evita el rebote elástico que, con una hoja inferior fija, hace que la
+     página entera parezca despegarse del borde. */
+  overscroll-behavior-y: none;
 }
 
-/* Objetivos táctiles cómodos en móvil. */
+/* Interacción táctil.
+   `touch-action: manipulation` elimina el retardo de 300 ms del doble toque.
+   El resaltado azul por defecto de iOS se sustituye por los estados `active:`
+   propios, que son consistentes entre plataformas. */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Red de seguridad: cualquier control que se haya quedado corto en un puntero
+   grueso alcanza el mínimo de 44 px. Las medidas explícitas de cada componente
+   siguen mandando; esto solo evita regresiones. */
 @media (pointer: coarse) {
   button,
   a[role="button"],
   [data-touch-target] {
     min-height: 44px;
+  }
+}
+
+/* iOS hace zoom automático al enfocar un campo con texto menor de 16 px. */
+@supports (-webkit-touch-callout: none) {
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1rem);
   }
 }
 
@@ -58,6 +87,19 @@ body {
 /* MapLibre: controles y atribución legibles sobre fondo claro. */
 .maplibregl-ctrl-attrib {
   font-size: 10px;
+}
+
+/* Los controles del mapa quedan bajo la cabecera fija y sobre la hoja. */
+.maplibregl-ctrl-top-right {
+  top: 0.5rem;
+}
+
+/* La atribución se sube para que la hoja inferior no la tape. */
+@media (max-width: 1023px) {
+  .maplibregl-ctrl-bottom-right,
+  .maplibregl-ctrl-bottom-left {
+    bottom: 28dvh;
+  }
 }
 
 .maplibregl-popup-content {

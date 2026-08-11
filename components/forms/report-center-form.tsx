@@ -56,7 +56,7 @@ export function ReportCenterForm({ centerId, centerSlug }: Props) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="text-sm font-medium text-ink-700 underline underline-offset-2 hover:text-ink-900"
+        className="inline-flex min-h-11 items-center text-sm font-medium text-ink-700 underline underline-offset-2 hover:text-ink-900"
       >
         ¿Información incorrecta? Reportar
       </button>
@@ -81,14 +81,14 @@ export function ReportCenterForm({ centerId, centerSlug }: Props) {
       <fieldset className="mt-3 space-y-2">
         <legend className="sr-only">Motivo del reporte</legend>
         {REPORT_REASONS.map((reason, index) => (
-          <label key={reason.value} className="flex items-center gap-2 text-sm text-ink-700">
+          <label key={reason.value} className="flex min-h-11 items-center gap-3 text-sm text-ink-700">
             <input
               type="radio"
               name="reason"
               value={reason.value}
               defaultChecked={index === 0}
               required
-              className="h-4 w-4 accent-brand-600"
+              className="size-5 accent-brand-600"
             />
             {reason.label}
           </label>
@@ -153,14 +153,14 @@ export function ReportCenterForm({ centerId, centerSlug }: Props) {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="rounded-lg bg-brand-600 px-4 py-2.5 font-semibold text-white disabled:opacity-60"
+          className="min-h-12 flex-1 rounded-xl bg-brand-600 px-4 font-semibold text-white disabled:opacity-60"
         >
           {status === "sending" ? "Enviando…" : "Enviar reporte"}
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded-lg border border-ink-300 px-4 py-2.5 font-medium text-ink-700"
+          className="min-h-12 rounded-xl border border-ink-300 px-4 font-medium text-ink-700"
         >
           Cancelar
         </button>

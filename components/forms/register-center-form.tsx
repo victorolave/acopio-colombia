@@ -15,7 +15,7 @@ const LocationPicker = dynamic(() => import("@/components/map/location-picker"),
 type Position = { latitude: number; longitude: number };
 
 const FIELD =
-  "mt-1 w-full rounded-lg border border-ink-300 bg-white px-3 py-2.5 text-base text-ink-900 placeholder:text-ink-500";
+  "mt-1 min-h-12 w-full rounded-xl border border-ink-300 bg-white px-3 py-2.5 text-base text-ink-900 placeholder:text-ink-500";
 const LABEL = "block text-sm font-medium text-ink-700";
 
 export function RegisterCenterForm() {
@@ -175,7 +175,7 @@ export function RegisterCenterForm() {
                   aria-pressed={active}
                   onClick={() => toggleItem(category.label)}
                   className={cn(
-                    "rounded-full border px-3 py-1.5 text-sm transition",
+                    "min-h-11 rounded-xl border px-3.5 text-sm transition-colors",
                     active
                       ? "border-brand-600 bg-brand-600 font-medium text-white"
                       : "border-ink-300 bg-white text-ink-700 hover:border-ink-500",
@@ -294,7 +294,7 @@ export function RegisterCenterForm() {
             type="checkbox"
             name="consent"
             required
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-ink-300 accent-brand-600"
+            className="mt-0.5 size-5 shrink-0 rounded border-ink-300 accent-brand-600"
           />
           <span>
             Confirmo que la información suministrada es correcta y que tengo autorización para publicar
@@ -321,7 +321,7 @@ export function RegisterCenterForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full rounded-lg bg-brand-600 px-4 py-3 text-lg font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
+        className="min-h-13 w-full rounded-xl bg-brand-600 px-4 py-3 text-base font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
       >
         {status === "sending" ? "Enviando…" : "Enviar para revisión"}
       </button>

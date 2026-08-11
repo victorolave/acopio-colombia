@@ -38,14 +38,9 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
     });
 
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    map.addControl(
-      new maplibregl.GeolocateControl({
-        positionOptions: { enableHighAccuracy: true },
-        trackUserLocation: false,
-        showAccuracyCircle: false,
-      }),
-      "top-right",
-    );
+    // Sin GeolocateControl a proposito: duplicaba el boton «Cerca de mi» con otro
+    // aspecto y, peor, centraba el mapa sin avisar a React, asi que la lista se
+    // quedaba sin ordenar por distancia. Una sola via para una sola accion.
 
     mapRef.current = map;
     return () => {
@@ -72,23 +67,40 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
     for (const center of centers) {
       if (markersRef.current.has(center.slug)) continue;
 
+      // El marcador visible mide 22 px, pero el area tactil es de 44 px: en un
+      // mapa lleno de puntos, pedir precision de pixel es la forma mas rapida de
+      // que alguien toque el centro equivocado.
       const el = document.createElement("button");
       el.type = "button";
       el.setAttribute("aria-label", `${center.name}, ${center.municipality}`);
       el.dataset.slug = center.slug;
       el.style.cssText = [
+        "width:44px",
+        "height:44px",
+        "display:grid",
+        "place-items:center",
+        "background:transparent",
+        "border:0",
+        "padding:0",
+        "cursor:pointer",
+        "touch-action:manipulation",
+      ].join(";");
+
+      const dot = document.createElement("span");
+      const verified = center.verification_status === "verified";
+      dot.style.cssText = [
         "width:22px",
         "height:22px",
         "border-radius:50% 50% 50% 2px",
         "transform:rotate(45deg)",
-        "cursor:pointer",
         "border:2px solid #ffffff",
-        "box-shadow:0 2px 6px rgba(15,23,42,.35)",
-        "padding:0",
+        "transition:transform 150ms ease-out",
+        // Verificado y reportado se distinguen por color Y por relleno, nunca solo por color:
+        // el reportado es un anillo hueco, distinguible sin percibir el matiz.
+        `background:${verified ? "#12715b" : "#ffffff"}`,
+        `box-shadow:0 2px 6px rgba(15,23,42,.35)${verified ? "" : ", inset 0 0 0 3px #b45309"}`,
       ].join(";");
-      // Verificado y reportado se distinguen por color Y por forma del borde interior.
-      el.style.background = center.verification_status === "verified" ? "#12715b" : "#b45309";
-      el.style.opacity = center.verification_status === "verified" ? "1" : "0.92";
+      el.appendChild(dot);
 
       el.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -121,7 +133,15 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
       .setLngLat([userPosition.longitude, userPosition.latitude])
       .addTo(map);
 
-    map.easeTo({ center: [userPosition.longitude, userPosition.latitude], zoom: 11, duration: 800 });
+    // La hoja inferior tapa la mitad baja de la pantalla en movil: se desplaza el
+    // encuadre hacia arriba para que el punto del usuario no quede debajo.
+    const sheetPadding = window.matchMedia("(min-width: 1024px)").matches ? 0 : window.innerHeight * 0.42;
+    map.easeTo({
+      center: [userPosition.longitude, userPosition.latitude],
+      zoom: 11,
+      duration: 800,
+      padding: { top: 0, right: 0, bottom: sheetPadding, left: 0 },
+    });
   }, [userPosition]);
 
   // Centro seleccionado -----------------------------------------------------
@@ -130,7 +150,13 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
     if (!map || !selectedSlug) return;
     const center = centers.find((c) => c.slug === selectedSlug);
     if (!center) return;
-    map.easeTo({ center: [center.longitude, center.latitude], zoom: Math.max(map.getZoom(), 13), duration: 600 });
+    const sheetPadding = window.matchMedia("(min-width: 1024px)").matches ? 0 : window.innerHeight * 0.42;
+    map.easeTo({
+      center: [center.longitude, center.latitude],
+      zoom: Math.max(map.getZoom(), 13),
+      duration: 600,
+      padding: { top: 0, right: 0, bottom: sheetPadding, left: 0 },
+    });
   }, [selectedSlug, centers]);
 
   return (

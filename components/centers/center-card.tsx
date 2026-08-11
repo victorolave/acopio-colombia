@@ -1,66 +1,122 @@
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { VerificationBadge } from "./verification-badge";
-import { formatDistance } from "@/lib/distance";
-import { formatDateTime, isStale, relativeTime } from "@/lib/format";
-import type { CenterWithDistance } from "@/lib/types";
+"use client";
 
-export function CenterCard({ center }: { center: CenterWithDistance }) {
+import Link from "next/link";
+import { IconCheck, IconAlert, IconPhone, IconRoute } from "@/components/ui/icons";
+import { trackEvent } from "@/lib/analytics";
+import { formatDistance } from "@/lib/distance";
+import { isStale, relativeTime } from "@/lib/format";
+import { googleMapsUrl, telUrl } from "@/lib/maps";
+import type { CenterWithDistance } from "@/lib/types";
+import { cn } from "@/lib/utils";
+
+type Props = {
+  center: CenterWithDistance;
+  selected?: boolean;
+  onSelect?: (slug: string) => void;
+};
+
+/**
+ * Tarjeta pensada para ESCANEAR, no para leer.
+ *
+ * La versión anterior metía 354 caracteres por tarjeta: nombre, dirección,
+ * organización, necesidades urgentes, cinco artículos, horario, fecha de
+ * verificación y enlace. Con 70 centros, encontrar el adecuado exigía leerlo
+ * todo. Aquí se deja lo que decide —distancia, nombre, municipio, estado y
+ * dos o tres cosas que recibe— y el resto vive en la ficha.
+ *
+ * Las acciones van EN la tarjeta: quien ya decidió no debería tener que entrar
+ * al detalle solo para tocar «Cómo llegar».
+ */
+export function CenterCard({ center, selected, onSelect }: Props) {
   const distance = formatDistance(center.distanceKm);
-  const updated = relativeTime(center.last_verified_at) ?? formatDateTime(center.last_verified_at);
+  const updated = relativeTime(center.last_verified_at);
   const stale = isStale(center.last_verified_at);
+  const verified = center.verification_status === "verified";
+
+  const items = center.urgent_needs.length > 0 ? center.urgent_needs : center.accepted_items;
 
   return (
-    <article className="rounded-xl border border-ink-100 bg-white p-4 transition hover:border-ink-300">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-base font-semibold leading-snug text-ink-900">
-          <Link href={`/centros/${center.slug}`} className="hover:underline">
-            {center.name}
-          </Link>
-        </h3>
-        {distance && (
-          <span className="shrink-0 rounded-lg bg-ink-50 px-2 py-1 text-sm font-semibold tabular-nums text-ink-700">
-            {distance}
+    <article
+      onClick={() => onSelect?.(center.slug)}
+      className={cn(
+        "rounded-xl border bg-white transition-colors",
+        selected ? "border-brand-600 ring-1 ring-brand-600" : "border-ink-100",
+      )}
+    >
+      <div className="p-3.5">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="min-w-0 text-[15px] font-semibold leading-snug text-ink-900">
+            <Link href={`/centros/${center.slug}`} className="hover:underline">
+              {center.name}
+            </Link>
+          </h3>
+          {distance && (
+            <span className="shrink-0 rounded-lg bg-ink-50 px-2 py-1 text-sm font-semibold tabular-nums text-ink-900">
+              {distance}
+            </span>
+          )}
+        </div>
+
+        <p className="mt-0.5 truncate text-sm text-ink-500">
+          {center.address} · {center.municipality}
+        </p>
+
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span
+            className={cn(
+              "inline-flex items-center gap-1 text-xs font-medium",
+              verified ? "text-brand-700" : "text-caution-700",
+            )}
+          >
+            {verified ? <IconCheck className="size-3.5" /> : <IconAlert className="size-3.5" />}
+            {verified ? "Verificado" : "Reportado"}
           </span>
+          <span aria-hidden="true" className="text-ink-300">
+            ·
+          </span>
+          <span className="truncate text-xs text-ink-500">
+            {items.slice(0, 3).join(" · ")}
+          </span>
+        </div>
+
+        {(stale || updated) && (
+          <p className={cn("mt-1.5 text-xs", stale ? "text-caution-700" : "text-ink-500")}>
+            {stale ? "Confirma antes de desplazarte" : `Verificado ${updated}`}
+          </p>
         )}
       </div>
 
-      <p className="mt-1 text-sm text-ink-500">
-        {center.address} · {center.municipality}, {center.department}
-      </p>
-
-      <div className="mt-3 flex flex-wrap gap-2">
-        <VerificationBadge status={center.verification_status} />
-        {center.organization && <Badge tone="neutral">{center.organization}</Badge>}
-      </div>
-
-      {center.urgent_needs.length > 0 && (
-        <p className="mt-3 text-sm text-ink-700">
-          <span className="font-medium">Necesita con urgencia: </span>
-          {center.urgent_needs.slice(0, 4).join(", ")}
-        </p>
-      )}
-
-      {center.accepted_items.length > 0 && (
-        <p className="mt-1 text-sm text-ink-500">
-          <span className="font-medium text-ink-700">Recibe: </span>
-          {center.accepted_items.slice(0, 5).join(", ")}
-          {center.accepted_items.length > 5 && ` y ${center.accepted_items.length - 5} más`}
-        </p>
-      )}
-
-      {center.schedule_text && <p className="mt-1 text-sm text-ink-500">🕒 {center.schedule_text}</p>}
-
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-ink-100 pt-3">
-        <p className="text-xs text-ink-500">
-          {updated ? `Verificado ${updated}` : "Sin fecha de verificación"}
-          {stale && <span className="ml-1 text-caution-700">· ⚠ Confirma antes de desplazarte</span>}
-        </p>
+      {/* Acciones directas. Altura 44px para cumplir el objetivo táctil mínimo. */}
+      <div className="flex items-stretch border-t border-ink-100 text-sm font-medium">
+        <a
+          href={googleMapsUrl(center)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => {
+            e.stopPropagation();
+            trackEvent("click_directions", center.slug);
+          }}
+          className="flex min-h-11 flex-1 items-center justify-center gap-1.5 text-brand-700 active:bg-brand-50"
+        >
+          <IconRoute className="size-4" />
+          Cómo llegar
+        </a>
+        {center.phone && (
+          <a
+            href={telUrl(center.phone)}
+            onClick={(e) => e.stopPropagation()}
+            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 border-l border-ink-100 text-ink-700 active:bg-ink-50"
+          >
+            <IconPhone className="size-4" />
+            Llamar
+          </a>
+        )}
         <Link
           href={`/centros/${center.slug}`}
-          className="text-sm font-medium text-brand-700 hover:underline"
+          onClick={(e) => e.stopPropagation()}
+          className="flex min-h-11 flex-1 items-center justify-center border-l border-ink-100 text-ink-700 active:bg-ink-50"
         >
-          Ver detalles →
+          Detalles
         </Link>
       </div>
     </article>

@@ -46,8 +46,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Saltar al contenido
         </a>
 
-        <header className="border-b border-ink-100 bg-white">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+        <header className="sticky top-0 z-40 h-14 shrink-0 border-b border-ink-100 bg-white">
+          <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-4 px-4">
             <Link href="/" className="flex items-center gap-2 font-semibold text-ink-900">
               <span
                 aria-hidden="true"
@@ -60,13 +60,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav aria-label="Principal" className="flex items-center gap-1 text-sm">
               <Link
                 href="/registrar"
-                className="rounded-lg px-3 py-2 font-medium text-ink-700 hover:bg-ink-50"
+                className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-ink-700 hover:bg-ink-50"
               >
-                Registrar centro
+                Registrar<span className="hidden sm:inline">&nbsp;centro</span>
               </Link>
               <Link
                 href="/metodologia"
-                className="hidden rounded-lg px-3 py-2 font-medium text-ink-700 hover:bg-ink-50 sm:block"
+                className="hidden min-h-11 items-center rounded-lg px-3 font-medium text-ink-700 hover:bg-ink-50 sm:inline-flex"
               >
                 Metodología
               </Link>
@@ -78,7 +78,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
 
-        <footer className="mt-8 border-t border-ink-100 bg-white">
+        {/* En las pantallas que ocupan todo el alto en móvil (la portada con mapa) el
+            pie no es alcanzable, así que se oculta ahí y su aviso se muestra dentro de
+            la hoja inferior. En escritorio y en el resto de páginas se comporta normal. */}
+        <footer className="mt-8 border-t border-ink-100 bg-white max-lg:[body:has([data-fullscreen])_&]:hidden">
           <div className="mx-auto max-w-6xl space-y-3 px-4 py-8 text-sm text-ink-500">
             <p className="rounded-lg bg-caution-50 px-3 py-2 text-caution-700">
               La información puede cambiar rápidamente durante la emergencia. Revisa la fecha de última

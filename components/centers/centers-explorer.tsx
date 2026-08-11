@@ -2,46 +2,59 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CenterCard } from "./center-card";
-import { VerificationBadge } from "./verification-badge";
 import { useGeolocation } from "./use-geolocation";
-import { Filters, type FilterState } from "@/components/filters/filters";
-import { calculateDistance, formatDistance } from "@/lib/distance";
+import {
+  ActiveFilterChips,
+  EMPTY_FILTERS,
+  FiltersBar,
+  FiltersSheet,
+  countActiveFilters,
+  type FilterState,
+} from "@/components/filters/filters";
+import { BottomSheet, type SnapPoint } from "@/components/ui/bottom-sheet";
+import { IconAlert, IconCrosshair } from "@/components/ui/icons";
+import { calculateDistance } from "@/lib/distance";
 import { centerAcceptsCategory } from "@/lib/items";
-import { googleMapsUrl, wazeUrl } from "@/lib/maps";
 import type { CenterWithDistance, CollectionCenter } from "@/lib/types";
-import { cn, normalize } from "@/lib/utils";
+import { normalize } from "@/lib/utils";
 
-/**
- * El mapa se carga aparte: en conexiones malas la lista tiene que servir sola.
- */
 const CentersMap = dynamic(() => import("@/components/map/centers-map"), {
   ssr: false,
-  loading: () => (
-    <div className="grid h-full w-full place-items-center bg-ink-100 text-sm text-ink-500">
-      Cargando mapa…
-    </div>
-  ),
+  loading: () => <div className="size-full animate-pulse bg-ink-100" />,
 });
 
-const INITIAL_FILTERS: FilterState = {
-  query: "",
-  department: "",
-  categories: [],
-  onlyVerified: false,
-};
-
+/**
+ * Un ÚNICO árbol para móvil y escritorio.
+ *
+ * La primera versión de este rediseño tenía dos ramas, una por tamaño de
+ * pantalla, y eso renderizaba la lista dos veces: 140 tarjetas en el HTML en
+ * lugar de 70, con cada botón duplicado para los lectores de pantalla. Aquí la
+ * diferencia entre móvil y escritorio es solo CSS.
+ */
 export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
-  const [view, setView] = useState<"list" | "map">("list");
+  const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [snap, setSnap] = useState<SnapPoint>("half");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const listRef = useRef<HTMLUListElement | null>(null);
   const geo = useGeolocation();
 
   const departments = useMemo(
     () => Array.from(new Set(centers.map((c) => c.department))).sort((a, b) => a.localeCompare(b, "es")),
     [centers],
   );
+
+  /** Municipios con más centros: el atajo cuando alguien no comparte ubicación. */
+  const topCities = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const c of centers) counts.set(c.municipality, (counts.get(c.municipality) ?? 0) + 1);
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([city]) => city);
+  }, [centers]);
 
   const withDistance: CenterWithDistance[] = useMemo(() => {
     const position = geo.position;
@@ -51,25 +64,21 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
         ? calculateDistance(position.latitude, position.longitude, center.latitude, center.longitude)
         : null,
     }));
-
     if (!position) return list;
     return list.sort((a, b) => (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity));
   }, [centers, geo.position]);
 
   const filtered = useMemo(() => {
     const q = normalize(filters.query.trim());
-
     return withDistance.filter((center) => {
       if (filters.onlyVerified && center.verification_status !== "verified") return false;
       if (filters.department && center.department !== filters.department) return false;
-
-      if (filters.categories.length > 0) {
-        const matches = filters.categories.some((id) =>
-          centerAcceptsCategory(center.accepted_items, id),
-        );
-        if (!matches) return false;
+      if (
+        filters.categories.length > 0 &&
+        !filters.categories.some((id) => centerAcceptsCategory(center.accepted_items, id))
+      ) {
+        return false;
       }
-
       if (q) {
         const haystack = normalize(
           [center.name, center.organization, center.municipality, center.department, center.address]
@@ -78,161 +87,155 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
         );
         if (!haystack.includes(q)) return false;
       }
-
       return true;
     });
   }, [withDistance, filters]);
 
-  const selected = filtered.find((c) => c.slug === selectedSlug) ?? null;
+  /** Al tocar un marcador, la hoja sube y la tarjeta se desplaza a la vista. */
+  const selectFromMap = useCallback((slug: string | null) => {
+    setSelectedSlug(slug);
+    if (slug) setSnap((current) => (current === "peek" ? "half" : current));
+  }, []);
+
+  useEffect(() => {
+    if (!selectedSlug) return;
+    listRef.current
+      ?.querySelector(`[data-slug="${selectedSlug}"]`)
+      ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [selectedSlug]);
+
+  const locating = geo.status === "requesting";
+  const hasLocation = geo.status === "granted";
 
   return (
-    <div className="space-y-4">
-      {/* Ubicación ---------------------------------------------------------- */}
-      <div className="rounded-xl border border-ink-100 bg-white p-4">
-        {geo.status === "granted" ? (
-          <p className="text-sm text-ink-700">
-            <span aria-hidden="true">📍</span> Mostrando centros ordenados por cercanía.{" "}
-            <span className="text-ink-500">Tu ubicación no se almacena.</span>
-          </p>
-        ) : (
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={geo.request}
-              disabled={geo.status === "requesting"}
-              className="rounded-lg bg-brand-600 px-4 py-2.5 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
-            >
-              {geo.status === "requesting" ? "Buscando tu ubicación…" : "📍 Ver centros cerca de mí"}
-            </button>
-            <p className="text-sm text-ink-500">
-              Tu ubicación se usa únicamente para mostrarte centros cercanos y no se almacena.
+    <div className="lg:grid lg:grid-cols-[1.1fr_1fr] lg:gap-5">
+      {/* Mapa: pantalla completa bajo la cabecera en móvil, columna fija en escritorio. */}
+      <div className="max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-14 max-lg:z-0 lg:sticky lg:top-4 lg:h-[calc(100dvh-7rem)] lg:overflow-hidden lg:rounded-2xl lg:border lg:border-ink-100">
+        <CentersMap
+          centers={filtered}
+          userPosition={geo.position}
+          selectedSlug={selectedSlug}
+          onSelect={selectFromMap}
+        />
+      </div>
+
+      <BottomSheet
+        snap={snap}
+        onSnapChange={setSnap}
+        label="Lista de centros de acopio"
+        header={
+          <div className="space-y-2.5">
+            {!hasLocation && (
+              <button
+                type="button"
+                onClick={geo.request}
+                disabled={locating}
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 font-semibold text-white active:bg-brand-700 disabled:opacity-70 lg:w-auto"
+              >
+                <IconCrosshair className="size-5" />
+                {locating ? "Buscando tu ubicación…" : "Ver centros cerca de mí"}
+              </button>
+            )}
+
+            <div className="flex items-baseline justify-between gap-2">
+              <h2 className="text-[15px] font-semibold text-ink-900" aria-live="polite">
+                {filtered.length} {filtered.length === 1 ? "centro" : "centros"}
+                {hasLocation && <span className="font-normal text-ink-500"> · por cercanía</span>}
+              </h2>
+              {countActiveFilters(filters) > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setFilters(EMPTY_FILTERS)}
+                  className="min-h-9 text-xs font-medium text-brand-700"
+                >
+                  Limpiar filtros
+                </button>
+              )}
+            </div>
+
+            <FiltersBar
+              value={filters}
+              onChange={setFilters}
+              onOpenFilters={() => setFiltersOpen(true)}
+            />
+            <ActiveFilterChips value={filters} onChange={setFilters} />
+          </div>
+        }
+      >
+        {!hasLocation && (
+          <div className="mb-3 rounded-xl border border-ink-100 bg-white p-3 lg:bg-ink-50">
+            <p className="text-sm font-medium text-ink-900">¿En qué ciudad estás?</p>
+            <p className="mt-0.5 text-xs text-ink-500">
+              Sin tu ubicación no podemos ordenar por cercanía. Elige tu ciudad o compártela.
             </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {topCities.map((city) => (
+                <button
+                  key={city}
+                  type="button"
+                  onClick={() => setFilters({ ...filters, query: city })}
+                  className="min-h-9 rounded-full border border-ink-300 bg-white px-3 text-xs font-medium text-ink-700 active:bg-ink-50"
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
           </div>
         )}
+
         {geo.message && (
-          <p role="status" className="mt-2 text-sm text-caution-700">
+          <p
+            role="status"
+            className="mb-3 flex items-start gap-1.5 rounded-xl bg-caution-50 p-3 text-sm text-caution-700"
+          >
+            <IconAlert className="mt-0.5 size-4 shrink-0" />
             {geo.message}
           </p>
         )}
-      </div>
 
-      <Filters
+        {filtered.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-ink-300 bg-white p-6 text-center">
+            <p className="font-medium text-ink-700">No encontramos centros con esos filtros.</p>
+            <p className="mt-1 text-sm text-ink-500">
+              Prueba con otro departamento o quita algún filtro. Si conoces un centro activo,{" "}
+              <Link href="/registrar" className="text-brand-700 underline underline-offset-2">
+                regístralo
+              </Link>
+              .
+            </p>
+          </div>
+        ) : (
+          <ul ref={listRef} className="space-y-2.5">
+            {filtered.map((center) => (
+              <li key={center.slug} data-slug={center.slug}>
+                <CenterCard
+                  center={center}
+                  selected={center.slug === selectedSlug}
+                  onSelect={setSelectedSlug}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* El pie no es alcanzable en la portada móvil: el aviso vive aquí. */}
+        <p className="py-4 text-center text-xs text-ink-500">
+          La información puede cambiar rápidamente. Revisa la fecha de actualización antes de
+          desplazarte.{" "}
+          <Link href="/metodologia" className="underline underline-offset-2">
+            Cómo verificamos
+          </Link>
+        </p>
+      </BottomSheet>
+
+      <FiltersSheet
+        open={filtersOpen}
+        onClose={() => setFiltersOpen(false)}
         value={filters}
         onChange={setFilters}
         departments={departments}
         resultCount={filtered.length}
       />
-
-      {/* Alternador móvil --------------------------------------------------- */}
-      <div className="flex rounded-lg border border-ink-300 bg-white p-1 lg:hidden" role="tablist">
-        {(["list", "map"] as const).map((mode) => (
-          <button
-            key={mode}
-            role="tab"
-            aria-selected={view === mode}
-            onClick={() => setView(mode)}
-            className={cn(
-              "flex-1 rounded-md px-3 py-2 text-sm font-medium transition",
-              view === mode ? "bg-brand-600 text-white" : "text-ink-700",
-            )}
-          >
-            {mode === "list" ? "Lista" : "Mapa"}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-[1.15fr_1fr]">
-        {/* Mapa ------------------------------------------------------------- */}
-        <div
-          className={cn(
-            "relative overflow-hidden rounded-xl border border-ink-100 bg-white",
-            "h-[55vh] min-h-80 lg:sticky lg:top-4 lg:h-[calc(100dvh-8rem)]",
-            view === "map" ? "block" : "hidden lg:block",
-          )}
-        >
-          <CentersMap
-            centers={filtered}
-            userPosition={geo.position}
-            selectedSlug={selectedSlug}
-            onSelect={setSelectedSlug}
-          />
-
-          {selected && (
-            <div className="absolute inset-x-2 bottom-2 rounded-xl border border-ink-100 bg-white p-4 shadow-lg">
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="font-semibold text-ink-900">{selected.name}</h3>
-                <button
-                  type="button"
-                  onClick={() => setSelectedSlug(null)}
-                  aria-label="Cerrar detalle del centro"
-                  className="rounded p-1 text-ink-500 hover:bg-ink-50"
-                >
-                  ✕
-                </button>
-              </div>
-              <p className="mt-1 text-sm text-ink-500">
-                {selected.address} · {selected.municipality}, {selected.department}
-              </p>
-              <div className="mt-2">
-                <VerificationBadge status={selected.verification_status} />
-              </div>
-              {selected.accepted_items.length > 0 && (
-                <p className="mt-2 text-sm text-ink-700">
-                  <span className="font-medium">Reciben: </span>
-                  {selected.accepted_items.slice(0, 4).join(", ")}
-                </p>
-              )}
-              {selected.distanceKm !== null && (
-                <p className="mt-1 text-sm font-medium text-ink-700">
-                  A {formatDistance(selected.distanceKm)} de ti
-                </p>
-              )}
-              <div className="mt-3 flex flex-wrap gap-2">
-                <a
-                  href={googleMapsUrl(selected)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg bg-brand-600 px-3 py-2 text-sm font-semibold text-white"
-                >
-                  Cómo llegar
-                </a>
-                <a
-                  href={wazeUrl(selected)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border border-ink-300 px-3 py-2 text-sm font-medium text-ink-700"
-                >
-                  Waze
-                </a>
-                <Link
-                  href={`/centros/${selected.slug}`}
-                  className="rounded-lg border border-ink-300 px-3 py-2 text-sm font-medium text-ink-700"
-                >
-                  Ver detalles
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Lista ------------------------------------------------------------ */}
-        <div className={cn("space-y-3", view === "list" ? "block" : "hidden lg:block")}>
-          {filtered.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-ink-300 bg-white p-8 text-center">
-              <p className="font-medium text-ink-700">No encontramos centros con esos filtros.</p>
-              <p className="mt-1 text-sm text-ink-500">
-                Prueba con otro departamento o quita algún filtro. Si conoces un centro activo,{" "}
-                <Link href="/registrar" className="text-brand-700 underline underline-offset-2">
-                  regístralo aquí
-                </Link>
-                .
-              </p>
-            </div>
-          ) : (
-            filtered.map((center) => <CenterCard key={center.slug} center={center} />)
-          )}
-        </div>
-      </div>
     </div>
   );
 }
