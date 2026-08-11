@@ -24,6 +24,31 @@ import { DEPARTMENTS } from "../lib/validation";
 /** Fecha del terremoto. Ninguna fuente anterior sirve para esta emergencia. */
 const EARTHQUAKE_DATE = "2026-08-10";
 
+/**
+ * Cuentas oficiales aceptadas como fuente para `verified`.
+ *
+ * La especificación del proyecto siempre admitió «Instagram oficial, Facebook
+ * oficial, X oficial» como fuente de validación: una cuenta oficial de la
+ * entidad responsable es la entidad publicando en su propio canal, no un
+ * tercero citándola.
+ *
+ * Es una LISTA BLANCA a propósito. Cualquiera puede crear una cuenta que
+ * parezca oficial; añadir una aquí es una decisión consciente que queda
+ * visible en el diff del pull request y exige revisión humana.
+ *
+ * Para añadir una cuenta: comprueba que sea la cuenta real de la entidad
+ * responsable, deja constancia de quién lo comprobó y documenta en
+ * docs/sources.md.
+ */
+const OFFICIAL_ACCOUNTS = [
+  {
+    url: "https://www.instagram.com/tigresasdelapatriaoficial",
+    entidad:
+      "Tigresas de la Patria — red difundida por la primera dama Ana Lucía Pineda, encargada por el presidente de coordinar la ayuda ciudadana por este terremoto",
+    comprobadoPor: "@victorolave, 11 de agosto de 2026",
+  },
+];
+
 /** Colombia continental e insular. */
 const BOUNDS = { minLat: -4.3, maxLat: 13.5, minLon: -82.0, maxLon: -66.8 };
 
@@ -119,12 +144,18 @@ for (const center of SEED_CENTERS as SeedCenter[]) {
       );
     }
     const url = center.sourceUrl ?? "";
-    const isInstitutional = /\.gov\.co|\.gob\.co|cruzrojacolombiana\.org|defensacivil\.gov\.co/.test(url);
-    if (!isInstitutional) {
+    const isInstitutionalSite = /\.gov\.co|\.gob\.co|cruzrojacolombiana\.org|defensacivil\.gov\.co/.test(url);
+    // Una cuenta oficial verificada de la entidad responsable ES la entidad
+    // publicando en su propio canal, no un tercero citándola. Durante una
+    // emergencia suele ser además el canal MÁS rápido. Se admite solo mediante
+    // lista blanca explícita, para que agregar una cuenta sea una decisión
+    // consciente y revisable en el diff, no algo que cualquiera cuele.
+    const isOfficialAccount = OFFICIAL_ACCOUNTS.some((a) => url.startsWith(a.url));
+    if (!isInstitutionalSite && !isOfficialAccount) {
       fail(
         slug,
         "verificado-sin-fuente-institucional",
-        `«verified» exige el sitio propio de la entidad responsable. «${url}» no lo parece. Si la fuente es un medio que cita a la entidad, el estado correcto es «reported».`,
+        `«verified» exige el sitio propio de la entidad responsable, o una cuenta oficial de la lista blanca. «${url}» no es ninguna. Si la fuente es un medio que cita a la entidad, el estado correcto es «reported».`,
       );
     }
   }

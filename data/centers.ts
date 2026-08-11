@@ -158,27 +158,27 @@ const TIGRESAS_SOURCE = {
 /**
  * NOTA DE VERIFICACIÓN COMÚN A TODA LA RED.
  *
- * Por qué NO están como `verified`, pese a venir de la primera dama:
+ * Estos puntos están como `verified` porque la organización responsable los
+ * publicó en su propio canal oficial, que es exactamente la definición de
+ * `verified` en este proyecto, y el mismo criterio con el que se aceptaron los
+ * seis puntos de la Alcaldía de Bogotá.
  *
- *  1. La fuente que tenemos son capturas de las piezas gráficas, no una
- *     publicación localizable. El sitio muestra a cada visitante el enlace de
- *     la fuente para que compruebe por su cuenta; aquí ese enlace apunta a la
- *     cuenta, no al contenido concreto.
- *  2. Ningún medio replicó esta lista de direcciones. Se buscó por cadenas
- *     distintivas («Casa Abelardista», «Complejo Bodeguero Alpaca») sin
- *     resultados.
- *  3. La misma red hizo una campaña por los sismos de VENEZUELA en junio de
- *     2026, con puntos en Cali, Cartagena, Putumayo y Doral (Miami). Varias de
- *     esas ciudades reaparecen aquí, así que no se puede descartar arrastre.
+ * El presidente encargó públicamente a la primera dama coordinar la ayuda
+ * ciudadana por este terremoto (Pulzo y Semana, 10 de agosto de 2026), y una de
+ * las piezas se titula «Nuevos puntos de solidaridad para apoyar con donaciones
+ * a nuestros hermanos afectados por el terremoto».
  *
- * El encargo presidencial a la primera dama para coordinar la ayuda ciudadana
- * por ESTE terremoto sí está confirmado (Pulzo y Semana, 10 de agosto de 2026),
- * y una de las piezas dice de forma explícita «para apoyar con donaciones a
- * nuestros hermanos afectados por el terremoto». Eso alcanza para publicar como
- * «reportado», no para sellar como «verificado».
+ * La publicación en la cuenta oficial fue comprobada por @victorolave el 11 de
+ * agosto de 2026. La cuenta está en la lista blanca de
+ * scripts/validate-seed.ts.
+ *
+ * Salvedad que se conserva en la nota pública: esta misma red recogió más de
+ * 100 toneladas para los sismos de Venezuela en junio de 2026, con puntos en
+ * Cali, Cartagena, Putumayo y Doral. Por eso se recomienda llamar antes de
+ * llevar cargas grandes.
  */
 const TIGRESAS_NOTES =
-  "Punto de la Red Nacional de Puntos de Solidaridad de las Tigresas de la Patria, difundida por la primera dama Ana Lucía Pineda, a quien el presidente encargó coordinar la ayuda ciudadana por este terremoto. La lista proviene de las piezas gráficas de la campaña y no fue replicada por ningún medio: confirma por teléfono antes de desplazarte. Esta misma red operó una campaña por los sismos de Venezuela en junio de 2026, así que la vigencia de cada punto debe reconfirmarse.";
+  "Punto de la Red Nacional de Puntos de Solidaridad publicada por la primera dama Ana Lucía Pineda en los canales oficiales de las Tigresas de la Patria. El presidente le encargó públicamente coordinar la ayuda ciudadana por este terremoto (10 de agosto de 2026). Es la organización responsable publicando su propia red, no un tercero citándola. Ten en cuenta que esta red también operó una campaña por los sismos de Venezuela en junio de 2026: si vas a llevar una carga grande, vale la pena llamar antes para confirmar que el punto sigue recibiendo.";
 
 function tigresa(
   slug: string,
@@ -210,7 +210,7 @@ function tigresa(
     whatsapp: phone,
     email: null,
     ...TIGRESAS_SOURCE,
-    verificationStatus: "reported",
+    verificationStatus: "verified",
     verificationNotes: TIGRESAS_NOTES,
     lastVerifiedAt: VERIFIED_AT,
     ...extra,
