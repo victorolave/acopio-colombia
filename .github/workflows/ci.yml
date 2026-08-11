@@ -44,6 +44,24 @@ jobs:
       - name: Build sin base de datos (modo respaldo)
         run: npm run build
 
+      # Pruebas de interacción real en navegador. Existen porque el rediseño
+      # móvil salió con dos botones muertos: el typecheck pasaba, el build
+      # pasaba y el HTML era correcto. Un manejador de gestos se interponía
+      # entre el dedo y el botón e impedía que se generara el `click`.
+      - name: Instalar Chromium para las pruebas de interacción
+        run: npx playwright install --with-deps chromium
+
+      - name: Pruebas de interacción (móvil y escritorio)
+        run: npm run test:e2e
+
+      - name: Guardar el rastro si algo falló
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
       # El seed generado tiene que corresponder con data/centers.ts. Si alguien
       # editó supabase/seed.sql a mano, o cambió los datos sin regenerarlo, aquí
       # se nota.

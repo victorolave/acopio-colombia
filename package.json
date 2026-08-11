@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "seed:build": "tsx scripts/build-seed.ts",
     "validate:seed": "tsx scripts/validate-seed.ts",
-    "geocode": "tsx scripts/geocode.ts"
+    "geocode": "tsx scripts/geocode.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
@@ -26,6 +27,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^24.13.3",
     "@types/react": "^19.1.0",

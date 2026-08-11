@@ -17,3 +17,7 @@ next-env.d.ts
 # Secretos locales
 .supabase-db-password.txt
 .supabase-admin-password.txt
+
+# Pruebas de navegador
+test-results
+playwright-report

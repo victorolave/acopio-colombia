@@ -28,16 +28,23 @@ type Props = {
  * más cerca?»— necesita las dos cosas a la vez.
  *
  * Decisiones de interacción:
- *  - El arrastre vive SOLO en la cabecera. La lista conserva su scroll nativo,
- *    así se evita el conflicto de gestos entre arrastrar la hoja y desplazar el
- *    contenido, que es lo que hace que estas hojas se sientan rotas.
+ *  - El arrastre vive SOLO en el tirador. Ni la cabecera —que tiene el botón de
+ *    ubicación, el buscador y el de filtros— ni la lista llevan manejadores de
+ *    gestos: un manejador entre el dedo y un botón termina matando el `click`.
+ *  - La lista conserva su scroll nativo, así no compite con el arrastre.
  *  - Hay control por teclado y por pulsación además del gesto: nunca se depende
  *    solo de arrastrar.
  *  - Respeta `prefers-reduced-motion`.
  */
 export function BottomSheet({ snap, onSnapChange, header, children, label }: Props) {
   const sheetRef = useRef<HTMLElement | null>(null);
-  const dragRef = useRef<{ startY: number; startTranslate: number; height: number } | null>(null);
+  const dragRef = useRef<{
+    startY: number;
+    startTranslate: number;
+    height: number;
+    /** Solo se captura el puntero tras superar el umbral; ver onPointerMove. */
+    captured: boolean;
+  } | null>(null);
   const [dragTranslate, setDragTranslate] = useState<number | null>(null);
 
   const nearestSnap = useCallback((translate: number): SnapPoint => {
@@ -53,24 +60,55 @@ export function BottomSheet({ snap, onSnapChange, header, children, label }: Pro
     return best;
   }, []);
 
+  /**
+   * El arrastre solo empieza tras superar un umbral de movimiento, y solo
+   * entonces se captura el puntero.
+   *
+   * Capturar en `pointerdown` era un error: redirige todos los eventos
+   * siguientes al elemento que captura, así que el `pointerup` no llega al
+   * control que está debajo y el navegador nunca genera el `click`. Cualquier
+   * botón dentro de la zona de arrastre se queda muerto.
+   */
+  const DRAG_THRESHOLD_PX = 6;
+
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const height = sheetRef.current?.offsetHeight ?? 1;
-    dragRef.current = { startY: event.clientY, startTranslate: TRANSLATE[snap], height };
-    event.currentTarget.setPointerCapture(event.pointerId);
+    // En escritorio la hoja es una columna estática: no hay nada que arrastrar.
+    if (window.matchMedia("(min-width: 1024px)").matches) return;
+    dragRef.current = {
+      startY: event.clientY,
+      startTranslate: TRANSLATE[snap],
+      height: sheetRef.current?.offsetHeight ?? 1,
+      captured: false,
+    };
   };
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
     if (!drag) return;
-    const deltaPercent = ((event.clientY - drag.startY) / drag.height) * 100;
+
+    const deltaY = event.clientY - drag.startY;
+    if (!drag.captured) {
+      if (Math.abs(deltaY) < DRAG_THRESHOLD_PX) return;
+      drag.captured = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+
+    const deltaPercent = (deltaY / drag.height) * 100;
     setDragTranslate(Math.min(TRANSLATE.peek + 6, Math.max(-4, drag.startTranslate + deltaPercent)));
   };
 
   const endDrag = () => {
     const drag = dragRef.current;
-    if (!drag) return;
-    if (dragTranslate !== null) onSnapChange(nearestSnap(dragTranslate));
     dragRef.current = null;
+
+    // Si nunca se superó el umbral fue un toque, no un arrastre: no se toca el
+    // estado y se deja que el `click` siga su curso normal.
+    if (!drag?.captured) {
+      setDragTranslate(null);
+      return;
+    }
+
+    if (dragTranslate !== null) onSnapChange(nearestSnap(dragTranslate));
     setDragTranslate(null);
   };
 
@@ -103,26 +141,31 @@ export function BottomSheet({ snap, onSnapChange, header, children, label }: Pro
       )}
       style={{ "--sheet-y": `${translate}%` } as React.CSSProperties}
     >
-      {/* Zona de arrastre. Es también un botón real, para teclado y lectores. */}
-      <div
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        className="shrink-0 cursor-grab touch-none select-none px-4 pb-2 pt-2 active:cursor-grabbing lg:cursor-auto lg:touch-auto lg:px-0 lg:pt-0"
-      >
-        <button
-          type="button"
-          onClick={cycle}
-          aria-label={
-            snap === "full" ? "Contraer la lista de centros" : "Expandir la lista de centros"
-          }
-          aria-expanded={snap === "full"}
-          className="mx-auto flex h-6 w-full max-w-24 items-center justify-center lg:hidden"
+      <div className="shrink-0 px-4 pb-2 pt-1 lg:px-0 lg:pt-0">
+        {/* El arrastre vive SOLO aquí. La cabecera queda fuera: contiene el botón
+            de ubicación, el buscador y el de filtros, y ningún manejador de
+            gestos debe interponerse entre el dedo y esos controles. */}
+        <div
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          className="cursor-grab touch-none select-none py-1 active:cursor-grabbing lg:hidden"
         >
-          <span aria-hidden="true" className="h-1.5 w-11 rounded-full bg-ink-300" />
-        </button>
-        <div className="pt-1">{header}</div>
+          <button
+            type="button"
+            onClick={cycle}
+            aria-label={
+              snap === "full" ? "Contraer la lista de centros" : "Expandir la lista de centros"
+            }
+            aria-expanded={snap === "full"}
+            className="mx-auto flex h-8 w-full max-w-32 items-center justify-center"
+          >
+            <span aria-hidden="true" className="h-1.5 w-11 rounded-full bg-ink-300" />
+          </button>
+        </div>
+
+        <div className="pt-1 lg:pt-0">{header}</div>
       </div>
 
       <div
