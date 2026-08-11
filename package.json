@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --max-warnings=0 --report-unused-disable-directives",
     "typecheck": "tsc --noEmit",
     "seed:build": "tsx scripts/build-seed.ts",
     "validate:seed": "tsx scripts/validate-seed.ts",
@@ -32,6 +32,8 @@
     "@types/node": "^24.13.3",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.0",
     "tailwindcss": "^4.1.13",
     "tsx": "^4.23.12",
     "typescript": "^5.6.3"

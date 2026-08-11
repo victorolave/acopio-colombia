@@ -23,7 +23,14 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
   const markersRef = useRef<Map<string, Marker>>(new Map());
   const userMarkerRef = useRef<Marker | null>(null);
   const onSelectRef = useRef(onSelect);
-  onSelectRef.current = onSelect;
+
+  // El callback se sincroniza en un efecto, NO durante el render: escribir en un
+  // ref mientras React renderiza se rompe con render concurrente, donde un render
+  // puede descartarse o repetirse. Los marcadores solo disparan por un toque de
+  // la persona, mucho después de que corran los efectos.
+  useEffect(() => {
+    onSelectRef.current = onSelect;
+  });
 
   // Inicialización ----------------------------------------------------------
   useEffect(() => {
@@ -42,11 +49,16 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
     // aspecto y, peor, centraba el mapa sin avisar a React, asi que la lista se
     // quedaba sin ordenar por distancia. Una sola via para una sola accion.
 
+    // Se captura la instancia del Map aquí dentro: leer `markersRef.current` en
+    // la limpieza consulta el valor del momento del desmontaje, que no tiene por
+    // qué ser este. Es el mismo objeto, pero dicho sin ambigüedad.
+    const markers = markersRef.current;
+
     mapRef.current = map;
     return () => {
       map.remove();
       mapRef.current = null;
-      markersRef.current.clear();
+      markers.clear();
     };
   }, []);
 

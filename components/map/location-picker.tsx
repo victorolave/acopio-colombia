@@ -36,8 +36,16 @@ export default function LocationPicker({ value, onChange, focus }: Props) {
   const mapRef = useRef<MapLibreMap | null>(null);
   const markerRef = useRef<Marker | null>(null);
   const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
   const lastFocusRef = useRef<number | null>(null);
+
+  // El callback se sincroniza en un efecto, NO durante el render: escribir en un
+  // ref mientras React renderiza se rompe con render concurrente, donde un render
+  // puede descartarse o repetirse. Los manejadores del mapa solo disparan por un
+  // gesto de la persona, mucho después de que corran los efectos, así que siempre
+  // leen el valor al día.
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;

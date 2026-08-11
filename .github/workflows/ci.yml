@@ -38,6 +38,13 @@ jobs:
       - name: Comprobar tipos
         run: npm run typecheck
 
+      # Se añade a CI el mismo día que ESLint se instaló de verdad. El proyecto
+      # llevaba desde el primer commit con `"lint": "next lint"` sin ESLint en las
+      # dependencias: el comando fallaba, nadie lo corría y las reglas de React se
+      # dejaron de cumplir en silencio. Si no se ejecuta aquí, vuelve a pasar.
+      - name: Reglas de estilo y de React
+        run: npm run lint
+
       # El build corre SIN credenciales de Supabase, a propósito: comprueba que
       # el respaldo con el seed estático sigue funcionando. Es lo que mantiene el
       # sitio en pie si la base de datos falla durante la emergencia.
