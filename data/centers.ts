@@ -337,7 +337,7 @@ const PARQUES_BIBLIOTECA_MEDELLIN: SeedCenter[] = (
   acceptedItems: MEDELLIN_DIA2_ITEMS,
   urgentNeeds: ["Alimentos no perecederos", "Artículos de aseo"],
   rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
-  scheduleText: null,
+  scheduleText: "9:00 a. m. – 6:00 p. m., de lunes a sábado",
   startsAt: "2026-08-11",
   endsAt: null,
   phone: null,
@@ -349,7 +349,7 @@ const PARQUES_BIBLIOTECA_MEDELLIN: SeedCenter[] = (
   sourcePublishedAt: "2026-08-11",
   verificationStatus: "reported" as const,
   verificationNotes:
-    "Punto de la red de bibliotecas públicas incluido por El Tiempo citando a la Alcaldía de Medellín, y corroborado por la pieza ciudadana. La fuente NO publica dirección ni horario: el pin se geocodifica por nombre del parque biblioteca y queda aproximado. Confirmar horario de la biblioteca antes de ir.",
+    "Punto de la red de bibliotecas públicas incluido por El Tiempo citando a la Alcaldía de Medellín, y corroborado por la pieza ciudadana. La fuente NO publica dirección: el pin se geocodifica por nombre del parque biblioteca y queda aproximado. El horario proviene de Semana (11 de agosto de 2026), que nombra explícitamente a los cuatro parques biblioteca en la misma frase de la jornada: «desde las 9:00 a. m. a 6:00 p. m. de lunes a sábados». Ese horario NO cubre los demás puntos de Medellín.",
   lastVerifiedAt: VERIFIED_AT_DIA2,
 }));
 
@@ -719,7 +719,12 @@ export const SEED_CENTERS: SeedCenter[] = [
     ],
     urgentNeeds: ["Carpas", "Colchonetas", "Linternas", "Cascos"],
     rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
-    scheduleText: null,
+    /**
+     * La salvedad va DENTRO del texto a propósito. La fuente solo publicó la
+     * hora de apertura, y un «7:00 a. m.» suelto se lee como horario completo:
+     * alguien llegaría a las 6 de la tarde creyendo que alcanza.
+     */
+    scheduleText: "Desde las 7:00 a. m.; la fuente no publicó hora de cierre",
     startsAt: "2026-08-10",
     endsAt: null,
     phone: null,

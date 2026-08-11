@@ -263,8 +263,9 @@ Por eso el proyecto **modela la precisión como dato de primera clase** (`locati
 6. **Plaza de la Paz (Cundinamarca)** — la fuente no publicó dirección exacta; se geocodificó la sede de la Gobernación.
 7. **Coliseo Bernardo Caraballo (Cartagena)** — la fuente no publicó dirección; se geocodificó por nombre.
 8. **Los 2 registros `disputed`** — resolver o descartar definitivamente.
-9. **Horarios** — la mayoría de las fuentes no los publicó. Solo 8 centros tienen horario confirmado.
+9. **Horarios** — la mayoría de las fuentes no los publicó. Al 11 de agosto, sobre los **95 centros publicados en producción** (el seed más lo aprobado desde `/admin`): **28 tienen horario utilizable** y **22 no tienen ni horario ni teléfono**, a los que la aplicación les avisa que no hay forma de confirmar antes de llegar. Ver §10.
 10. **Vigencia de la campaña de Cundinamarca** — declarada del 11 al 23 de agosto de 2026; la aplicación avisa automáticamente cuando pasa la fecha de cierre.
+11. **Los 6 puntos de Medellín de la pieza gráfica ciudadana** — ver §10, hallazgo 2. Siguen publicados como `reported` con su nota de salvedad; ninguna fuente oficial los corrobora.
 
 ---
 
@@ -283,3 +284,38 @@ No se modelaron como «centros de acopio» porque no son lugares físicos a los 
 
 `123` Policía, Bomberos y Defensa Civil · `111` desastres naturales · `119` incendios y rescates (Bogotá) · `125` urgencias médicas · `132` Cruz Roja Colombiana · `126` Policía de Carreteras.
 Reunificación familiar Cruz Roja: `rcf@cruzrojacolombiana.org`, WhatsApp +57 321 213 9525.
+
+---
+
+## 10. Investigación de horarios y teléfonos (11 de agosto de 2026)
+
+Búsqueda dirigida sobre los 27 centros que estaban publicados **sin horario y sin teléfono**.
+
+### Hallazgo 1 — no existe ni un solo teléfono de punto de acopio
+
+**0 de 27.** Ninguna fuente publica una línea propia del punto. Sí aparecen números **generales de la entidad** —Cruz Roja Bogotá `601 746 0909` / línea nacional `132`, Gobernación del Valle `602 620 00 00`, WhatsApp nacional de ABACO `313 245 7978`—, y **se decidió NO cargarlos** en el campo `phone`: implicarían «llama a este centro», que es falso, y sacarían esos registros del nivel de alerta de `tripAdvisory()` con una mejora inexistente.
+
+### Hallazgo 2 — 6 puntos de Medellín sin corroboración en ninguna fuente
+
+`batallon-girardot-medellin`, `bodega-guayaquiliando-medellin`, `la-razon-medellin`, `libreria-rodante-delfos-medellin`, `restaurante-belisario-medellin`, `simon-coffee-medellin`.
+
+Son exactamente los seis cuyo `sourceName` es la pieza gráfica ciudadana sin entidad firmante. El Tiempo, El Colombiano, Semana, BluRadio y Telemedellín describen el mismo núcleo de ~10 puntos oficiales de Medellín y **ninguno los menciona**. No hay evidencia de cierre, pero sí ausencia en toda lista oficial. Se mantienen publicados: ya llevan la nota de salvedad que advierte que la fuente no es institucional.
+
+### Horarios incorporados
+
+| Centros | Horario | Fuente |
+|---|---|---|
+| Los 4 Parques Biblioteca (Belén, García Márquez, León de Greiff, San Javier) | 9:00 a. m. – 6:00 p. m., lunes a sábado | Semana, 11 ago 2026 |
+| Casa del Valle (Bogotá) | Desde las 7:00 a. m., sin hora de cierre publicada | La FM, 11 ago 2026 |
+
+> **Alcance del horario de Medellín.** La frase de Semana es: «los parques bibliotecas Belén, San Javier, Gabriel García Márquez, León de Greiff (La Ladera) y la biblioteca pública El Poblado hacen parte de esta jornada de ayudas desde las 9:00 a. m. a 6:00 p. m. de lunes a sábados». Nombra **solo a los parques biblioteca**. NO cubre a FUBAM, Fundación Saciar, Terminal del Norte ni el Hall de la Alcaldía, y se verificó que El Colombiano (10 ago) tampoco publica horario para esos cuatro.
+
+### Datos descartados por falsos
+
+Detectados **únicamente al abrir la fuente citada**; las síntesis automáticas de búsqueda los daban por buenos:
+
+1. Teléfono `311 255 5912` atribuido a «122 Plaza Apartahotel» (Bogotá). En el artículo real de Infobae corresponde a un punto en **Chía**, otra ciudad de la misma lista.
+2. Horario «8:00 a. m. – 9:00 p. m.» atribuido a los puntos de Cruz Roja en Bogotá. Portafolio dice expresamente que **no** publica horario para ninguno de esos seis puntos; ese horario pertenece a los cuatro puntos distintos anunciados por la Alcaldía de Bogotá.
+3. Teléfonos del Banco de Alimentos de Manizales tomados de un artículo de La Patria cuyo contenido real es de **junio de 2020**; la página mostraba una fecha de plantilla de 2026.
+
+---
