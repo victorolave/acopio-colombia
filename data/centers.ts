@@ -86,6 +86,45 @@ const MEDELLIN_BOLETIN_SOURCE = {
   sourcePublishedAt: "2026-08-11",
 };
 
+/**
+ * Campaña «El Valle Somos Todos», publicada por la Gobernación del Valle del
+ * Cauca en su propio sitio el 11 de agosto de 2026.
+ *
+ * POR QUÉ APARECE AHORA. §3.d.4 de docs/sources.md dejó estos puntos en
+ * `reported` no por falta de fuente sino por límite de herramienta:
+ * `valledelcauca.gov.co` devolvía 404 en su sección de publicaciones. Ese mismo
+ * párrafo pedía reintentar desde otra red antes de dar nada por inexistente.
+ * Se reintentó el 12 de agosto y la publicación estaba ahí.
+ *
+ * La publicación trae las direcciones EXACTAS y coinciden con las que el seed
+ * ya venía publicando vía El País. No publica horario: `scheduleText` no cambia.
+ */
+const VALLE_CAMPANA_SOURCE = {
+  sourceName: "Gobernación del Valle del Cauca — campaña «El Valle Somos Todos»",
+  sourceUrl:
+    "https://valledelcauca.gov.co/publicaciones/90172/campana-el-valle-somos-todos-estos-son-los-elementos-que-se-pueden-donar-para-los-damnificados-por-el-sismo",
+  sourcePublishedAt: "2026-08-11",
+};
+
+/**
+ * «Terremoto de Cali | Repositorio Oficial de Información», de la Alcaldía de
+ * Santiago de Cali en su propio sitio.
+ *
+ * Mismo caso y mismo desenlace: `cali.gov.co` no resolvía por DNS el 12 de
+ * agosto (§3.d.4) y el punto de la Plazoleta Jairo Varela colgaba de El País.
+ * El repositorio lo lista con la misma dirección que el seed ya traía.
+ */
+const CALI_REPOSITORIO_SOURCE = {
+  sourceName: "Alcaldía de Santiago de Cali — Repositorio Oficial de Información",
+  sourceUrl:
+    "https://www.cali.gov.co/gobierno/publicaciones/193607/terremoto-de-cali-repositorio-oficial-de-informacion/",
+  sourcePublishedAt: "2026-08-11",
+};
+
+/** Ascensos del Valle del Cauca tras el reintento de dominios del 12 de agosto. */
+const VERIFIED_AT_VALLE = "2026-08-12T16:00:00-05:00";
+
+
 /** Salvedad común a los 9 puntos que el boletín confirma sin publicar dirección ni horario. */
 const MEDELLIN_BOLETIN_NOTA =
   "Confirmado el 12 de agosto de 2026 en el boletín propio de la Alcaldía de Medellín (11 de agosto), que lo lista entre los 10 puntos oficiales de la campaña. El boletín NO publica dirección ni horario: esos datos siguen procediendo de medios (El Colombiano, El Tiempo) y no ganan certeza con esta verificación.";
@@ -831,14 +870,11 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Alcaldía de Santiago de Cali, vía El País (Cali)",
-    sourceUrl:
-      "https://www.elpais.com.co/cali/alcaldia-habilita-nuevos-espacios-para-recibir-ayudas-y-atender-a-afectados-en-cali-1154.html",
-    sourcePublishedAt: "2026-08-11",
-    verificationStatus: "reported",
+    ...CALI_REPOSITORIO_SOURCE,
+    verificationStatus: "verified",
     verificationNotes:
-      "Día 1 (10 ago): la Alcaldía lo habilitó priorizando elementos de protección para los equipos de búsqueda y rescate (El País: elpais.com.co/cali/habilitan-centro-de-acopio-en-cali-tras-fuerte-terremoto-asi-puede-donar-agua-y-elementos-de-seguridad-1047.html). Día 2 (11 ago): El País, citando a la Alcaldía, amplía la lista a ayuda humanitaria general —alimentos, cobijas, ropa, botiquín— además de los elementos de rescate; por eso el tipo pasa de «rescue_supplies» a «mixed».",
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+      "ASCENDIDO el 12 de agosto de 2026: el repositorio oficial de la Alcaldía de Cali lo lista como punto de acopio con la dirección «Av. 2 Nte. # 10 Nte. - 1 Granada», que corrobora la que el seed ya publicaba vía El País. Es la entidad responsable publicando en su propio canal. QUÉ RECIBE, y de dónde sale ese dato: día 1 (10 ago) la Alcaldía lo habilitó priorizando elementos de protección para los equipos de búsqueda y rescate; día 2 (11 ago) El País, citando a la Alcaldía, amplía la lista a ayuda humanitaria general —alimentos, cobijas, ropa, botiquín— además de los elementos de rescate, y por eso el tipo es «mixed» y no «rescue_supplies». Esa canasta sigue viniendo de El País y NO gana certeza con el ascenso: el repositorio confirma que el punto existe y su dirección, no publica la lista de artículos. Mismo criterio que se aplicó al boletín de Medellín en §3.d.2. SIN HORARIO: ninguna fuente oficial lo publica. Se rechazó a propósito el «8:00 a. m. – 6:00 p. m.» que circulaba: en el repositorio ese horario pertenece a los puntos de donación de SANGRE, que son otra cosa.",
+    lastVerifiedAt: VERIFIED_AT_VALLE,
   },
   {
     slug: "antigua-licorera-del-valle-cali",
@@ -867,14 +903,11 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Gobernación del Valle del Cauca, vía El País (Cali)",
-    sourceUrl:
-      "https://www.elpais.com.co/valle/gobernacion-del-valle-declara-calamidad-publica-tras-fuerte-terremoto-y-habilita-puntos-para-recibir-donaciones-1030.html",
-    sourcePublishedAt: "2026-08-10",
-    verificationStatus: "reported",
+    ...VALLE_CAMPANA_SOURCE,
+    verificationStatus: "verified",
     verificationNotes:
-      "Habilitado por la Gobernación del Valle del Cauca junto con la declaratoria de calamidad pública. La nota no detalla horarios ni la lista completa de artículos: confirmar antes de ir.",
-    lastVerifiedAt: VERIFIED_AT,
+      "ASCENDIDO el 12 de agosto de 2026: la campaña «El Valle Somos Todos», en el sitio propio de la Gobernación del Valle, publica «Antigua Licorera del Valle, Carrera 1 No. 26-85, Cali» — coincidencia EXACTA con la dirección que el seed ya traía vía El País. Habilitado junto con la declaratoria de calamidad pública. SIN HORARIO: la publicación no lo trae, así que sigue sin publicarse. Confirmar antes de ir.",
+    lastVerifiedAt: VERIFIED_AT_VALLE,
   },
   {
     slug: "casa-del-valle-bogota",
@@ -917,14 +950,11 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Gobernación del Valle del Cauca, vía El País (Cali)",
-    sourceUrl:
-      "https://www.elpais.com.co/valle/gobernacion-del-valle-declara-calamidad-publica-tras-fuerte-terremoto-y-habilita-puntos-para-recibir-donaciones-1030.html",
-    sourcePublishedAt: "2026-08-10",
-    verificationStatus: "reported",
+    ...VALLE_CAMPANA_SOURCE,
+    verificationStatus: "verified",
     verificationNotes:
-      "Punto en Bogotá habilitado por la Gobernación del Valle del Cauca para canalizar ayudas hacia el suroccidente del país.",
-    lastVerifiedAt: VERIFIED_AT,
+      "ASCENDIDO el 12 de agosto de 2026: la campaña «El Valle Somos Todos», en el sitio propio de la Gobernación del Valle, publica «Casa del Valle en Bogotá, Calle 34 No. 5-50, barrio La Merced, localidad de Santa Fe» — coincidencia EXACTA con la dirección del seed. Punto en Bogotá para canalizar ayudas hacia el suroccidente. EL PIN SIGUE APROXIMADO a propósito: el geocodificador resolvió «Diagonal 34» en vez de «Calle 34». Cae en La Merced, Santa Fe, que es el barrio y la localidad que declara la fuente, pero no corrobora la nomenclatura, así que la navegación sigue yendo por dirección en texto. EL HORARIO NO CAMBIA: la publicación de la Gobernación no lo trae, y el «desde las 7:00 a. m.» sigue siendo de La FM, con su salvedad intacta. NOTA: la publicación describe el evento como «sismo de magnitud 6.9»; el resto del seed usa 7,4. Es una discrepancia sobre la cifra del terremoto, no sobre el punto.",
+    lastVerifiedAt: VERIFIED_AT_VALLE,
   },
   {
     slug: "banco-de-alimentos-cali",
