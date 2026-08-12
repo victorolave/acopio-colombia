@@ -3,7 +3,7 @@
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
 **Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
-**Consolidado:** 98 registros · **90 publicables** (67 verificados + 23 reportados) · 3 en disputa · 3 inactivos · 2 pendientes · 26 departamentos.
+**Consolidado:** 108 registros · **99 publicables** (67 verificados + 32 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 39 municipios**.
 
 ---
 
@@ -245,8 +245,15 @@ No se localizó ningún comunicado de la Gobernación del Magdalena que habilite
 ### 4.5 Fundación Saciar — dirección discrepante
 La Silla Vacía publica «Carrera 52 #25-261». El Colombiano, Telemedellín, Infobae, Publimetro, La FM y Colombia.com coinciden en «**Carrera 50** #25-261». Se usó la versión mayoritaria. **Validar en terreno.**
 
-### 4.6 Manizales — Coliseo Mayor
-Aparece en algunas notas, pero como **albergue temporal**, no como centro de acopio. **Excluido deliberadamente**: publicarlo enviaría donaciones a un lugar que no las recibe.
+### 4.6 Manizales — Coliseo Mayor → **excluido el 10 de agosto, admitido el 12** ⚠️
+
+**Decisión del 10 de agosto.** Aparecía en algunas notas, pero como **albergue temporal**, no como centro de acopio. **Excluido deliberadamente**: publicarlo enviaría donaciones a un lugar que no las recibe.
+
+**Revisada el 12 de agosto de 2026 con la tanda de @Garzu96 (§11).** Se admite como `reported`. La Patria (10 de agosto) reporta **recepción efectiva de donaciones ciudadanas** en el sitio, para las más de 140 personas que aloja. La ficha dice, en este orden, que es **ante todo un albergue** y que quien lleve donaciones no interfiera con su operación.
+
+> **Lo que cambió es el hecho, no el criterio.** «Albergue ≠ acopio» sigue en pie y sigue excluyendo a los albergues de Cali (cancha Miguel Calero, Diamante de Béisbol) y al **Coliseo Menor de Manizales**, que queda en `pending` justamente porque su recepción de donaciones solo está implícita en la cobertura. Lo que este caso añade es que un recinto puede ser **las dos cosas a la vez**, y que la prueba para admitirlo es que una fuente reporte recepción efectiva, no que el sitio parezca apropiado.
+>
+> Esta sección se **reescribe en vez de borrarse**. Un mapa de emergencia que revierte una exclusión sin dejar rastro no es auditable: quien lea la ficha mañana tiene que poder ver que estuvo fuera, por qué, y qué evidencia lo hizo entrar.
 
 ### 4.7 Pereira y Buenaventura (bancos de alimentos ABACO) → `inactive`
 ABACO informó que ambas sedes resultaron **afectadas por el sismo** y que se evalúa ubicación alterna. No se publican como activas.
@@ -478,8 +485,23 @@ Detectados **únicamente al abrir la fuente citada**; las síntesis automáticas
 
 Al cierre del 11 de agosto, **ni la Alcaldía de Quibdó ni la Gobernación del Chocó habían anunciado un punto de acopio o canal de donación propio**, pese a ser el departamento del epicentro ([Cambio](https://cambiocolombia.com/pais/articulo/2026/8/donde-y-que-puede-donar-para-ayudar-a-los-damnificados-estos-son-los-centros-de-acopio-en-las-ciudades-principales-de-colombia) lo señala expresamente). La ayuda hacia el Chocó se está canalizando por la Cruz Roja y por los acopios de otras ciudades. **Revisar a diario**: cuando aparezca el canal oficial del Chocó, esa tanda tiene prioridad sobre cualquier otra.
 
+### Ajustes aplicados al integrar el aporte
+
+Tres cosas se cambiaron respecto a la propuesta original, y conviene que estén dichas porque dos de ellas tocan reglas del proyecto.
+
+**1. Los CAFE se publican SIN lista de artículos, y para eso hubo que abrir una excepción en el validador.** La propuesta rellenaba `acceptedItems` con las cuatro categorías básicas de la emergencia, declarándolo en la nota. El problema es que `acceptedItems` **alimenta el filtro de la interfaz**: quien filtre por «Agua potable» vería estos siete puntos y leería en la ficha que reciben agua, sin que ninguna fuente lo diga. Un dato inventado es peor que uno ausente, porque el ausente se ve.
+
+> **Pero el aporte no eligió eso por descuido: la regla `publico-sin-articulos` lo obligaba.** El validador exigía que todo centro publicado dijera qué recibe, y no contemplaba el caso de una fuente que confirma el punto y su dirección pero no publica la canasta. La regla tenía un punto ciego y forzaba a elegir entre dejar fuera un punto real o inventarle el contenido.
+>
+> Se resolvió como §3.c resolvió la tensión equivalente con `publico-sin-enlace`: **no se elimina la regla, se abre una excepción explícita.** `SIN_ARTICULOS_APROBADOS` en `scripts/validate-seed.ts` lleva los siete slugs, el validador emite un aviso permanente hasta que aparezca la canasta, y añadir un slug ahí queda visible en el diff. Es la segunda vez que una regla dura del validador se encuentra con un caso legítimo que no previó, y la segunda vez que la salida correcta es la excepción documentada y no relajar la regla.
+
+**2. El Coliseo Mayor de Manizales revertía §4.6 sin reescribirla.** Se reescribió: ver §4.6, que ahora deja constancia de que estuvo excluido, por qué, y qué evidencia lo hizo entrar.
+
+**3. Renumeración.** Esta sección llegó como «§10» y `main` ya tenía un §10 (investigación de horarios y teléfonos). Pasó a §11, y la referencia cruzada de `data/centers.ts` se actualizó.
+
 ### Pendientes que deja esta tanda
 
+0. **Conseguir la canasta de los siete CAFE** y sacarlos de `SIN_ARTICULOS_APROBADOS`. Es hoy el grupo de centros publicados con menos información del seed.
 1. Localizar la publicación primaria de los CAFE (Alcaldía de Pereira) para subirlos a `verified` y conseguir horarios/teléfonos.
 2. Confirmar si la Escuela Nacional del Deporte (Cali) retomó operación normal tras la evacuación por la réplica del 11 de agosto.
 3. Confirmar si el Coliseo Menor de Manizales recibe donaciones (activaría el registro `pending`).

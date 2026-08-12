@@ -437,18 +437,21 @@ const CALI_DIA2_URGENTES = [
  *
  * El Diario (Pereira) publicó los siete con sus direcciones el 10 de agosto
  * citando a la administración municipal; Semana corroboró los siete nombres el
- * 11. La fuente NO publica qué artículos recibe cada punto: se listan las
- * categorías básicas de la emergencia y la nota lo advierte.
+ * 11. La fuente NO publica qué artículos recibe cada punto.
+ *
+ * POR ESO VA VACÍA, y conviene explicar por qué no se rellenó con las
+ * categorías básicas de la emergencia, que fue la propuesta original del
+ * aporte. `acceptedItems` no es descriptivo: alimenta el filtro de la
+ * interfaz. Rellenarlo con lo que suele pedirse hace que alguien que filtre
+ * por «Agua potable» vea estos siete puntos y lea en la ficha que reciben
+ * agua, sin que ninguna fuente lo diga. Es el mismo razonamiento por el que
+ * §10 decidió no cargar los teléfonos generales de la entidad: un campo sin
+ * fuente se queda vacío y la salvedad vive en `verificationNotes`.
  */
-const CAFE_PEREIRA_ITEMS = [
-  "Agua potable",
-  "Alimentos no perecederos",
-  "Elementos de aseo",
-  "Cobijas",
-];
+const CAFE_PEREIRA_ITEMS: string[] = [];
 
 const CAFE_PEREIRA_NOTA =
-  "Punto CAFE habilitado por la Alcaldía de Pereira tras la declaratoria de calamidad pública (El Diario, 10 de agosto; Semana corrobora los siete puntos el 11). La fuente no publica la lista de artículos que recibe cada punto: se listan las categorías básicas de esta emergencia — confirma en el punto antes de llevar la donación. ";
+  "Punto CAFE habilitado por la Alcaldía de Pereira tras la declaratoria de calamidad pública (El Diario, 10 de agosto; Semana corrobora los siete puntos el 11). NO SE PUBLICA QUÉ RECIBE: ninguna de las dos fuentes lista los artículos de cada punto, así que la ficha va sin lista en vez de suponer una. Pregunta en el punto antes de llevar la donación. Tampoco hay horario ni teléfono publicados. ";
 
 function cafePereira(
   slug: string,
@@ -2621,7 +2624,7 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourcePublishedAt: "2026-08-10",
     verificationStatus: "reported",
     verificationNotes:
-      "Es ante todo un ALBERGUE temporal habilitado por la Alcaldía de Manizales (junto con el Coliseo Menor y el SIC de Aranjuez) que además recibe donaciones ciudadanas para las familias que aloja —más de 140 personas al 11 de agosto—. La apertura de los albergues la confirmó la Alcaldía en sus canales; la recepción de donaciones en este punto la reporta La Patria. Si llevas donaciones, entrégalas sin interferir con la operación del albergue.",
+      "Es ante todo un ALBERGUE temporal habilitado por la Alcaldía de Manizales (junto con el Coliseo Menor y el SIC de Aranjuez) que además recibe donaciones ciudadanas para las familias que aloja —más de 140 personas al 11 de agosto—. La apertura de los albergues la confirmó la Alcaldía en sus canales; la recepción de donaciones en este punto la reporta La Patria. Si llevas donaciones, entrégalas sin interferir con la operación del albergue. REVIERTE UNA EXCLUSIÓN DELIBERADA, y por eso queda dicho aquí: §4.6 de docs/sources.md había dejado este recinto FUERA del mapa el 10 de agosto, con el argumento de que aparecía en las notas como albergue y no como acopio, y que publicarlo enviaría donaciones a un lugar que no las recibe. Lo que cambió no es el criterio sino el hecho: La Patria reporta recepción efectiva de donaciones ciudadanas en el sitio. El criterio se mantiene intacto para el resto —los albergues de Cali y el Coliseo Menor siguen fuera—, y §4.6 quedó reescrita en vez de borrada para que la reversión sea auditable.",
     lastVerifiedAt: VERIFIED_AT_DIA2,
   },
   {
