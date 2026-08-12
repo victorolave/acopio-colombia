@@ -3,7 +3,7 @@
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
 **Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d; reintento de dominios cerrados, §3.e; alta de Rionegro, §3.f). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
-**Consolidado:** 111 registros · **102 publicables** (73 verificados + 29 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 40 municipios**.
+**Consolidado:** 111 registros · **102 publicables** (69 verificados + 33 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 40 municipios**.
 
 ---
 
@@ -366,7 +366,22 @@ La misma URL, releída el 12 de agosto, lista ahora **cinco** puntos: Universida
 
 El punto añadido tiene además **artículo propio** en el mismo dominio —[«El estadio El Campín, habilitado como nuevo punto de recepción…»](https://bogota.gov.co/mi-ciudad/ambiente/estadio-el-campin-de-bogota-nuevo-punto-ayudas-damnificados-terremoto), 11 de agosto— y abre **el miércoles 12**. Se dio de alta como `estadio-el-campin-bogota`, `verified`, con horario continuo de 8:00 a. m. a 9:00 p. m.
 
-**Los cuatro centros de la tabla de arriba siguen `verified`, por decisión expresa mantenida el 12 de agosto.** El razonamiento del día 2 no ha cambiado: ausencia de la lista no es prueba de cierre, y son sedes propias de la Cruz Roja. **Sigue pendiente la llamada a la Cruz Roja Seccional**, y es hoy el riesgo abierto más alto del proyecto: cuatro fichas con el sello más fuerte del sitio apoyadas en una fuente que ya no las sostiene.
+#### Resuelto el 12 de agosto: los cuatro bajan a `reported` ✅
+
+**Decisión tomada antes de publicar el seed en producción.** Los cuatro centros de la tabla pasan de `verified` a `reported`. Siguen **publicados**; lo que pierden es el sello.
+
+| Centro | Antes | Ahora |
+|---|---|---|
+| `samu-sur-cruz-roja-bogota` | `verified` | **`reported`** |
+| `centro-salvamento-acuatico-cruz-roja-bogota` | `verified` | **`reported`** |
+| `bodega-cruz-roja-bogota` | `verified` | **`reported`** |
+| `palacio-de-los-deportes-bogota` | `verified` | **`reported`** |
+
+**Por qué se degradan y no se ocultan.** El razonamiento del día 2 sigue siendo correcto en su mitad: ausencia de la lista no es prueba de cierre, son sedes propias de la Cruz Roja y pueden seguir recibiendo. Ocultarlas mandaría a la gente a menos puntos de los que existen. Pero la otra mitad ya no se sostenía: **el sello de `verified` significa «la entidad responsable lo publica en su propio canal», y la fuente que lo respaldaba dejó de mencionarlos.** Mantener el sello era afirmar algo que la fuente ya no dice.
+
+`reported` es exactamente el estado que describe la situación real: el punto probablemente existe, lo respalda una fuente que ya no lo confirma, y el sitio muestra el aviso «confirma antes de ir». **Sigue pendiente la llamada a la Cruz Roja Seccional Cundinamarca y Bogotá** para reconfirmarlos o retirarlos, pero ya no es un riesgo abierto: es una ficha que dice lo que sabe.
+
+> **Lo que este caso deja como método.** Cuando una fuente se actualiza en sitio y deja de respaldar lo que respaldaba, la respuesta correcta no es ocultar el dato ni conservar el sello: es **bajar el nivel de confianza al que la evidencia sostiene hoy**. Los estados de verificación existen precisamente para poder degradar sin borrar. Costó dos días llegar aquí porque se planteó como «¿lo quitamos o lo dejamos?», que es una falsa dicotomía.
 
 ### 4.9 Medellín — Terminal y La Alpujarra: disputa resuelta
 
@@ -473,7 +488,7 @@ Nueve centros que **ya estaban en el seed** tenían el pin en el centroide de la
 2. ~~Los 16 puntos ACSC~~ — **RESUELTO el 12 de agosto de 2026** (§3.d.1). Apareció el comunicado firmado en el dominio propio de la ACSC; las 16 direcciones y teléfonos coinciden con el seed. Siguen **sin horario publicado**: la ficha pide llamar antes de ir, y no se inventó ninguno.
 2.b **Refrendo humano de dos entradas de lista blanca** — `sociedadescientificas.com` (§3.d.1) y `@somosbelisario` (§3.d.3) se añadieron con comprobación asistida y quedan marcadas «refrendadas por @victorolave el 12 de agosto de 2026 en `scripts/validate-seed.ts`. La segunda además **sienta precedente**: es la primera cuenta de un negocio privado en esa lista.
 2.c **Batallón Girardot (Medellín)** — el boletín oficial lista 10 puntos y no lo incluye, pese a confirmar los otros ocho de la ciudad (§3.d.2). Localizar comunicado de la Cuarta Brigada o bajar a `disputed`.
-2.d **Los cuatro centros de Bogotá de §4.8** — llamar a la Cruz Roja Seccional. Es el riesgo abierto más alto del proyecto.
+2.d ~~**Los cuatro centros de Bogotá de §4.8**~~ — **DEGRADADOS a `reported` el 12 de agosto de 2026** (§4.8). Siguen publicados con el aviso «confirma antes de ir». Queda pendiente la llamada a la Cruz Roja Seccional Cundinamarca y Bogotá para reconfirmarlos o retirarlos, pero ya no es el riesgo abierto más alto: la ficha dice lo que la evidencia sostiene.
 3. **Las 4 sedes de bancos de alimentos sin dirección** (Armenia, Manizales, Ibagué, Cúcuta ACSC) — obtener dirección exacta con ABACO / la ACSC.
 4. **Los 65 pines no exactos** (de 93 publicados) — verificar visualmente contra imagen satelital o llamada al centro. Cifra recontada el 12 de agosto tras el alta de Rionegro. **Antes de tocar nada aquí, leer §3.g**: la pasada completa de `scripts/geocode.ts` sobrescribe las correcciones manuales de §5.4 que no tienen `QUERY_OVERRIDE`.
 5. **Dirección de Fundación Saciar** — resolver Carrera 50 vs. Carrera 52.
