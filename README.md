@@ -35,6 +35,7 @@ Además, la precisión del pin es **un dato explícito** (`exact` / `approximate
 | Datos | Supabase (Postgres + Auth + Storage + RLS) | Tres servicios administrados en uno |
 | Mapas | MapLibre GL JS + OpenFreeMap | Sin API key, sin cuenta, sin costo |
 | Deploy | Vercel | Despliegue automático desde GitHub |
+| Paquetes | pnpm (fijado en `packageManager`) | Un solo gestor: el que valida el CI es el que instalas tú |
 
 Sin PostGIS: las distancias se calculan con **Haversine en el cliente** sobre unas decenas de puntos (`lib/distance.ts`).
 
@@ -43,9 +44,9 @@ Sin PostGIS: las distancias se calculan con **Haversine en el cliente** sobre un
 ## Setup
 
 ```bash
-npm install
+pnpm install
 cp env.example .env.local
-npm run dev
+pnpm run dev
 ```
 
 Abre <http://localhost:3000>.
@@ -95,8 +96,8 @@ values ('<uuid-del-usuario>', 'admin@ejemplo.com');
 El seed **no se edita a mano**. La fuente de verdad es `data/centers.ts`.
 
 ```bash
-npx tsx scripts/geocode.ts   # geocodifica (Nominatim, 1 req/s) → data/coordinates.json
-npm run seed:build           # genera supabase/seed.sql
+pnpm run geocode      # geocodifica (Nominatim, 1 req/s) → data/coordinates.json
+pnpm run seed:build   # genera supabase/seed.sql
 ```
 
 `scripts/geocode.ts` cachea resultados, aplica consultas curadas por centro, clasifica la precisión de forma conservadora y permite correcciones manuales documentadas. **Revisa siempre la salida antes de publicar.**
@@ -109,8 +110,8 @@ npm run seed:build           # genera supabase/seed.sql
 
 **Desde el equipo (seed):**
 1. Agrega el registro en `data/centers.ts` con su `sourceName`, `sourceUrl`, `sourcePublishedAt` y `verificationStatus`.
-2. `npx tsx scripts/geocode.ts` y revisa la precisión asignada.
-3. `npm run seed:build` y ejecuta el SQL resultante.
+2. `pnpm run geocode` y revisa la precisión asignada.
+3. `pnpm run seed:build` y ejecuta el SQL resultante.
 4. Documenta la fuente en `docs/sources.md`.
 
 ---
@@ -204,7 +205,7 @@ Lo más útil que puedes hacer ahora mismo: tomar uno de los 23 centros `reporte
 Las reglas de verificación no son solo documentación: están **como código** en `scripts/validate-seed.ts` y corren en CI en cada pull request. Rechazan automáticamente fuentes anteriores al terremoto, `verified` sin fuente institucional, coordenadas fuera de Colombia y duplicados.
 
 ```bash
-npm run validate:seed
+pnpm run validate:seed
 ```
 
 - [Código de conducta](CODE_OF_CONDUCT.md)

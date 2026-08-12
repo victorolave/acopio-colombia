@@ -22,44 +22,53 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # pnpm se instala ANTES que Node a propósito: `setup-node` necesita que
+      # pnpm ya exista para poder cachear su almacén. La versión no se escribe
+      # aquí, sale del campo `packageManager` de package.json, que es la única
+      # respuesta a «con qué se instala esto».
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      # `--frozen-lockfile` hace fallar el CI si package.json y pnpm-lock.yaml
+      # no concuerdan, en vez de resolver por su cuenta y desplegar un árbol de
+      # dependencias que nadie probó.
+      - run: pnpm install --frozen-lockfile
 
       # Se ejecuta PRIMERO y a propósito: si un pull request introduce un centro
       # con fuente anterior al terremoto, o marca «verified» algo que solo tiene
       # respaldo de prensa, queremos que falle aquí y no en la revisión humana.
       - name: Validar las reglas de verificación del seed
-        run: npm run validate:seed
+        run: pnpm run validate:seed
 
       - name: Comprobar tipos
-        run: npm run typecheck
+        run: pnpm run typecheck
 
       # Se añade a CI el mismo día que ESLint se instaló de verdad. El proyecto
       # llevaba desde el primer commit con `"lint": "next lint"` sin ESLint en las
       # dependencias: el comando fallaba, nadie lo corría y las reglas de React se
       # dejaron de cumplir en silencio. Si no se ejecuta aquí, vuelve a pasar.
       - name: Reglas de estilo y de React
-        run: npm run lint
+        run: pnpm run lint
 
       # El build corre SIN credenciales de Supabase, a propósito: comprueba que
       # el respaldo con el seed estático sigue funcionando. Es lo que mantiene el
       # sitio en pie si la base de datos falla durante la emergencia.
       - name: Build sin base de datos (modo respaldo)
-        run: npm run build
+        run: pnpm run build
 
       # Pruebas de interacción real en navegador. Existen porque el rediseño
       # móvil salió con dos botones muertos: el typecheck pasaba, el build
       # pasaba y el HTML era correcto. Un manejador de gestos se interponía
       # entre el dedo y el botón e impedía que se generara el `click`.
       - name: Instalar Chromium para las pruebas de interacción
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Pruebas de interacción (móvil y escritorio)
-        run: npm run test:e2e
+        run: pnpm run test:e2e
 
       - name: Guardar el rastro si algo falló
         if: failure()
@@ -74,10 +83,10 @@ jobs:
       # se nota.
       - name: Verificar que el seed generado esté al día
         run: |
-          npm run seed:build
+          pnpm run seed:build
           if ! git diff --quiet -- supabase/seed.sql; then
             echo "::error::supabase/seed.sql está desactualizado respecto a data/centers.ts."
-            echo "Ejecuta 'npm run seed:build' e incluye el resultado en el commit."
+            echo "Ejecuta 'pnpm run seed:build' e incluye el resultado en el commit."
             git diff --stat -- supabase/seed.sql
             exit 1
           fi

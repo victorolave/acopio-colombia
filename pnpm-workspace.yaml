@@ -1,0 +1,14 @@
+# pnpm no ejecuta scripts de instalación de las dependencias salvo que se
+# aprueben aquí de forma explícita. Es una defensa contra paquetes que ejecutan
+# código arbitrario al instalarse, y en un repositorio público que acepta
+# aportes conviene mantenerla.
+#
+# Estos dos están aprobados porque su script de instalación es lo que descarga
+# o enlaza su binario nativo: sin él, `next build` y `eslint` no arrancan.
+#
+# Antes de añadir uno nuevo a esta lista, mira qué hace su script. Que la
+# instalación falle es un fastidio; que un paquete ejecute lo que quiera en el
+# equipo de quien contribuye es otra cosa.
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true

@@ -2,6 +2,10 @@
   "name": "acopio-colombia",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.21.0",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

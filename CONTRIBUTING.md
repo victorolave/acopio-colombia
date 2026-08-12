@@ -63,26 +63,26 @@ El campo `location_precision` tiene tres valores: `exact`, `approximate`, `munic
 ```bash
 git clone https://github.com/victorolave/acopio-colombia.git
 cd acopio-colombia
-npm install
+pnpm install
 ```
 
 1. **Edita `data/centers.ts`.** Es la única fuente de verdad. No edites `supabase/seed.sql` ni `data/coordinates.json` a mano: se generan.
 
 2. **Geocodifica y REVISA el resultado.**
    ```bash
-   npm run geocode
+   pnpm run geocode
    ```
    El script imprime a qué lugar resolvió cada dirección. Léelo. En la primera pasada de este proyecto, «Carrera 24 #73-38» (Barrios Unidos, Bogotá) cayó en **Ciudad Bolívar**, al otro lado de la ciudad.
 
 3. **Valida.**
    ```bash
-   npm run validate:seed
+   pnpm run validate:seed
    ```
    Comprueba mecánicamente lo que no debería depender de la memoria de un revisor: fuentes anteriores al sismo, `verified` sin fuente institucional, coordenadas fuera de Colombia, duplicados, campos obligatorios.
 
 4. **Regenera el seed.**
    ```bash
-   npm run seed:build
+   pnpm run seed:build
    ```
 
 5. **Documenta la fuente en `docs/sources.md`.** Si encontraste una contradicción entre fuentes, escríbela ahí aunque la hayas resuelto. La próxima persona necesita saber que ya lo revisaste.
@@ -94,9 +94,9 @@ npm install
 ## Aportes de código
 
 ```bash
-npm run dev          # http://localhost:3000
-npm run typecheck
-npm run build
+pnpm run dev          # http://localhost:3000
+pnpm run typecheck
+pnpm run build
 ```
 
 La app **funciona sin Supabase**: sin variables de entorno usa el seed estático en modo solo lectura. No necesitas credenciales para trabajar en la interfaz.
