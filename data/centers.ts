@@ -688,9 +688,9 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl:
       "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
     sourcePublishedAt: "2026-08-10",
-    verificationStatus: "verified",
+    verificationStatus: "reported",
     verificationNotes:
-      "Publicado directamente por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026 como uno de los seis puntos oficiales. También aparece como «SAMU de la Alquería» en algunas publicaciones.",
+      "DEGRADADO A `reported` el 12 de agosto de 2026, y conviene saber por qué. Este punto entró como `verified` el 10 de agosto porque la Alcaldía Mayor de Bogotá lo publicaba en bogota.gov.co. Esa MISMA URL fue actualizada en sitio —sin cambiar la dirección ni la fecha visible— y hoy ya NO lo menciona: el 10 de agosto listaba seis puntos, el 11 cuatro y el 12 cinco, y este no está en la lista vigente (ver §4.8 de docs/sources.md). AUSENCIA DE LA LISTA NO ES PRUEBA DE CIERRE: es una sede propia de la Cruz Roja y puede seguir recibiendo, así que se mantiene PUBLICADO. Lo que ya no se sostiene es el SELLO de verificado, porque la fuente que lo respaldaba dejó de respaldarlo. Queda como `reported`, con el aviso «confirma antes de ir», hasta que la Cruz Roja Seccional Cundinamarca y Bogotá lo confirme por teléfono. Publicado directamente por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026 como uno de los seis puntos oficiales. También aparece como «SAMU de la Alquería» en algunas publicaciones.",
     lastVerifiedAt: VERIFIED_AT,
   },
   {
@@ -746,9 +746,9 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl:
       "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
     sourcePublishedAt: "2026-08-10",
-    verificationStatus: "verified",
+    verificationStatus: "reported",
     verificationNotes:
-      "Uno de los seis puntos oficiales de la Alcaldía Mayor de Bogotá. La Alcaldía lo nombra «Sede Cruz Roja Barrios Unidos / Centro de Salvamento Acuático».",
+      "DEGRADADO A `reported` el 12 de agosto de 2026, y conviene saber por qué. Este punto entró como `verified` el 10 de agosto porque la Alcaldía Mayor de Bogotá lo publicaba en bogota.gov.co. Esa MISMA URL fue actualizada en sitio —sin cambiar la dirección ni la fecha visible— y hoy ya NO lo menciona: el 10 de agosto listaba seis puntos, el 11 cuatro y el 12 cinco, y este no está en la lista vigente (ver §4.8 de docs/sources.md). AUSENCIA DE LA LISTA NO ES PRUEBA DE CIERRE: es una sede propia de la Cruz Roja y puede seguir recibiendo, así que se mantiene PUBLICADO. Lo que ya no se sostiene es el SELLO de verificado, porque la fuente que lo respaldaba dejó de respaldarlo. Queda como `reported`, con el aviso «confirma antes de ir», hasta que la Cruz Roja Seccional Cundinamarca y Bogotá lo confirme por teléfono. Uno de los seis puntos oficiales de la Alcaldía Mayor de Bogotá. La Alcaldía lo nombra «Sede Cruz Roja Barrios Unidos / Centro de Salvamento Acuático».",
     lastVerifiedAt: VERIFIED_AT,
   },
   {
@@ -806,9 +806,9 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl:
       "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
     sourcePublishedAt: "2026-08-10",
-    verificationStatus: "verified",
+    verificationStatus: "reported",
     verificationNotes:
-      "Bodega de acopio y clasificación previa al envío de ayudas a los departamentos afectados. Punto oficial de la Alcaldía Mayor de Bogotá.",
+      "DEGRADADO A `reported` el 12 de agosto de 2026, y conviene saber por qué. Este punto entró como `verified` el 10 de agosto porque la Alcaldía Mayor de Bogotá lo publicaba en bogota.gov.co. Esa MISMA URL fue actualizada en sitio —sin cambiar la dirección ni la fecha visible— y hoy ya NO lo menciona: el 10 de agosto listaba seis puntos, el 11 cuatro y el 12 cinco, y este no está en la lista vigente (ver §4.8 de docs/sources.md). AUSENCIA DE LA LISTA NO ES PRUEBA DE CIERRE: es una sede propia de la Cruz Roja y puede seguir recibiendo, así que se mantiene PUBLICADO. Lo que ya no se sostiene es el SELLO de verificado, porque la fuente que lo respaldaba dejó de respaldarlo. Queda como `reported`, con el aviso «confirma antes de ir», hasta que la Cruz Roja Seccional Cundinamarca y Bogotá lo confirme por teléfono. Bodega de acopio y clasificación previa al envío de ayudas a los departamentos afectados. Punto oficial de la Alcaldía Mayor de Bogotá.",
     lastVerifiedAt: VERIFIED_AT,
   },
   {
@@ -835,9 +835,9 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl:
       "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
     sourcePublishedAt: "2026-08-10",
-    verificationStatus: "verified",
+    verificationStatus: "reported",
     verificationNotes:
-      "Punto de mayor capacidad de los seis habilitados por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026.",
+      "DEGRADADO A `reported` el 12 de agosto de 2026, y conviene saber por qué. Este punto entró como `verified` el 10 de agosto porque la Alcaldía Mayor de Bogotá lo publicaba en bogota.gov.co. Esa MISMA URL fue actualizada en sitio —sin cambiar la dirección ni la fecha visible— y hoy ya NO lo menciona: el 10 de agosto listaba seis puntos, el 11 cuatro y el 12 cinco, y este no está en la lista vigente (ver §4.8 de docs/sources.md). AUSENCIA DE LA LISTA NO ES PRUEBA DE CIERRE: es una sede propia de la Cruz Roja y puede seguir recibiendo, así que se mantiene PUBLICADO. Lo que ya no se sostiene es el SELLO de verificado, porque la fuente que lo respaldaba dejó de respaldarlo. Queda como `reported`, con el aviso «confirma antes de ir», hasta que la Cruz Roja Seccional Cundinamarca y Bogotá lo confirme por teléfono. Punto de mayor capacidad de los seis habilitados por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026.",
     lastVerifiedAt: VERIFIED_AT,
   },
   {
