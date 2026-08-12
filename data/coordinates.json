@@ -138,9 +138,9 @@
   "fundacion-saciar-medellin": {
     "slug": "fundacion-saciar-medellin",
     "query": "Carrera 50, Guayabal, Medellín, Antioquia, Colombia",
-    "latitude": 6.223145,
-    "longitude": -75.577415,
-    "displayName": "Carrera 50, Santa Fé, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050021, Colombia",
+    "latitude": 6.228658,
+    "longitude": -75.57672,
+    "displayName": "[corrección manual] POI de Google a 619 m de la dirección publicada: mejora el pin, pero se conserva la navegación por texto.",
     "precision": "approximate"
   },
   "parque-principal-itagui": {
@@ -618,42 +618,42 @@
   "udea-afroudea-medellin": {
     "slug": "udea-afroudea-medellin",
     "query": "Universidad de Antioquia, Ciudad Universitaria, Medellín, Antioquia, Colombia",
-    "latitude": 6.26798,
-    "longitude": -75.568759,
-    "displayName": "Universidad de Antioquia, 53-108, Calle 67, Ciudad Universitaria, Comuna 4 - Aranjuez, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050010, Colombia",
+    "latitude": 6.265728,
+    "longitude": -75.569724,
+    "displayName": "[corrección manual] Se pasa del centroide del campus al bloque 9, que es la sede que declara el centro.",
     "precision": "exact"
   },
   "simon-coffee-medellin": {
     "slug": "simon-coffee-medellin",
     "query": "Carrera 37 # 10-54, El Poblado, Medellín, Antioquia, Colombia",
-    "latitude": 6.207655,
-    "longitude": -75.567216,
-    "displayName": "Carrera 37, La Florida, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050003, Colombia",
-    "precision": "approximate"
+    "latitude": 6.209586,
+    "longitude": -75.566377,
+    "displayName": "[corrección manual] POI con nombre propio en Google Maps; Nominatim solo resolvía el centroide de la Carrera 37.",
+    "precision": "exact"
   },
   "restaurante-belisario-medellin": {
     "slug": "restaurante-belisario-medellin",
     "query": "Calle 7 # 35-44, El Poblado, Medellín, Antioquia, Colombia",
-    "latitude": 6.20435,
-    "longitude": -75.558621,
-    "displayName": "Calle 7, El Tesoro, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050003, Colombia",
-    "precision": "approximate"
+    "latitude": 6.206436,
+    "longitude": -75.565875,
+    "displayName": "[corrección manual] El pin corrobora la Calle 7 #35-44; Nominatim había resuelto la misma vía en El Tesoro.",
+    "precision": "exact"
   },
   "remanence-medellin": {
     "slug": "remanence-medellin",
     "query": "Calle 10B # 35-27, El Poblado, Medellín, Antioquia, Colombia",
-    "latitude": 6.210378,
-    "longitude": -75.55807,
-    "displayName": "Calle 10B, Las Lomas Numero 2, Comuna 14 - El Poblado, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050003, Colombia",
+    "latitude": 6.210096,
+    "longitude": -75.565046,
+    "displayName": "[corrección manual] POI de Google a 773 m de la Calle 10B #35-27: mejora el pin, pero se conserva la navegación por texto.",
     "precision": "approximate"
   },
   "bodega-guayaquiliando-medellin": {
     "slug": "bodega-guayaquiliando-medellin",
     "query": "Avenida 80 # 52-88, Medellín, Antioquia, Colombia",
-    "latitude": 6.265139,
-    "longitude": -75.59628,
-    "displayName": "Avenida 80, Los Colores, Comuna 11 - Laureles-Estadio, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050035, Colombia",
-    "precision": "approximate"
+    "latitude": 6.266046,
+    "longitude": -75.595864,
+    "displayName": "[corrección manual] El pin corrobora la Avenida 80 #52-88 con número de vía; antes era el centroide de la avenida.",
+    "precision": "exact"
   },
   "libreria-rodante-delfos-medellin": {
     "slug": "libreria-rodante-delfos-medellin",
@@ -666,10 +666,10 @@
   "fundacion-el-arte-de-los-suenos-medellin": {
     "slug": "fundacion-el-arte-de-los-suenos-medellin",
     "query": "Carrera 48 # 35-47, Perpetuo Socorro, Medellín, Antioquia, Colombia",
-    "latitude": 6.237804,
-    "longitude": -75.571717,
-    "displayName": "Carrera 48, Perpetuo Socorro, Comuna 10 - La Candelaria, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050015, Colombia",
-    "precision": "approximate"
+    "latitude": 6.236355,
+    "longitude": -75.572418,
+    "displayName": "[corrección manual] POI con nombre propio en Google Maps, coherente con la dirección del Perpetuo Socorro.",
+    "precision": "exact"
   },
   "la-razon-medellin": {
     "slug": "la-razon-medellin",
@@ -738,10 +738,10 @@
   "gestion-del-riesgo-envigado": {
     "slug": "gestion-del-riesgo-envigado",
     "query": "Carrera 40, Envigado, Antioquia, Colombia",
-    "latitude": 6.17006,
-    "longitude": -75.585057,
-    "displayName": "Carrera 40, San Mateo, Envigado, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 055422, Colombia",
-    "precision": "approximate"
+    "latitude": 6.167091,
+    "longitude": -75.586845,
+    "displayName": "[corrección manual] El pin corrobora la Carrera 40 #39 sur-59 y nombra la oficina; la nomenclatura «39 sur» no resuelve en OSM.",
+    "precision": "exact"
   },
   "usaquen-usaquen-vl0m": {
     "slug": "usaquen-usaquen-vl0m",
