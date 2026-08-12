@@ -3,7 +3,7 @@
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
 **Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d).
-**Consolidado:** 99 registros · **90 publicables** (67 verificados + 23 reportados) · 4 en disputa · 3 inactivos · 2 pendientes · 26 departamentos.
+**Consolidado:** 98 registros · **90 publicables** (67 verificados + 23 reportados) · 3 en disputa · 3 inactivos · 2 pendientes · 26 departamentos.
 
 ---
 
@@ -292,7 +292,9 @@ El 11 de agosto El Tiempo publica ambos citando a la Alcaldía, y **precisa que 
 
 - La Alpujarra → se publica como `hall-alcaldia-medellin`.
 - La terminal → se publica como `terminal-del-norte-medellin`.
-- El registro viejo `terminal-transportes-la-alpujarra-medellin` se conserva en disputa, sin coordenadas y sin publicar, con la nota de traza que apunta a los dos nuevos.
+- El registro viejo `terminal-transportes-la-alpujarra-medellin` se conservó en disputa, sin coordenadas y sin publicar, con la nota de traza que apunta a los dos nuevos.
+
+**Cerrado el 12 de agosto de 2026:** ese registro viejo quedó **eliminado**. Sus dos mitades llevaban un día publicadas por separado y ambas fueron después confirmadas en el boletín propio de la Alcaldía (§3.d.2); su propia nota decía «pendiente de decidir si se crea como registro propio» y ya no había nada que decidir. Mantener un registro fantasma en `disputed` solo añade ruido a un archivo que se revisa a las tres de la mañana.
 
 También quedó **corroborada la dirección de Fundación Saciar**: la pieza ciudadana coincide en «Carrera 50 #25-261», la versión mayoritaria que ya usaba el seed frente al «Carrera 52» de La Silla Vacía (§4.5). Tercera fuente independiente a favor.
 
@@ -326,6 +328,9 @@ Por eso el proyecto **modela la precisión como dato de primera clase** (`locati
 | `acsc-cucuta` | El centroide administrativo del municipio quedaba ~20 km al norte del casco urbano | Se fijó el centro urbano de Cúcuta |
 | `acsc-santa-marta` | La consulta enganchó un POI («Hotel Monterrey») sobre otra vía | Se fijó el centro histórico de Santa Marta |
 | `biblioteca-publica-el-poblado-medellin` | OSM no tiene la biblioteca como POI y el boletín no publica dirección | Centroide del barrio El Poblado, marcado `approximate`: es el barrio, no el edificio (12 ago 2026) |
+| `acsc-bogota` | **~11 km de error.** El pin caía en la Carrera 15A de **Los Mártires**; la dirección (calle 120) está en **Usaquén**. Nominatim ofrece varios tramos con el mismo nombre de vía y la primera pasada tomó el equivocado | Se fijó el tramo de la Carrera 15A en Usaquén (12 ago 2026) |
+
+> **Cómo apareció el error de Bogotá, porque el método importa.** No salió de una auditoría de pines: salió de **desconfiar de un ascenso**. Antes de promover los 16 puntos de la ACSC al sello «Verificado» se revisó su geometría, bajo el criterio de que promover un centro cuyo mapa apunta a 11 km es peor que dejarlo como `reported`. **Conviene aplicar esa misma revisión a cualquier tanda futura de ascensos.**
 
 ### 5.4 Tanda del 12 de agosto — pines afinados con fichas de Google Maps
 

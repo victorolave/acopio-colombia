@@ -194,9 +194,9 @@
   "acsc-bogota": {
     "slug": "acsc-bogota",
     "query": "Carrera 15A # 120-74, Bogotá, Colombia",
-    "latitude": 4.599741,
-    "longitude": -74.084903,
-    "displayName": "Carrera 15A, Los Mártires, UPZs de Bogotá, Localidad Los Mártires, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111411, Colombia",
+    "latitude": 4.69929,
+    "longitude": -74.043834,
+    "displayName": "[corrección manual 12 ago 2026] El pin apuntaba a la Carrera 15A en LOS MÁRTIRES (4.599741, -74.084903), a unos 11 km al sur de la dirección real: la calle 120 está en Usaquén. Nominatim ofrece varios tramos con el mismo nombre de vía y la primera pasada tomó el equivocado. Se fija el tramo de la Carrera 15A en Usaquén, coherente con la calle 120. Sigue siendo centroide de vía, no el portal.",
     "precision": "approximate"
   },
   "acsc-cartagena": {

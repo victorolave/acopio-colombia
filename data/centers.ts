@@ -1156,34 +1156,13 @@ export const SEED_CENTERS: SeedCenter[] = [
       "Jornada de dos días (11 y 12 de agosto de 2026). Reportado por un agregador nacional; no se localizó comunicado de la Alcaldía de Itagüí. Confirmar antes de desplazarse.",
     lastVerifiedAt: VERIFIED_AT,
   },
-  {
-    slug: "terminal-transportes-la-alpujarra-medellin",
-    name: "Terminal de Transportes y Centro Administrativo La Alpujarra",
-    organization: "Alcaldía de Medellín",
-    type: "general",
-    department: "Antioquia",
-    municipality: "Medellín",
-    address: "Sin dirección publicada",
-    geocodeQuery: null,
-    latitude: null,
-    longitude: null,
-    acceptedItems: ["Alimentos no perecederos", "Elementos de primera necesidad"],
-    urgentNeeds: [],
-    rejectedItems: [],
-    scheduleText: null,
-    startsAt: null,
-    endsAt: null,
-    phone: null,
-    whatsapp: null,
-    email: null,
-    sourceName: "Sin fuente primaria localizada",
-    sourceUrl: null,
-    sourcePublishedAt: null,
-    verificationStatus: "disputed",
-    verificationNotes:
-      "NO PUBLICADO — RESUELTO A MEDIAS EL 11 DE AGOSTO DE 2026. El 10 de agosto los resúmenes de búsqueda atribuían a la Alcaldía de Medellín puntos en la Terminal de Transportes y en La Alpujarra, pero El Colombiano y Telemedellín solo confirmaban FUBAM y Fundación Saciar, así que este registro agrupaba ambos en disputa. El 11 de agosto El Tiempo publicó los dos citando a la Alcaldía: (a) La Alpujarra queda resuelta y se publica aparte como `hall-alcaldia-medellin`; (b) la terminal resulta ser la TERMINAL DEL NORTE, local 9840, que es un sitio distinto del que decían los resúmenes iniciales. Este registro se conserva en disputa solo por la terminal, pendiente de decidir si se crea como registro propio.",
-    lastVerifiedAt: null,
-  },
+  // ELIMINADO el 12 de agosto de 2026: `terminal-transportes-la-alpujarra-medellin`.
+  // Era un registro fantasma. Agrupaba en disputa «Terminal de Transportes» y
+  // «La Alpujarra» desde el 10 de agosto; sus dos mitades quedaron resueltas y
+  // publicadas por separado como `hall-alcaldia-medellin` y
+  // `terminal-del-norte-medellin`, ambas confirmadas después en el boletín
+  // propio de la Alcaldía. Su propia nota decía «pendiente de decidir si se crea
+  // como registro propio»: ya no hay nada que decidir. Ver docs/sources.md §4.9.
 
   // ===========================================================================
   // SANTANDER — iniciativas locales en Bucaramanga
