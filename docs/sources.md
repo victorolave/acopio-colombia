@@ -2,8 +2,8 @@
 
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
-**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
-**Consolidado:** 108 registros · **99 publicables** (67 verificados + 32 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 39 municipios**.
+**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d; reintento de dominios cerrados, §3.e). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
+**Consolidado:** 108 registros · **99 publicables** (70 verificados + 29 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 39 municipios**.
 
 ---
 
@@ -228,6 +228,49 @@ Siguen `inactive`, **sin cambio**. Ninguna fuente del 11 o 12 de agosto anuncia 
 
 ---
 
+### 3.e Reintento del 12 de agosto (tarde) — el Valle abrió sus puertas
+
+§3.d.4 dejó escrito que los 0 ascensos del Caribe, la zona andina y ABACO se debían a un **límite de herramienta y no a ausencia de fuente**, y pidió expresamente reintentar desde otra red antes de dar nada por inexistente. Se reintentó. **Dos de los cinco dominios cerrados respondieron.**
+
+| Dominio | Estado el 12 ago (mañana) | Estado en el reintento |
+|---|---|---|
+| `cali.gov.co` | DNS no resuelve | **Responde** |
+| `valledelcauca.gov.co` | 404 en publicaciones | **Responde** |
+| `barranquilla.gov.co` | HTTP 403 | 403 (sin cambio) |
+| `cartagena.gov.co` | HTTP 403 | 403 (sin cambio) |
+| `santamarta.gov.co` | HTTP 403 | 403 (sin cambio) |
+
+**3 ascensos a `verified`, 0 altas, 0 bajas.** Ningún centro nuevo: son tres puntos que ya estaban publicados y que ganan el sello.
+
+| Centro | Antes | Ahora | Fuente propia localizada |
+|---|---|---|---|
+| `antigua-licorera-del-valle-cali` | `reported` (El País) | `verified` | Gobernación del Valle, «El Valle Somos Todos», 11 ago |
+| `casa-del-valle-bogota` | `reported` (El País) | `verified` | La misma publicación |
+| `plazoleta-jairo-varela-cali` | `reported` (El País) | `verified` | Alcaldía de Cali, «Repositorio Oficial de Información», 11 ago |
+
+**Las tres direcciones coinciden exactamente con las que el seed ya publicaba.** El País había transcrito bien, igual que había ocurrido con la ACSC en §3.d.1.
+
+#### Revisión de geometría previa al ascenso
+
+§5.3 dejó la regla: **antes de promover, revisar el pin**, porque promover un centro cuyo mapa apunta lejos es peor que dejarlo en `reported`. Aplicada a los tres:
+
+| Centro | Pin | Veredicto |
+|---|---|---|
+| `plazoleta-jairo-varela-cali` | `exact`, POI con nombre propio en Comuna 2 | Se mantiene. La dirección oficial corrobora la del seed |
+| `antigua-licorera-del-valle-cali` | `exact`, POI con nombre propio en Comuna 4 | Se mantiene. La dirección oficial corrobora la del seed |
+| `casa-del-valle-bogota` | `approximate` | **Se mantiene `approximate` a propósito** |
+
+El de Bogotá merece explicación. El geocodificador resolvió **«Diagonal 34»**, no «Calle 34». Cae en La Merced, localidad de Santa Fe —exactamente el barrio y la localidad que declara la Gobernación—, pero **no corrobora la nomenclatura**. Según el criterio de §5.4, eso es `approximate` y no `exact`: el pin mejora la orientación pero la navegación debe seguir yendo por **dirección en texto**, que es lo que `lib/maps.ts` hace con todo lo que no sea `exact`. Subir el sello de verificación **no** es motivo para subir la precisión del pin: son dos ejes distintos y confundirlos es cómo se fabrica un pin errado con etiqueta de alta confianza.
+
+#### Dos datos rechazados en este ascenso
+
+1. **El horario de la Plazoleta Jairo Varela.** Circulaba un «8:00 a. m. – 6:00 p. m.». En el repositorio oficial ese horario pertenece a los **puntos de donación de sangre**, que son otra cosa. Es el mismo patrón del hallazgo 2 de §10: horario correcto atribuido al centro equivocado. `scheduleText` sigue en `null`.
+2. **El horario de Casa del Valle no cambió.** Sigue siendo el «desde las 7:00 a. m.» de La FM, con su salvedad dentro del texto. La publicación de la Gobernación no publica horario, así que ese dato **no gana ni pierde certeza** con este hallazgo — mismo criterio que se aplicó al boletín de Medellín en §3.d.2.
+
+> **Discrepancia anotada, no resuelta.** La publicación de la Gobernación describe el evento como «sismo de magnitud **6.9**»; el resto del seed usa 7,4. Es una discrepancia sobre la cifra del terremoto, no sobre el punto de acopio, y no invalida el ascenso. Queda escrita para que quien la encuentre no se alarme.
+
+---
+
 ## 4. Conflictos de fuentes resueltos
 
 ### 4.1 Barranquilla — Carrera 43 #6-120, Barranquillita → `reported`
@@ -388,7 +431,7 @@ Nueve centros que **ya estaban en el seed** tenían el pin en el centroide de la
 
 ## 7. Datos que deben validarse manualmente antes de sellar como verificados
 
-1. **Los 23 centros `reported`** — confirmar en el sitio o canal oficial de cada entidad. Para 20 de ellos (Caribe, andina y ABACO) el obstáculo del 12 de agosto fue de herramienta, no de fuente: ver §3.d.4 y **reintentar desde otra red antes de darlos por inexistentes**.
+1. **Los 20 centros `reported`** — confirmar en el sitio o canal oficial de cada entidad. Para el bloque del Caribe el obstáculo del 12 de agosto fue de herramienta, no de fuente: ver §3.d.4 y **reintentar desde otra red antes de darlos por inexistentes**. §3.e demuestra que el reintento paga: los tres del Valle salieron de aquí en cuanto sus dominios respondieron. Siguen cerrados `barranquilla.gov.co`, `cartagena.gov.co` y `santamarta.gov.co`, que son justo las primarias de Barranquillita, el Coliseo Bernardo Caraballo y la Ogricc.
 2. ~~Los 16 puntos ACSC~~ — **RESUELTO el 12 de agosto de 2026** (§3.d.1). Apareció el comunicado firmado en el dominio propio de la ACSC; las 16 direcciones y teléfonos coinciden con el seed. Siguen **sin horario publicado**: la ficha pide llamar antes de ir, y no se inventó ninguno.
 2.b **Refrendo humano de dos entradas de lista blanca** — `sociedadescientificas.com` (§3.d.1) y `@somosbelisario` (§3.d.3) se añadieron con comprobación asistida y quedan marcadas «refrendadas por @victorolave el 12 de agosto de 2026 en `scripts/validate-seed.ts`. La segunda además **sienta precedente**: es la primera cuenta de un negocio privado en esa lista.
 2.c **Batallón Girardot (Medellín)** — el boletín oficial lista 10 puntos y no lo incluye, pese a confirmar los otros ocho de la ciudad (§3.d.2). Localizar comunicado de la Cuarta Brigada o bajar a `disputed`.
