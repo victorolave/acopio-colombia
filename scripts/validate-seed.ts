@@ -127,6 +127,44 @@ const SIN_ENLACE_APROBADOS = new Set<string>([
   "batallon-girardot-medellin",
 ]);
 
+/**
+ * Excepciones a la regla `publico-sin-articulos`.
+ *
+ * La regla existe porque un centro que no dice qué recibe no le sirve a nadie,
+ * y sigue siendo cierto. Pero tiene un punto ciego que apareció con los CAFE de
+ * Pereira: cuando la fuente confirma que el punto EXISTE y publica su dirección
+ * pero **no publica qué recibe**, la regla obliga a elegir entre dos males.
+ *
+ * O se deja el centro fuera del mapa —y se pierde un punto real en una de las
+ * ciudades más golpeadas y peor cubiertas—, o se rellena `acceptedItems` con
+ * las categorías que «suelen pedirse». Lo segundo parece inofensivo y no lo es:
+ * `acceptedItems` alimenta el FILTRO de la interfaz, así que quien filtre por
+ * «Agua potable» verá ese punto y leerá que recibe agua sin que ninguna fuente
+ * lo diga. Un dato inventado es peor que un dato ausente, porque el ausente se
+ * ve y el inventado no.
+ *
+ * Se resuelve igual que `SIN_ENLACE_APROBADOS`: no se elimina la regla, se
+ * abre una excepción explícita. Añadir un slug aquí es una DECISIÓN CONSCIENTE,
+ * visible en el diff del pull request, y el validador emite un aviso permanente
+ * hasta que la fuente publique la lista.
+ *
+ * La ficha DEBE explicar en `verificationNotes` que no se sabe qué recibe y
+ * pedir que se confirme antes de llevar la donación.
+ */
+const SIN_ARTICULOS_APROBADOS = new Set<string>([
+  // Los 7 CAFE de la Alcaldía de Pereira, aportados por @Garzu96 el 12 de
+  // agosto de 2026. El Diario publica los siete con dirección y Semana los
+  // corrobora, pero ninguna de las dos fuentes lista los artículos.
+  // REVISAR: quitar de aquí en cuanto la Alcaldía publique la canasta.
+  "cafe-consota-pereira",
+  "cafe-perla-del-otun-pereira",
+  "cafe-el-remanso-pereira",
+  "cafe-kennedy-pereira",
+  "cafe-ormaza-pereira",
+  "cafe-san-nicolas-pereira",
+  "cafe-comuna-del-cafe-pereira",
+]);
+
 type Issue = { slug: string; rule: string; message: string };
 
 const errors: Issue[] = [];
@@ -198,11 +236,18 @@ for (const center of SEED_CENTERS as SeedCenter[]) {
     if (!center.address?.trim()) {
       fail(slug, "publico-sin-direccion", "Un centro publicado necesita dirección.");
     }
-    if (center.acceptedItems.length === 0) {
+    if (center.acceptedItems.length === 0 && !SIN_ARTICULOS_APROBADOS.has(slug)) {
       fail(
         slug,
         "publico-sin-articulos",
-        "Un centro publicado debe indicar qué recibe; si no, no le sirve a nadie.",
+        "Un centro publicado debe indicar qué recibe; si no, no le sirve a nadie. Si la fuente confirma el punto pero NO publica la lista de artículos, añádelo a `SIN_ARTICULOS_APROBADOS` con su motivo en vez de inventar la canasta: es una decisión consciente y queda visible en el diff.",
+      );
+    }
+    if (center.acceptedItems.length === 0 && SIN_ARTICULOS_APROBADOS.has(slug)) {
+      warn(
+        slug,
+        "publicado-sin-articulos-aprobado",
+        "Publicado SIN lista de artículos, por excepción aprobada: la fuente confirma el punto pero no publica qué recibe. Rellenar en cuanto la entidad lo publique.",
       );
     }
     if (!center.verificationNotes?.trim()) {
