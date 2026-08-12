@@ -838,5 +838,29 @@
     "longitude": -75.4884494,
     "displayName": "Coliseo Mayor, Carrera 24, Palogrande, Comuna Palogrande, Perímetro Urbano Manizales, Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",
     "precision": "exact"
+  },
+  "coliseo-ivan-ramiro-cordoba-rionegro": {
+    "slug": "coliseo-ivan-ramiro-cordoba-rionegro",
+    "query": "Carrera 52 # 41-61, Rionegro, Antioquia, Colombia",
+    "latitude": 6.159262,
+    "longitude": -75.372486,
+    "displayName": "Carrera 52, Rionegro, Oriente, Antioquia, RAP del Agua y la Montaña, 054040, Colombia",
+    "precision": "approximate"
+  },
+  "casa-cincopasitos-rionegro": {
+    "slug": "casa-cincopasitos-rionegro",
+    "query": "Carrera 50 # 51-19, Rionegro, Antioquia, Colombia",
+    "latitude": 6.16261,
+    "longitude": -75.369735,
+    "displayName": "Carrera 50, Rionegro, Oriente, Antioquia, RAP del Agua y la Montaña, 054040, Colombia",
+    "precision": "approximate"
+  },
+  "antiguo-colegio-san-antonio-rionegro": {
+    "slug": "antiguo-colegio-san-antonio-rionegro",
+    "query": "San Antonio de Pereira, Rionegro, Antioquia, Colombia",
+    "latitude": 6.130047,
+    "longitude": -75.380249,
+    "displayName": "San Antonio de Pereira, Rionegro, Oriente, Antioquia, RAP del Agua y la Montaña, 054048, Colombia",
+    "precision": "municipality"
   }
 }

@@ -2,8 +2,8 @@
 
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
-**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d; reintento de dominios cerrados, §3.e). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
-**Consolidado:** 108 registros · **99 publicables** (70 verificados + 29 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 39 municipios**.
+**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d; reintento de dominios cerrados, §3.e; alta de Rionegro, §3.f). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
+**Consolidado:** 111 registros · **102 publicables** (73 verificados + 29 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 40 municipios**.
 
 ---
 
@@ -271,6 +271,40 @@ El de Bogotá merece explicación. El geocodificador resolvió **«Diagonal 34»
 
 ---
 
+### 3.f Rionegro (Antioquia) — municipio nuevo, y el fallo era la ruta
+
+**3 altas, las tres `verified`.** La Alcaldía de Rionegro publica los puntos en su propio dominio, con dirección, horario y canasta: [«Rionegro se suma a #ColombiaSeLevanta para apoyar a las familias afectadas por el sismo»](https://rionegro.gov.co/publicaciones/1389/rionegro-se-suma-a-colombiaselevanta-para-apoyar-a-las-familias-afectadas-por-el-sismo/), 12 de agosto de 2026.
+
+| Punto | Dirección | Pin |
+|---|---|---|
+| Coliseo Iván Ramiro Córdoba | Carrera 52 #41-61 | `approximate` |
+| Casa CincoPasitos | Carrera 50 #51-19 | `approximate` |
+| Antiguo Colegio San Antonio — Oficina de Desarrollo Económico | sin nomenclatura | `municipality` |
+
+Horario de los tres: 7:30 a. m. – 4:30 p. m.
+
+> **Por qué esto casi se da por inexistente, que es la parte útil.** La primera búsqueda concluyó que el artículo no existía. Existía: lo que fallaba era **la ruta**. El portal lo enlaza desde la portada en `/publicaciones/1389/`, mientras que la sección `/galeria/23/noticias/` —la que uno explora por ser «la de noticias»— sirve contenido de 2024. **Navegar la portada lo encontró; buscar en la sección de noticias devolvía vacío.** Súmese a §3.d.4 y a §3.e: se acumulan los casos en que «no hay fuente» significaba «no di con ella».
+
+**Discrepancia de canasta que importa y no se resolvió por comodidad.** Rionegro **sí recibe ropa** —«ropa en buen estado organizada por tallas»—, al revés que la campaña de Medellín, que la rechaza expresamente. Son dos municipios vecinos con reglas opuestas: copiar la canasta de uno al otro manda gente con ropa a una puerta que no la acepta. Por eso `RIONEGRO_ITEMS` es su propia constante y no reutiliza la de Medellín.
+
+**Salvedad de evento, dicha en voz alta.** El artículo habla de «el sismo que ha generado emergencias en diferentes zonas del país» y **no repite la fecha del terremoto**. Lo que ata el evento es (a) la fecha de publicación visible, 12/08/2026, y (b) que el mismo portal publicó el 10/08/2026 el reporte del Puesto de Mando Unificado «por la emergencia ocasionada por el sismo». Es suficiente, pero la atadura es **contextual y no literal**, y conviene que esté escrito.
+
+**El tercero es el más débil.** La primaria no publica nomenclatura para el Antiguo Colegio San Antonio: solo el nombre del inmueble y la oficina. DiariOriente lo llama «Antiguo Colegio San Antonio **de Pereira**», corregimiento de Rionegro, y esa es la única pista geográfica disponible; se usó **solo** en `geocodeQuery`, nunca en `name` ni en `address`, porque la primaria no lo dice. Su pin es `municipality` a 2,9 km del casco urbano. Si alguien recorta Rionegro, este es el que sale.
+
+---
+
+### 3.g Aviso sobre `scripts/geocode.ts` ⚠️
+
+**Correr `npx tsx scripts/geocode.ts` regeocodifica los 101 centros, no solo los nuevos, y sobrescribe `data/coordinates.json` entero.**
+
+Eso es un problema porque **6 de los 9 pines afinados a mano en §5.4 no tienen `QUERY_OVERRIDE`**: `restaurante-belisario-medellin`, `remanence-medellin`, `udea-afroudea-medellin`, `simon-coffee-medellin`, `fundacion-el-arte-de-los-suenos-medellin` y `bodega-guayaquiliando-medellin`. Sus coordenadas se fijaron con fichas de Google Maps directamente sobre el JSON. Una pasada completa las reemplazaría por el resultado de Nominatim y **desharía en silencio** el trabajo de §5.4, devolviendo a posición equivocada varios pines hoy `exact`.
+
+Los tres pines de Rionegro se generaron **solo para esos tres slugs**, fusionando sobre el JSON existente: el diff de `data/coordinates.json` es de 24 inserciones y **0 borrados**.
+
+**Pendiente:** o se convierten esas 6 correcciones en `QUERY_OVERRIDES` reproducibles, o se les añade un campo que el script respete y no pise. Mientras tanto, **no correr la pasada completa** sin comprobar el diff línea por línea.
+
+---
+
 ## 4. Conflictos de fuentes resueltos
 
 ### 4.1 Barranquilla — Carrera 43 #6-120, Barranquillita → `reported`
@@ -361,10 +395,10 @@ Por eso el proyecto **modela la precisión como dato de primera clase** (`locati
 | Precisión | Centros publicados | Comportamiento en la interfaz |
 |---|---|---|
 | `exact` | 28 | Pin normal, deep link por coordenadas |
-| `approximate` | 49 | Aviso «el punto es aproximado, guíate por la dirección»; Google Maps recibe la **dirección en texto** |
-| `municipality` | 13 | Aviso «ubicación aproximada al municipio» |
+| `approximate` | 51 | Aviso «el punto es aproximado, guíate por la dirección»; Google Maps recibe la **dirección en texto** |
+| `municipality` | 14 | Aviso «ubicación aproximada al municipio» |
 
-> Recuento rehecho el 12 de agosto de 2026 sobre los 90 centros publicados. La tabla anterior (11 / 24 / 4) sumaba 39 y venía arrastrada de una tanda previa: no reflejaba el estado del seed. **Solo 28 de 90 pines son exactos**, que es el dato que conviene tener presente antes de confiar en el mapa.
+> Recuento rehecho el 12 de agosto de 2026 sobre los **93** centros publicados, tras el alta de Rionegro (§3.f). La tabla anterior (11 / 24 / 4) sumaba 39 y venía arrastrada de una tanda previa: no reflejaba el estado del seed. **Solo 28 de 93 pines son exactos**, que es el dato que conviene tener presente antes de confiar en el mapa. Los tres altas de Rionegro no movieron la cifra de `exact`: entraron dos `approximate` y un `municipality`.
 
 ### 5.1 Pines aproximados (requieren validación visual)
 `samu-sur-cruz-roja-bogota`, `samu-norte-cruz-roja-bogota`, `centro-salvamento-acuatico-cruz-roja-bogota`, `bodega-cruz-roja-bogota`, `empresa-licores-cundinamarca`, `casa-del-valle-bogota`, `banco-de-alimentos-cali`, `centro-acopio-barranquillita`, `ogricc-santa-marta`, `fubam-banco-arquidiocesano-alimentos-medellin`, `fundacion-saciar-medellin`, `consejo-municipal-juventudes-bucaramanga`, `acsc-barranquilla`, `acsc-bogota`, `acsc-cartagena`, `acsc-tunja`, `acsc-popayan`, `acsc-valledupar`, `acsc-monteria`, `acsc-riohacha`, `acsc-neiva`, `acsc-santa-marta`, `acsc-pasto`, `acsc-bucaramanga`
@@ -421,11 +455,15 @@ Nueve centros que **ya estaban en el seed** tenían el pin en el centroide de la
 
 ## 6. Cobertura territorial
 
-**21 departamentos con al menos un centro publicado:** Antioquia, Atlántico, Bogotá D.C., Bolívar, Boyacá, Caldas, Cauca, Cesar, Córdoba, Cundinamarca, Huila, La Guajira, Magdalena, Meta, Nariño, Norte de Santander, Quindío, Santander, Sucre, Tolima, Valle del Cauca.
+**26 departamentos con al menos un centro publicado**, sobre 40 municipios: Antioquia, Arauca, Atlántico, Bogotá D.C., Bolívar, Boyacá, Caldas, Caquetá, Cauca, Cesar, **Chocó**, Córdoba, Cundinamarca, Huila, La Guajira, Magdalena, Meta, Nariño, Norte de Santander, Putumayo, Quindío, **Risaralda**, Santander, Sucre, Tolima, Valle del Cauca.
 
-**12 departamentos sin centros confirmados:** Amazonas, Arauca, Caquetá, Casanare, **Chocó**, Guainía, Guaviare, Putumayo, **Risaralda**, San Andrés y Providencia, Vaupés, Vichada.
+**7 departamentos sin centros publicados:** Amazonas, Casanare, Guainía, Guaviare, San Andrés y Providencia, Vaupés, Vichada.
 
-> **Lectura del vacío:** que Chocó y Risaralda no aparezcan **no es una falla de la investigación**. Son las zonas más golpeadas: reciben ayuda, no la acopian. Los centros de acopio se habilitan en ciudades no afectadas para enviar hacia allá. El resto de departamentos sin cobertura son de baja densidad poblacional y no se encontró actividad reportada.
+> **Cifra corregida el 12 de agosto de 2026.** Esta sección decía «21 departamentos» y «12 sin cobertura» mientras la cabecera del mismo documento ya decía 26. Arauca, Caquetá, Putumayo, Chocó y Risaralda habían entrado en tandas anteriores y **nadie actualizó la lista**. Es el mismo tipo de desajuste que §5 tuvo que corregir con la tabla de precisiones: **una cifra escrita a mano en un documento que crece se queda obsoleta en silencio**, y esta llevaba dos días mal.
+>
+> **Ojo al recontar:** Casanare **aparece** en `data/centers.ts` vía `tigresas-casanare`, pero ese registro está `disputed` y no se publica. El conteo que importa es el de departamentos con al menos un centro **publicable**, no el de departamentos presentes en el archivo. Contar sobre el archivo da números distintos, y esa es justamente la vía por la que se coló el «21».
+
+> **Lectura del vacío, reescrita.** La versión anterior explicaba que Chocó y Risaralda no aparecieran porque son las zonas más golpeadas: reciben ayuda, no la acopian. **Ese razonamiento sigue siendo correcto pero ya no describe el mapa** — ambos entraron, Chocó con el punto de Quibdó y Risaralda con Pereira. Lo que se sostiene es el principio: los centros de acopio se habilitan sobre todo en ciudades no afectadas para enviar hacia allá, y en la zona golpeada hay que comprobar caso por caso si un punto **recibe** o **distribuye**, porque publicar un punto de distribución como centro de acopio manda gente a entregar donde solo se reparte. Los departamentos que siguen sin cobertura son de baja densidad poblacional y no se encontró actividad reportada.
 
 ---
 
@@ -437,7 +475,7 @@ Nueve centros que **ya estaban en el seed** tenían el pin en el centroide de la
 2.c **Batallón Girardot (Medellín)** — el boletín oficial lista 10 puntos y no lo incluye, pese a confirmar los otros ocho de la ciudad (§3.d.2). Localizar comunicado de la Cuarta Brigada o bajar a `disputed`.
 2.d **Los cuatro centros de Bogotá de §4.8** — llamar a la Cruz Roja Seccional. Es el riesgo abierto más alto del proyecto.
 3. **Las 4 sedes de bancos de alimentos sin dirección** (Armenia, Manizales, Ibagué, Cúcuta ACSC) — obtener dirección exacta con ABACO / la ACSC.
-4. **Los 62 pines no exactos** (de 90 publicados) — verificar visualmente contra imagen satelital o llamada al centro. Cifra recontada el 12 de agosto; la anterior estaba desactualizada.
+4. **Los 65 pines no exactos** (de 93 publicados) — verificar visualmente contra imagen satelital o llamada al centro. Cifra recontada el 12 de agosto tras el alta de Rionegro. **Antes de tocar nada aquí, leer §3.g**: la pasada completa de `scripts/geocode.ts` sobrescribe las correcciones manuales de §5.4 que no tienen `QUERY_OVERRIDE`.
 5. **Dirección de Fundación Saciar** — resolver Carrera 50 vs. Carrera 52.
 6. **Plaza de la Paz (Cundinamarca)** — la fuente no publicó dirección exacta; se geocodificó la sede de la Gobernación.
 7. **Coliseo Bernardo Caraballo (Cartagena)** — la fuente no publicó dirección; se geocodificó por nombre.

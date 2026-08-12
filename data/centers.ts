@@ -124,6 +124,136 @@ const CALI_REPOSITORIO_SOURCE = {
 /** Ascensos del Valle del Cauca tras el reintento de dominios del 12 de agosto. */
 const VERIFIED_AT_VALLE = "2026-08-12T16:00:00-05:00";
 
+/** Alta de Rionegro, tanda 2 de cobertura del 12 de agosto de 2026. */
+const VERIFIED_AT_TANDA2 = "2026-08-12T22:00:00-05:00";
+
+/**
+ * Canasta de la campaña #ColombiaSeLevanta de la Alcaldía de Rionegro.
+ *
+ * Es la lista de la CAMPAÑA, no de cada punto: la primaria no la desglosa por
+ * sede. OJO AL COPIAR: incluye ROPA, al revés que la campaña de Medellín, que
+ * la rechaza expresamente. Dos municipios vecinos con reglas opuestas — copiar
+ * la canasta de uno al otro manda gente con ropa a una puerta que no la acepta.
+ */
+const RIONEGRO_ITEMS = [
+  "Agua potable",
+  "Bebidas de hidratación",
+  "Arroz",
+  "Aceite",
+  "Pasta",
+  "Lentejas",
+  "Fríjol",
+  "Garbanzo",
+  "Arveja",
+  "Alimentos enlatados",
+  "Harina de maíz y trigo",
+  "Panela",
+  "Chocolate",
+  "Avena",
+  "Coladas",
+  "Cereales",
+  "Galletas",
+  "Leche en polvo",
+  "Leche UHT",
+  "Alimentos listos para el consumo",
+  "Alimentos infantiles",
+  "Jabón",
+  "Champú",
+  "Cepillos dentales",
+  "Crema dental",
+  "Toallas higiénicas",
+  "Papel higiénico",
+  "Pañales para bebé y adulto",
+  "Toallitas húmedas",
+  "Crema antipañalitis",
+  "Toallas",
+  "Colchonetas",
+  "Mantas",
+  "Cobijas",
+  "Sábanas limpias",
+  "Ropa en buen estado organizada por tallas",
+  "Linternas",
+  "Baterías",
+  "Guantes",
+  "Tapabocas",
+  "Elementos básicos para mascotas",
+  "Guantes desechables",
+  "Agua estéril",
+  "Suero fisiológico",
+  "Gasas",
+  "Algodón",
+  "Alcohol",
+  "Soluciones antisépticas",
+  "Botiquines de primeros auxilios",
+  "Analgésicos de venta libre",
+  "Termómetros",
+];
+
+const RIONEGRO_SOURCE = {
+  sourceName:
+    "Alcaldía de Rionegro — «Rionegro se suma a #ColombiaSeLevanta para apoyar a las familias afectadas por el sismo» (publicación propia)",
+  sourceUrl:
+    "https://rionegro.gov.co/publicaciones/1389/rionegro-se-suma-a-colombiaselevanta-para-apoyar-a-las-familias-afectadas-por-el-sismo/",
+  sourcePublishedAt: "2026-08-12",
+};
+
+const RIONEGRO_NOTA =
+  "VERIFICADO EN CANAL PROPIO el 12 de agosto de 2026: la Alcaldía de Rionegro publica este punto en su propio dominio, con dirección y horario, dentro de la iniciativa #ColombiaSeLevanta liderada por la estrategia Creesiendo (primera dama municipal Mónica Gutiérrez), en articulación con el Concejo Municipal, la Corporación Presentes y la Gobernación de Antioquia. SALVEDAD DE EVENTO: el artículo dice «el sismo que ha generado emergencias en diferentes zonas del país» y NO repite la fecha del terremoto; lo que ata el evento es la fecha de publicación visible (12/08/2026) y que el mismo portal publicó el 10/08/2026 el reporte del Puesto de Mando Unificado «por la emergencia ocasionada por el sismo». La lista de artículos es de la campaña completa, no de este punto. LA FUENTE NO PUBLICA TELÉFONO. ATENCIÓN AL MODELAR: Rionegro SÍ recibe ropa en buen estado, a diferencia de la campaña de Medellín, que la rechaza expresamente.";
+
+const RIONEGRO_BASE = {
+  organization:
+    "Alcaldía de Rionegro — estrategia Creesiendo, campaña #ColombiaSeLevanta",
+  type: "general" as const,
+  department: "Antioquia",
+  municipality: "Rionegro",
+  acceptedItems: RIONEGRO_ITEMS,
+  urgentNeeds: ["Alimentos no perecederos", "Agua potable", "Colchonetas"],
+  rejectedItems: [
+    "Medicamentos que requieran prescripción médica",
+    "Productos vencidos",
+    "Alimentos perecederos",
+  ],
+  scheduleText: "7:30 a. m. – 4:30 p. m.",
+  startsAt: "2026-08-11",
+  endsAt: null,
+  phone: null,
+  whatsapp: null,
+  email: null,
+  ...RIONEGRO_SOURCE,
+  verificationStatus: "verified" as const,
+  lastVerifiedAt: VERIFIED_AT_TANDA2,
+  latitude: null,
+  longitude: null,
+};
+
+const RIONEGRO_CENTROS: SeedCenter[] = [
+  {
+    ...RIONEGRO_BASE,
+    slug: "coliseo-ivan-ramiro-cordoba-rionegro",
+    name: "Coliseo Iván Ramiro Córdoba",
+    address: "Carrera 52 #41-61",
+    geocodeQuery: "Carrera 52 # 41-61, Rionegro, Antioquia, Colombia",
+    verificationNotes: RIONEGRO_NOTA,
+  },
+  {
+    ...RIONEGRO_BASE,
+    slug: "casa-cincopasitos-rionegro",
+    name: "Casa CincoPasitos",
+    address: "Carrera 50 #51-19",
+    geocodeQuery: "Carrera 50 # 51-19, Rionegro, Antioquia, Colombia",
+    verificationNotes: RIONEGRO_NOTA,
+  },
+  {
+    // EL MÁS DÉBIL DE LOS TRES: la primaria no publica nomenclatura, solo el
+    // nombre del inmueble y la oficina. Si alguien recorta Rionegro, es este.
+    ...RIONEGRO_BASE,
+    slug: "antiguo-colegio-san-antonio-rionegro",
+    name: "Antiguo Colegio San Antonio — Oficina de Desarrollo Económico",
+    address: "Antiguo Colegio San Antonio, Oficina de Desarrollo Económico",
+    geocodeQuery: "San Antonio de Pereira, Rionegro, Antioquia, Colombia",
+    verificationNotes: `${RIONEGRO_NOTA} LA PRIMARIA NO PUBLICA NOMENCLATURA para este punto: escribe «Antiguo Colegio San Antonio, Oficina de Desarrollo Económico». DiariOriente (11 ago) lo llama «Antiguo Colegio San Antonio DE PEREIRA», que es un corregimiento de Rionegro y es la única pista geográfica disponible; se usó SOLO en \`geocodeQuery\`, no en el nombre ni en la dirección, porque la primaria no lo dice. Su pin no puede ser mejor que \`approximate\`. Si se considera que no basta como dirección publicable, ESTE es el que hay que dejar fuera.`,
+  },
+];
 
 /** Salvedad común a los 9 puntos que el boletín confirma sin publicar dirección ni horario. */
 const MEDELLIN_BOLETIN_NOTA =
@@ -2510,6 +2640,15 @@ export const SEED_CENTERS: SeedCenter[] = [
       "Pieza oficial firmada con el escudo de la Alcaldía de Envigado, comprobada por @victorolave el 11 de agosto de 2026 — mismo criterio con el que se aceptaron los puntos de Tigresas de la Patria. El enlace apunta al sitio institucional, NO a la pieza: no se localizó una URL estable de la publicación. DOS RESTRICCIONES PROPIAS: los elementos para dormir deben ser NUEVOS, y no se recibe ropa (ni nueva ni usada) ni medicamentos. Es el único punto del seed que pide explícitamente alimento para perros y gatos. La pieza también publica una cuenta para donación en dinero, registrada en docs/sources.md §8 y deliberadamente fuera del mapa.",
     lastVerifiedAt: VERIFIED_AT_DIA2,
   },
+
+  // --- Rionegro: la Alcaldía publicó en su propio dominio ---------------------
+  //
+  // Municipio NUEVO en el seed. El lead venía de la tanda de cobertura: el
+  // portal enlaza la noticia desde la portada en `/publicaciones/1389/`, no
+  // desde `/galeria/23/noticias/`, que sirve contenido de 2024. Buscar por la
+  // sección de noticias daba «no existe»; navegar la portada la encontró.
+  ...RIONEGRO_CENTROS,
+
   {
     slug: "casa-eterna-la-explanada",
     name: "Casa Eterna",
