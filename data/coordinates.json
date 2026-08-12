@@ -47,6 +47,14 @@
     "displayName": "Palacio de los Deportes, Avenida Calle 63, UPZs de Bogotá, Localidad Barrios Unidos, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111221, Colombia",
     "precision": "exact"
   },
+  "estadio-el-campin-bogota": {
+    "slug": "estadio-el-campin-bogota",
+    "query": "Estadio Nemesio Camacho El Campín, Bogotá, Colombia",
+    "latitude": 4.64595,
+    "longitude": -74.077605,
+    "displayName": "Estadio Nemesio Camacho El Campín, Avenida Carrera 30, Galerías, UPZs de Bogotá, Localidad Teusaquillo, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 111311, Colombia",
+    "precision": "exact"
+  },
   "gobernacion-cundinamarca-plaza-de-la-paz": {
     "slug": "gobernacion-cundinamarca-plaza-de-la-paz",
     "query": "Gobernación de Cundinamarca, Calle 26, Bogotá, Colombia",
@@ -685,6 +693,14 @@
     "latitude": 6.259893,
     "longitude": -75.545604,
     "displayName": "Batallón Girardot, Comuna 8 - Villa Hermosa, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, Colombia",
+    "precision": "approximate"
+  },
+  "biblioteca-publica-el-poblado-medellin": {
+    "slug": "biblioteca-publica-el-poblado-medellin",
+    "query": "Biblioteca Pública El Poblado, Medellín, Antioquia, Colombia",
+    "latitude": 6.2103777,
+    "longitude": -75.5709171,
+    "displayName": "[corrección manual 12 ago 2026] OpenStreetMap no tiene esta biblioteca como POI y el boletín de la Alcaldía no publica su dirección, así que no hay forma de anclar el portal. Se usa el centroide del barrio El Poblado. Es el barrio correcto, NO el edificio: por eso queda «approximate» y el botón «Cómo llegar» manda a Google Maps el nombre en texto, que sí la resuelve.",
     "precision": "approximate"
   },
   "parque-biblioteca-belen-medellin": {

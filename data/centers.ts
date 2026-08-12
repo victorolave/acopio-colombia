@@ -64,6 +64,32 @@ const VERIFIED_AT = "2026-08-10T23:00:00-05:00";
 /** Tanda del día 2: la Alcaldía de Bogotá republicó su lista el 11 de agosto. */
 const VERIFIED_AT_DIA2 = "2026-08-11T12:00:00-05:00";
 
+/** Revisión del día 3: se rastrearon las fuentes primarias de lo que estaba `reported`. */
+const VERIFIED_AT_DIA3 = "2026-08-12T01:00:00-05:00";
+
+/**
+ * Boletín propio de la Alcaldía de Medellín, localizado el 12 de agosto de 2026.
+ *
+ * Hasta ahora los puntos de Medellín colgaban de El Colombiano y El Tiempo, que
+ * citaban a la Alcaldía sin que se hubiera localizado la publicación primaria.
+ * Este boletín ES la Alcaldía publicando en su propio sitio institucional, que
+ * es la definición de `verified` en este proyecto.
+ *
+ * SALVEDAD IMPORTANTE: el boletín confirma la EXISTENCIA de cada punto, pero no
+ * publica direcciones ni horarios. Esos datos siguen viniendo de medios y NO
+ * suben de nivel de confianza por este hallazgo. Cada ficha lo dice.
+ */
+const MEDELLIN_BOLETIN_SOURCE = {
+  sourceName: "Alcaldía de Medellín — Secretaría de Inclusión Social y Familia (boletín oficial)",
+  sourceUrl:
+    "https://www.medellin.gov.co/es/sala-de-prensa/noticias/en-10-puntos-se-recibiran-las-donaciones-para-enviar-desde-medellin-a-las-comunidades-afectadas-por-el-sismo/",
+  sourcePublishedAt: "2026-08-11",
+};
+
+/** Salvedad común a los 9 puntos que el boletín confirma sin publicar dirección ni horario. */
+const MEDELLIN_BOLETIN_NOTA =
+  "Confirmado el 12 de agosto de 2026 en el boletín propio de la Alcaldía de Medellín (11 de agosto), que lo lista entre los 10 puntos oficiales de la campaña. El boletín NO publica dirección ni horario: esos datos siguen procediendo de medios (El Colombiano, El Tiempo) y no ganan certeza con esta verificación.";
+
 /**
  * Fuente de la mayoría de los puntos de Medellín del día 2.
  *
@@ -130,15 +156,27 @@ const ACSC_ITEMS = [
   "Plantas generadoras de energía",
 ];
 
+/**
+ * Comunicado propio de la ACSC, localizado el 12 de agosto de 2026.
+ *
+ * Durante dos días estos 16 puntos colgaron de El Espectador, que citaba un
+ * comunicado que nadie había localizado. El comunicado existe, está en el
+ * dominio propio de la ACSC y lo firma su presidente.
+ *
+ * OJO: el PDF es una imagen escaneada SIN capa de texto. Las herramientas que
+ * solo extraen texto lo devuelven vacío o ilegible; hay que leerlo como imagen.
+ * Se dejó constancia aquí para que quien vuelva a comprobarlo no concluya por
+ * error que el enlace está roto.
+ */
 const ACSC_SOURCE = {
-  sourceName: "Asociación Colombiana de Sociedades Científicas (ACSC), vía El Espectador",
-  sourceUrl:
-    "https://www.elespectador.com/salud/habilitan-16-centros-de-acopio-para-recolectar-medicamentos-e-insumos-medicos-tras-el-sismo-de-este-10-de-agosto/",
+  sourceName:
+    "Asociación Colombiana de Sociedades Científicas (ACSC) — comunicado a la opinión pública",
+  sourceUrl: "https://sociedadescientificas.com/solidaridad-con-victimas-del-terremoto-agosto-10/",
   sourcePublishedAt: "2026-08-10",
 };
 
 const ACSC_NOTES =
-  "Sede de la ACSC habilitada para recibir medicamentos e insumos médicos. Reportado por El Espectador a partir del comunicado de la ACSC del 10 de agosto de 2026. No se localizó el comunicado original en el sitio de la ACSC: confirmar por teléfono antes de desplazarse.";
+  "VERIFICADO EN CANAL PROPIO el 12 de agosto de 2026: el comunicado de la ACSC del 10 de agosto, firmado por su presidente Jaime Alberto González, lista esta sede con su dirección y su teléfono. Se cotejaron las 16 sedes del comunicado contra el seed y coinciden una por una. Los puntos operan en sedes de la Sociedad Colombiana de Anestesiología y Reanimación (S.C.A.R.E.), que son OFICINAS, no bodegas. EL COMUNICADO NO PUBLICA HORARIOS de ninguna sede: por eso la ficha sigue diciendo que hay que llamar antes de ir, y no se inventa un horario plausible. Corrobora El Espectador, 10 de agosto de 2026.";
 
 // --- Red de las Tigresas de la Patria / «Colombia un solo corazón» -----------
 
@@ -262,9 +300,9 @@ function acsc(
     whatsapp: null,
     email: null,
     ...ACSC_SOURCE,
-    verificationStatus: "reported",
+    verificationStatus: "verified",
     verificationNotes: ACSC_NOTES,
-    lastVerifiedAt: VERIFIED_AT,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   };
 }
 
@@ -343,14 +381,10 @@ const PARQUES_BIBLIOTECA_MEDELLIN: SeedCenter[] = (
   phone: null,
   whatsapp: null,
   email: null,
-  sourceName: "Alcaldía de Medellín, vía El Tiempo",
-  sourceUrl:
-    "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
-  sourcePublishedAt: "2026-08-11",
-  verificationStatus: "reported" as const,
-  verificationNotes:
-    "Punto de la red de bibliotecas públicas incluido por El Tiempo citando a la Alcaldía de Medellín, y corroborado por la pieza ciudadana. La fuente NO publica dirección: el pin se geocodifica por nombre del parque biblioteca y queda aproximado. El horario proviene de Semana (11 de agosto de 2026), que nombra explícitamente a los cuatro parques biblioteca en la misma frase de la jornada: «desde las 9:00 a. m. a 6:00 p. m. de lunes a sábados». Ese horario NO cubre los demás puntos de Medellín.",
-  lastVerifiedAt: VERIFIED_AT_DIA2,
+  ...MEDELLIN_BOLETIN_SOURCE,
+  verificationStatus: "verified" as const,
+  verificationNotes: `${MEDELLIN_BOLETIN_NOTA} El boletín nombra a los cuatro parques biblioteca uno por uno. Ninguna fuente publica dirección: el pin se geocodifica por nombre del parque biblioteca y queda aproximado. El horario proviene de Semana (11 de agosto de 2026), que nombra explícitamente a los cuatro en la misma frase: «desde las 9:00 a. m. a 6:00 p. m. de lunes a sábados». Ese horario NO cubre los demás puntos de Medellín.`,
+  lastVerifiedAt: VERIFIED_AT_DIA3,
 }));
 
 export const SEED_CENTERS: SeedCenter[] = [
@@ -533,6 +567,62 @@ export const SEED_CENTERS: SeedCenter[] = [
     verificationNotes:
       "Punto de mayor capacidad de los seis habilitados por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026.",
     lastVerifiedAt: VERIFIED_AT,
+  },
+  {
+    slug: "estadio-el-campin-bogota",
+    name: "Estadio El Campín",
+    organization:
+      "Alcaldía Mayor de Bogotá, con apoyo de la Cruz Roja Colombiana e iniciativa de Sencia Bogotá",
+    type: "mixed",
+    department: "Bogotá D.C.",
+    municipality: "Bogotá D.C.",
+    address: "Avenida NQS (Carrera 30) entre Calle 53B Bis y Calle 57",
+    geocodeQuery: "Estadio Nemesio Camacho El Campín, Bogotá, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: [
+      "Agua embotellada",
+      "Arroz",
+      "Aceite",
+      "Pasta",
+      "Alimentos enlatados",
+      "Granos",
+      "Harina",
+      "Panela",
+      "Leche en polvo",
+      "Chocolate",
+      "Cobijas",
+      "Mantas",
+      "Almohadas",
+      "Colchonetas",
+      "Toldillos",
+      "Tapabocas",
+      "Gasas",
+      "Alcohol",
+      "Clorhexidina",
+      "Guantes",
+      "Jabón",
+      "Shampoo",
+      "Toallas higiénicas",
+      "Pañales",
+      "Biberones",
+    ],
+    urgentNeeds: ["Agua embotellada", "Alimentos no perecederos", "Colchonetas"],
+    rejectedItems: [],
+    scheduleText: "8:00 a. m. – 9:00 p. m., horario continuo",
+    startsAt: "2026-08-12",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    sourceName: "Alcaldía Mayor de Bogotá",
+    sourceUrl:
+      "https://bogota.gov.co/mi-ciudad/ambiente/estadio-el-campin-de-bogota-nuevo-punto-ayudas-damnificados-terremoto",
+    sourcePublishedAt: "2026-08-11",
+    verificationStatus: "verified",
+    verificationNotes:
+      "ALTA DEL 12 DE AGOSTO DE 2026. Punto NUEVO, anunciado por la Alcaldía Mayor de Bogotá en su propio sitio el 11 de agosto y abierto desde el miércoles 12. No existía cuando se armó el seed. La dirección es la referencia de acceso que publica la fuente (avenida NQS entre calles 53B Bis y 57), no una nomenclatura de portal: el pin se geocodifica por el nombre del estadio. La fuente no publica lista de rechazados; `rejectedItems` queda vacío en lugar de suponerla.",
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
 
   // ===========================================================================
@@ -984,14 +1074,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Alcaldía de Medellín, vía El Colombiano",
-    sourceUrl:
-      "https://www.elcolombiano.com/antioquia/damnificados-sismo-puntos-acopio-medellin-donaciones-que-donar-CF39784677",
-    sourcePublishedAt: "2026-08-10",
-    verificationStatus: "reported",
-    verificationNotes:
-      "DUDA RESUELTA: existía riesgo de confundir este punto con la campaña por los sismos de Venezuela de junio de 2026. El Colombiano y Telemedellín publicaron el 10 de agosto de 2026 que la Alcaldía de Medellín lo habilitó para ESTA emergencia, dentro de la campaña «En Medellín somos solidarios» con la Corporación Presentes. Explícitamente NO recibe medicamentos ni ropa.",
-    lastVerifiedAt: VERIFIED_AT,
+    ...MEDELLIN_BOLETIN_SOURCE,
+    verificationStatus: "verified",
+    verificationNotes: `${MEDELLIN_BOLETIN_NOTA} DUDA RESUELTA ANTES: existía riesgo de confundir este punto con la campaña por los sismos de Venezuela de junio de 2026. El Colombiano y Telemedellín publicaron el 10 de agosto de 2026 que la Alcaldía lo habilitó para ESTA emergencia, dentro de «En Medellín somos solidarios» con la Corporación Presentes. Explícitamente NO recibe medicamentos ni ropa.`,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
   {
     slug: "fundacion-saciar-medellin",
@@ -1030,14 +1116,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Alcaldía de Medellín, vía El Colombiano",
-    sourceUrl:
-      "https://www.elcolombiano.com/antioquia/damnificados-sismo-puntos-acopio-medellin-donaciones-que-donar-CF39784677",
-    sourcePublishedAt: "2026-08-10",
-    verificationStatus: "reported",
-    verificationNotes:
-      "Habilitado por la Alcaldía de Medellín para esta emergencia. DISCREPANCIA DE DIRECCIÓN: La Silla Vacía publicó «Carrera 52 #25-261»; El Colombiano, Infobae, Publimetro, La FM y Telemedellín coinciden en «Carrera 50 #25-261». Se usa la versión mayoritaria. VALIDAR PIN MANUALMENTE.",
-    lastVerifiedAt: VERIFIED_AT,
+    ...MEDELLIN_BOLETIN_SOURCE,
+    verificationStatus: "verified",
+    verificationNotes: `${MEDELLIN_BOLETIN_NOTA} DISCREPANCIA DE DIRECCIÓN AÚN ABIERTA: La Silla Vacía publicó «Carrera 52 #25-261»; El Colombiano, Infobae, Publimetro, La FM y Telemedellín coinciden en «Carrera 50 #25-261». Se usa la versión mayoritaria. El boletín de la Alcaldía no dirime la discrepancia porque no publica direcciones. VALIDAR PIN MANUALMENTE.`,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
   {
     slug: "parque-principal-itagui",
@@ -1274,7 +1356,7 @@ export const SEED_CENTERS: SeedCenter[] = [
     "acsc-pasto",
     "Nariño",
     "Pasto",
-    "Carrera 25 #15-62, oficina 201",
+    "Carrera 25 #15-62, oficina 201, Edificio Zaguán del Lago",
     "(602) 7382025",
     "Carrera 25 # 15-62, Pasto, Nariño, Colombia",
   ),
@@ -1915,14 +1997,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Alcaldía de Medellín, vía El Tiempo",
-    sourceUrl:
-      "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
-    sourcePublishedAt: "2026-08-11",
-    verificationStatus: "reported",
-    verificationNotes:
-      "RESUELVE UNA DISPUTA ANTERIOR: el 10 de agosto este punto (La Alpujarra) se marcó `disputed` y no se publicó, porque los resúmenes de búsqueda lo atribuían a la Alcaldía pero El Colombiano y Telemedellín solo confirmaban FUBAM y Saciar. El 11 de agosto El Tiempo lo publica citando a la Alcaldía, y aparece también en la pieza ciudadana. La dirección de La Alpujarra no la publica la fuente: se tomó la del Centro Administrativo Municipal. VALIDAR PIN.",
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    ...MEDELLIN_BOLETIN_SOURCE,
+    verificationStatus: "verified",
+    verificationNotes: `${MEDELLIN_BOLETIN_NOTA} RESUELVE UNA DISPUTA ANTERIOR: el 10 de agosto este punto (La Alpujarra) se marcó \`disputed\` y no se publicó, porque los resúmenes de búsqueda lo atribuían a la Alcaldía pero El Colombiano y Telemedellín solo confirmaban FUBAM y Saciar. La dirección de La Alpujarra no la publica ninguna fuente: se tomó la del Centro Administrativo Municipal. VALIDAR PIN.`,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
   {
     slug: "terminal-del-norte-medellin",
@@ -1944,14 +2022,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Alcaldía de Medellín, vía El Tiempo",
-    sourceUrl:
-      "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
-    sourcePublishedAt: "2026-08-11",
-    verificationStatus: "reported",
-    verificationNotes:
-      "CIERRA LA DISPUTA DEL 10 DE AGOSTO. El registro `terminal-transportes-la-alpujarra-medellin` agrupaba en disputa «Terminal de Transportes» y «La Alpujarra» porque los resúmenes de búsqueda los atribuían a la Alcaldía sin que El Colombiano ni Telemedellín los confirmaran. El Tiempo los publica el 11 de agosto citando a la Alcaldía, y precisa que la terminal es la DEL NORTE, local 9840 —no la Terminal del Sur ni una genérica—. El local sí lo publica la fuente; el número de la vía no, así que se tomó la dirección conocida de la terminal. VALIDAR PIN.",
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    ...MEDELLIN_BOLETIN_SOURCE,
+    verificationStatus: "verified",
+    verificationNotes: `${MEDELLIN_BOLETIN_NOTA} El boletín lo nombra «Terminal del Norte (local 9840)», que confirma el local publicado por El Tiempo el 11 de agosto y descarta la Terminal del Sur. El número de la vía no lo publica ninguna fuente: se tomó la dirección conocida de la terminal. VALIDAR PIN.`,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
   {
     slug: "universidad-eafit-medellin",
@@ -1973,14 +2047,38 @@ export const SEED_CENTERS: SeedCenter[] = [
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: "Alcaldía de Medellín, vía El Tiempo",
-    sourceUrl:
-      "https://www.eltiempo.com/colombia/medellin/medellin-se-une-por-las-victimas-del-terremoto-en-colombia-conozca-los-10-puntos-para-entregar-sus-donaciones-3577553",
-    sourcePublishedAt: "2026-08-11",
-    verificationStatus: "reported",
-    verificationNotes:
-      "El horario proviene de la pieza gráfica ciudadana; El Tiempo no lo publica. La fuente no da dirección: se usó la sede principal de EAFIT. El acceso al campus puede requerir identificación.",
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    ...MEDELLIN_BOLETIN_SOURCE,
+    verificationStatus: "verified",
+    verificationNotes: `${MEDELLIN_BOLETIN_NOTA} El boletín lo nombra «Universidad Eafit (placa cubierta)», que confirma el punto exacto dentro del campus. El HORARIO proviene de la pieza gráfica ciudadana y ninguna fuente oficial lo respalda. La dirección es la sede principal de EAFIT. El acceso al campus puede requerir identificación.`,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
+  },
+  {
+    slug: "biblioteca-publica-el-poblado-medellin",
+    name: "Biblioteca Pública El Poblado",
+    organization: "Red de Bibliotecas Públicas de Medellín / Alcaldía de Medellín",
+    type: "general",
+    department: "Antioquia",
+    municipality: "Medellín",
+    address: "Biblioteca Pública El Poblado, Medellín",
+    geocodeQuery: "Biblioteca Pública El Poblado, Medellín, Antioquia, Colombia",
+    latitude: null,
+    longitude: null,
+    acceptedItems: MEDELLIN_DIA2_ITEMS,
+    urgentNeeds: ["Alimentos no perecederos", "Artículos de aseo"],
+    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    // Semana la nombra EXPRESAMENTE junto a los cuatro parques biblioteca en la
+    // misma frase de la jornada, así que el horario sí la cubre. Ver §10 de
+    // docs/sources.md, donde está la cita literal.
+    scheduleText: "9:00 a. m. – 6:00 p. m., de lunes a sábado",
+    startsAt: "2026-08-11",
+    endsAt: null,
+    phone: null,
+    whatsapp: null,
+    email: null,
+    ...MEDELLIN_BOLETIN_SOURCE,
+    verificationStatus: "verified",
+    verificationNotes: `${MEDELLIN_BOLETIN_NOTA} ALTA DEL 12 DE AGOSTO DE 2026: es el décimo punto del boletín oficial y faltaba en el seed. El dato estaba a la vista desde el día 2 y se pasó por alto: la cita de Semana recogida en §10 de docs/sources.md la nombra expresamente —«los parques bibliotecas Belén, San Javier, Gabriel García Márquez, León de Greiff (La Ladera) y la biblioteca pública El Poblado»— pero solo se crearon los cuatro parques biblioteca. De ahí sale también su horario.`,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
   {
     slug: "udea-afroudea-medellin",
@@ -2038,30 +2136,38 @@ export const SEED_CENTERS: SeedCenter[] = [
   },
   {
     slug: "restaurante-belisario-medellin",
-    name: "Restaurante Belisario",
-    organization: null,
-    type: "general",
+    name: "Somos Belisario — oficina",
+    organization: "Somos Belisario Grupo Empresarial",
+    type: "mixed",
     department: "Antioquia",
     municipality: "Medellín",
     address: "Calle 7 #35-44 (oficina)",
     geocodeQuery: "Calle 7 # 35-44, El Poblado, Medellín, Antioquia, Colombia",
     latitude: null,
     longitude: null,
-    acceptedItems: MEDELLIN_DIA2_ITEMS,
-    urgentNeeds: ["Alimentos no perecederos"],
-    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    // OJO: esta canasta NO es la de la campaña de Medellín. La empresa publicó
+    // la suya y recibe justo lo que aquella rechaza: medicinas y ropa.
+    acceptedItems: [
+      "Medicinas",
+      "Agua",
+      "Alimentos no perecederos",
+      "Ropa nueva o en muy buen estado",
+    ],
+    urgentNeeds: ["Medicinas", "Agua", "Alimentos no perecederos"],
+    rejectedItems: ["Ropa usada en mal estado"],
     scheduleText: null,
     startsAt: "2026-08-11",
     endsAt: null,
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: PIEZA_CIUDADANA_MEDELLIN,
-    sourceUrl: null,
+    sourceName: "Somos Belisario Grupo Empresarial (cuenta oficial de la empresa)",
+    sourceUrl: "https://www.instagram.com/somosbelisario/p/Db6ksTmO0Us/",
     sourcePublishedAt: "2026-08-11",
-    verificationStatus: "reported",
-    verificationNotes: `${PIEZA_CIUDADANA_NOTA} La pieza menciona TRES sedes —Provenza, CC El Tesoro y la oficina de la Calle 7 #35-44— pero solo publica dirección de la última, que es la que se mapea. Si se confirman las otras dos, van como registros separados.`,
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    verificationStatus: "verified",
+    verificationNotes:
+      "VERIFICADO EN CANAL PROPIO el 12 de agosto de 2026: la propia empresa publicó el 11 de agosto que habilitó centros de acopio por ESTE terremoto, con la misma dirección que ya traía la ficha. CORRIGE UN DATO QUE ESTÁBAMOS PUBLICANDO MAL: hasta ahora esta ficha usaba la canasta genérica de la campaña de Medellín, que rechaza medicamentos y ropa; la empresa dice expresamente que SÍ recibe medicinas y ropa nueva o en muy buen estado. La publicación menciona TRES sedes —esta oficina, Provenza y CC El Tesoro— pero solo da dirección de la primera: las otras dos no se crean como registros hasta tener dirección publicada.",
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
   {
     slug: "remanence-medellin",
@@ -2223,8 +2329,8 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl: null,
     sourcePublishedAt: "2026-08-11",
     verificationStatus: "reported",
-    verificationNotes: `${PIEZA_CIUDADANA_NOTA} INSTALACIÓN MILITAR: el ingreso puede exigir documento de identidad y registro previo. Confirmar antes de desplazarse, sobre todo con carga grande.`,
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} INSTALACIÓN MILITAR: el ingreso puede exigir documento de identidad y registro previo. Confirmar antes de desplazarse, sobre todo con carga grande. REVISAR — SEÑAL NEGATIVA (12 de agosto de 2026): el boletín propio de la Alcaldía de Medellín lista sus 10 puntos oficiales y este NO está entre ellos, pese a que sí confirma los otros ocho puntos de la ciudad que teníamos. No es contradicción directa —el Ejército puede tener su propia iniciativa, ajena a la campaña municipal— pero es el único punto de Medellín que sigue sin ninguna fuente comprobable. Decisión editorial pendiente: localizar comunicado de la Cuarta Brigada o bajar a \`disputed\`.`,
+    lastVerifiedAt: VERIFIED_AT_DIA3,
   },
   ...PARQUES_BIBLIOTECA_MEDELLIN,
 

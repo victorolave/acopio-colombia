@@ -117,8 +117,9 @@ const SIN_ENLACE_APROBADOS = new Set<string>([
   // REVISAR: sustituir por `sourceUrl` en cuanto aparezca el post original.
   "udea-afroudea-medellin",
   "simon-coffee-medellin",
-  "restaurante-belisario-medellin",
   "remanence-medellin",
+  // RESUELTO el 12 de agosto de 2026: `restaurante-belisario-medellin` salió de
+  // esta lista porque su propia cuenta publicó el punto con URL estable.
   "bodega-guayaquiliando-medellin",
   "libreria-rodante-delfos-medellin",
   "fundacion-el-arte-de-los-suenos-medellin",

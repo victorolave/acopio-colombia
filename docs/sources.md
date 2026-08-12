@@ -2,8 +2,8 @@
 
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
-**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia).
-**Consolidado:** 97 registros · **88 publicables** (39 verificados + 49 reportados) · 4 en disputa · 3 inactivos · 2 pendientes · 26 departamentos.
+**Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d).
+**Consolidado:** 99 registros · **90 publicables** (67 verificados + 23 reportados) · 4 en disputa · 3 inactivos · 2 pendientes · 26 departamentos.
 
 ---
 
@@ -153,6 +153,81 @@ Particularidades: los elementos para dormir deben ser **nuevos**; no se recibe r
 
 ---
 
+## 3.d Tanda del 12 de agosto — rastreo de fuentes primarias
+
+Hasta el día 2, **49 centros** estaban en `reported` por una sola razón: existía un comunicado o una lista de la entidad responsable, pero **nadie había conseguido localizarlo**. Se citaba al medio que lo citaba. Esta tanda fue a buscar esos documentos.
+
+Se repartieron los 58 registros no verificados en seis frentes **agrupados por entidad responsable, no por departamento**, porque verificar aquí significa encontrar a la entidad publicando en su propio canal: los 16 puntos de la ACSC dependían de un único comunicado, y buscarlo seis veces por separado habría sido desperdicio.
+
+**Resultado: 26 ascensos a `verified`, 2 altas, 1 baja, 0 descensos.**
+
+### 3.d.1 ACSC — apareció el comunicado (16 centros)
+
+| | |
+|---|---|
+| **Fuente** | [sociedadescientificas.com — «Comunicado a la opinión pública: solidaridad con las comunidades afectadas…»](https://sociedadescientificas.com/solidaridad-con-victimas-del-terremoto-agosto-10/) |
+| **Fecha** | Bogotá D.C., 10 de agosto de 2026 |
+| **Firma** | Jaime Alberto González, presidente de la ACSC 2026-2028 |
+
+El comunicado lista las 16 sedes con dirección y teléfono. Se cotejaron **una por una** contra el seed: las 16 direcciones y los 16 teléfonos coinciden. El Espectador había transcrito bien.
+
+Dos datos que solo aparecen en el original:
+
+- Los puntos operan en **sedes de la Sociedad Colombiana de Anestesiología y Reanimación (S.C.A.R.E.)**, sociedad miembro que prestó sus oficinas regionales. Explica por qué las direcciones son oficinas y no bodegas, y por qué ninguna publica horario.
+- La sede de Pasto incluye el **«Edificio Zaguán del Lago»**, que faltaba en el seed. Ya incorporado.
+
+> **Trampa de herramienta, anotada para quien vuelva a comprobarlo.** El PDF del comunicado es una **imagen escaneada sin capa de texto**. Las herramientas que solo extraen texto lo devuelven vacío o «ilegible», y es fácil concluir por error que el enlace está roto. Hay que leerlo como imagen.
+
+### 3.d.2 Medellín — apareció el boletín de la Alcaldía (9 centros + 1 alta)
+
+[medellin.gov.co — «En 10 puntos se recibirán las donaciones…»](https://www.medellin.gov.co/es/sala-de-prensa/noticias/en-10-puntos-se-recibiran-las-donaciones-para-enviar-desde-medellin-a-las-comunidades-afectadas-por-el-sismo/), 11 de agosto de 2026, Secretaría de Inclusión Social y Familia (Luz María Ramírez).
+
+Confirma nueve puntos que teníamos como `reported`: FUBAM, Fundación Saciar, hall de la Alcaldía, Terminal del Norte, EAFIT y los cuatro parques biblioteca.
+
+**Salvedad que se conserva y que importa:** el boletín confirma que **el punto existe**, pero **no publica direcciones ni horarios**. Esos datos siguen viniendo de medios y **no ganan certeza** por este hallazgo. La discrepancia de dirección de Fundación Saciar (§4.5) sigue abierta: el boletín no la dirime.
+
+**Alta:** `biblioteca-publica-el-poblado-medellin`, décimo punto del boletín. **Estaba a la vista desde el día 2 y se pasó por alto**: la cita de Semana recogida en §10 la nombra expresamente —«…León de Greiff (La Ladera) **y la biblioteca pública El Poblado**»— pero solo se crearon los cuatro parques biblioteca. De esa misma cita sale su horario.
+
+**Señal negativa:** el boletín lista 10 puntos y el **Batallón Girardot no está** entre ellos, pese a que sí confirma los otros ocho de la ciudad. No es contradicción directa —el Ejército puede tener iniciativa propia— pero es hoy el único punto de Medellín sin ninguna fuente comprobable. Marcado para decisión editorial en su ficha.
+
+### 3.d.3 Belisario — la empresa publicó en su propio canal (1 centro)
+
+[@somosbelisario](https://www.instagram.com/somosbelisario/p/Db6ksTmO0Us/), 11 de agosto de 2026: «SOMOS CENTRO DE ACOPIO PARA: MEDICINAS, AGUA, ALIMENTOS NO PERECEDEROS Y ROPA NUEVA O EN MUY BUEN ESTADO».
+
+Es la propia empresa anunciando su punto, con la dirección que ya traía la ficha. Sale de `SIN_ENLACE_APROBADOS` porque ahora tiene URL estable.
+
+**Corrige un dato que estábamos publicando mal.** La ficha usaba la canasta genérica de la campaña de Medellín, que **rechaza medicamentos y ropa**. La empresa dice que **sí** los recibe. Publicábamos lo contrario de lo que el centro hace.
+
+> **Precedente nuevo, y conviene decirlo en voz alta.** `@somosbelisario` es la **primera cuenta de un negocio privado** en la lista blanca de `scripts/validate-seed.ts`; hasta ahora solo había organizaciones de la respuesta oficial. Cumple la definición literal de canal propio, pero amplía qué cuenta como entidad responsable. Revisar si se quiere sostener como política.
+
+### 3.d.4 Lo que NO se pudo verificar, y por qué
+
+**0 ascensos** en Caribe (4), zona andina (10) y red ABACO (6). La razón **no es ausencia de fuente sino límite de herramienta**, y conviene reintentarlo desde otra red antes de dar nada por inexistente:
+
+| Obstáculo | Afecta a |
+|---|---|
+| HTTP 403 a todo acceso directo | `barranquilla.gov.co`, `cartagena.gov.co`, `santamarta.gov.co` |
+| DNS no resuelve | `cali.gov.co` |
+| 404 en la sección de publicaciones | `valledelcauca.gov.co` |
+| Contenido no legible sin sesión | Instagram, incluida la cuenta en lista blanca de Tigresas |
+
+Casos con evidencia circunstancial fuerte que **aun así no se ascendieron**: Barranquillita (vocero nombrado y confirmación del alcalde el 11 de agosto), Coliseo Bernardo Caraballo (confirmado que abrió el martes 11 y sigue operando) y Ogricc Santa Marta (dos artículos independientes del 10 y el 12 coinciden en dirección, horario y entidad). Ninguno es canal propio, así que siguen en `reported`.
+
+### 3.d.5 Cuatro trampas de reciclaje esquivadas
+
+La regla `EARTHQUAKE_DATE` existe por esto. Las cuatro se detectaron **solo al abrir la fuente**:
+
+1. **`donahoy.abaco.org.co/colombia2026`** — parece la página de ABACO hecha para esta emergencia. Su texto es de la campaña **«Unidos por Vzla» de junio de 2026** (terremotos de Venezuela, epicentro Yaracuy). Es exactamente el error que casi contamina el seed original.
+2. **`cartagena.gov.co`** — una nota con título casi idéntico al que se buscaba, sobre **el mismo coliseo**, resultó ser del **10 de febrero de 2026** y sobre la emergencia de Montería.
+3. **Buga** — la cuenta de origen del envío pendiente tiene una publicación reciente sobre un proyecto sin relación con el terremoto (donar un gimnasio de calistenia para embellecer un monumento).
+4. **Un resumen automático de búsqueda fabricó un teléfono**, atribuyendo el mismo número a dos entidades distintas. Descartado al contrastar con la fuente.
+
+### 3.d.6 Estado de Pereira y Buenaventura (bancos ABACO)
+
+Siguen `inactive`, **sin cambio**. Ninguna fuente del 11 o 12 de agosto anuncia reapertura, y la del 11 refuerza que ambas ciudades siguen con vías dañadas. Hay una contradicción menor sin resolver: Semana dice que ABACO está «evaluando» un punto alterno y Diario del Sur que «operan con puntos alternos», ambos del 10 de agosto citando la misma fuente. Diario del Sur no aporta dirección, así que no alcanza para reactivar.
+
+---
+
 ## 4. Conflictos de fuentes resueltos
 
 ### 4.1 Barranquilla — Carrera 43 #6-120, Barranquillita → `reported`
@@ -201,6 +276,14 @@ De los seis originales **sobrevive uno**: `sede-administrativa-cruz-roja-bogota`
 
 > **Lección de método, aplicable a todo el seed.** Las fuentes de emergencia se actualizan en sitio conservando URL y fecha. **Citar una URL no es citar un contenido.** `source_url` por sí solo no detecta esto. Hace falta releer periódicamente las fuentes del seed, o guardar un hash/snapshot del contenido citado para que un job avise del cambio. Es la diferencia entre enterarse revisando y enterarse porque alguien manejó hasta el Palacio de los Deportes con el carro lleno.
 
+#### Actualización del 12 de agosto — la página cambió por segunda vez
+
+La misma URL, releída el 12 de agosto, lista ahora **cinco** puntos: Universidad Jorge Tadeo Lozano, Calle 161A #7F-55 (Usaquén), Unicentro, **estadio El Campín** y la sede administrativa de la Cruz Roja. El 10 de agosto eran seis, el 11 eran cuatro, hoy son cinco. **Tres composiciones distintas en tres días, sin que cambie ni la URL ni la fecha visible.** Esto ya no es un incidente: es el comportamiento normal de esta fuente, y confirma que hace falta el snapshot automático que pedía la lección de arriba.
+
+El punto añadido tiene además **artículo propio** en el mismo dominio —[«El estadio El Campín, habilitado como nuevo punto de recepción…»](https://bogota.gov.co/mi-ciudad/ambiente/estadio-el-campin-de-bogota-nuevo-punto-ayudas-damnificados-terremoto), 11 de agosto— y abre **el miércoles 12**. Se dio de alta como `estadio-el-campin-bogota`, `verified`, con horario continuo de 8:00 a. m. a 9:00 p. m.
+
+**Los cuatro centros de la tabla de arriba siguen `verified`, por decisión expresa mantenida el 12 de agosto.** El razonamiento del día 2 no ha cambiado: ausencia de la lista no es prueba de cierre, y son sedes propias de la Cruz Roja. **Sigue pendiente la llamada a la Cruz Roja Seccional**, y es hoy el riesgo abierto más alto del proyecto: cuatro fichas con el sello más fuerte del sitio apoyadas en una fuente que ya no las sostiene.
+
 ### 4.9 Medellín — Terminal y La Alpujarra: disputa resuelta
 
 §4.3 dejó en disputa un registro que agrupaba «Terminal de Transportes» y «La Alpujarra», porque los resúmenes de búsqueda los atribuían a la Alcaldía pero El Colombiano y Telemedellín solo confirmaban FUBAM y Saciar.
@@ -225,9 +308,11 @@ Por eso el proyecto **modela la precisión como dato de primera clase** (`locati
 
 | Precisión | Centros publicados | Comportamiento en la interfaz |
 |---|---|---|
-| `exact` | 11 | Pin normal, deep link por coordenadas |
-| `approximate` | 24 | Aviso «el punto es aproximado, guíate por la dirección»; Google Maps recibe la **dirección en texto** |
-| `municipality` | 4 | Aviso «ubicación aproximada al municipio» |
+| `exact` | 28 | Pin normal, deep link por coordenadas |
+| `approximate` | 49 | Aviso «el punto es aproximado, guíate por la dirección»; Google Maps recibe la **dirección en texto** |
+| `municipality` | 13 | Aviso «ubicación aproximada al municipio» |
+
+> Recuento rehecho el 12 de agosto de 2026 sobre los 90 centros publicados. La tabla anterior (11 / 24 / 4) sumaba 39 y venía arrastrada de una tanda previa: no reflejaba el estado del seed. **Solo 28 de 90 pines son exactos**, que es el dato que conviene tener presente antes de confiar en el mapa.
 
 ### 5.1 Pines aproximados (requieren validación visual)
 `samu-sur-cruz-roja-bogota`, `samu-norte-cruz-roja-bogota`, `centro-salvamento-acuatico-cruz-roja-bogota`, `bodega-cruz-roja-bogota`, `empresa-licores-cundinamarca`, `casa-del-valle-bogota`, `banco-de-alimentos-cali`, `centro-acopio-barranquillita`, `ogricc-santa-marta`, `fubam-banco-arquidiocesano-alimentos-medellin`, `fundacion-saciar-medellin`, `consejo-municipal-juventudes-bucaramanga`, `acsc-barranquilla`, `acsc-bogota`, `acsc-cartagena`, `acsc-tunja`, `acsc-popayan`, `acsc-valledupar`, `acsc-monteria`, `acsc-riohacha`, `acsc-neiva`, `acsc-santa-marta`, `acsc-pasto`, `acsc-bucaramanga`
@@ -240,6 +325,7 @@ Por eso el proyecto **modela la precisión como dato de primera clase** (`locati
 |---|---|---|
 | `acsc-cucuta` | El centroide administrativo del municipio quedaba ~20 km al norte del casco urbano | Se fijó el centro urbano de Cúcuta |
 | `acsc-santa-marta` | La consulta enganchó un POI («Hotel Monterrey») sobre otra vía | Se fijó el centro histórico de Santa Marta |
+| `biblioteca-publica-el-poblado-medellin` | OSM no tiene la biblioteca como POI y el boletín no publica dirección | Centroide del barrio El Poblado, marcado `approximate`: es el barrio, no el edificio (12 ago 2026) |
 
 ### 5.4 Tanda del 12 de agosto — pines afinados con fichas de Google Maps
 
@@ -290,10 +376,13 @@ Nueve centros que **ya estaban en el seed** tenían el pin en el centroide de la
 
 ## 7. Datos que deben validarse manualmente antes de sellar como verificados
 
-1. **Los 33 centros `reported`** — confirmar en el sitio o canal oficial de cada entidad.
-2. **Los 16 puntos ACSC** — no se localizó el comunicado original en el sitio de la ACSC; se tomaron de El Espectador. Confirmar por los teléfonos publicados.
+1. **Los 23 centros `reported`** — confirmar en el sitio o canal oficial de cada entidad. Para 20 de ellos (Caribe, andina y ABACO) el obstáculo del 12 de agosto fue de herramienta, no de fuente: ver §3.d.4 y **reintentar desde otra red antes de darlos por inexistentes**.
+2. ~~Los 16 puntos ACSC~~ — **RESUELTO el 12 de agosto de 2026** (§3.d.1). Apareció el comunicado firmado en el dominio propio de la ACSC; las 16 direcciones y teléfonos coinciden con el seed. Siguen **sin horario publicado**: la ficha pide llamar antes de ir, y no se inventó ninguno.
+2.b **Refrendo humano de dos entradas de lista blanca** — `sociedadescientificas.com` (§3.d.1) y `@somosbelisario` (§3.d.3) se añadieron con comprobación asistida y quedan marcadas «refrendadas por @victorolave el 12 de agosto de 2026 en `scripts/validate-seed.ts`. La segunda además **sienta precedente**: es la primera cuenta de un negocio privado en esa lista.
+2.c **Batallón Girardot (Medellín)** — el boletín oficial lista 10 puntos y no lo incluye, pese a confirmar los otros ocho de la ciudad (§3.d.2). Localizar comunicado de la Cuarta Brigada o bajar a `disputed`.
+2.d **Los cuatro centros de Bogotá de §4.8** — llamar a la Cruz Roja Seccional. Es el riesgo abierto más alto del proyecto.
 3. **Las 4 sedes de bancos de alimentos sin dirección** (Armenia, Manizales, Ibagué, Cúcuta ACSC) — obtener dirección exacta con ABACO / la ACSC.
-4. **Los 28 pines no exactos** — verificar visualmente contra imagen satelital o llamada al centro.
+4. **Los 62 pines no exactos** (de 90 publicados) — verificar visualmente contra imagen satelital o llamada al centro. Cifra recontada el 12 de agosto; la anterior estaba desactualizada.
 5. **Dirección de Fundación Saciar** — resolver Carrera 50 vs. Carrera 52.
 6. **Plaza de la Paz (Cundinamarca)** — la fuente no publicó dirección exacta; se geocodificó la sede de la Gobernación.
 7. **Coliseo Bernardo Caraballo (Cartagena)** — la fuente no publicó dirección; se geocodificó por nombre.
