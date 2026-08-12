@@ -26,7 +26,7 @@ jobs:
       # pnpm ya exista para poder cachear su almacén. La versión no se escribe
       # aquí, sale del campo `packageManager` de package.json, que es la única
       # respuesta a «con qué se instala esto».
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
       - uses: actions/setup-node@v7
         with:
