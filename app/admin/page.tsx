@@ -5,7 +5,8 @@ import { setVerificationStatus, signOut } from "./actions";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { VerificationBadge } from "@/components/centers/verification-badge";
 import { formatDateTime } from "@/lib/format";
-import type { CollectionCenter, VerificationStatus } from "@/lib/types";
+import { evidenceKind, type EvidenceKind } from "@/lib/validation";
+import type { AdminCenter, VerificationStatus } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,49 @@ const TABS: { value: VerificationStatus; label: string }[] = [
   { value: "disputed", label: "Disputados" },
   { value: "inactive", label: "Inactivos" },
 ];
+
+/**
+ * Con qué se puede comprobar un envío, y en qué orden conviene atenderlo.
+ *
+ * Un enlace se revisa leyendo; un contacto obliga a llamar. Los envíos que solo
+ * traen contacto son los que más tiempo cuestan y los que más fácil se quedan
+ * estancados, así que se marcan.
+ */
+const EVIDENCE: Record<EvidenceKind, { label: string; tone: string }> = {
+  url: { label: "Enlace", tone: "border-ink-300 text-ink-700" },
+  contact: { label: "Solo contacto", tone: "border-caution-700 text-caution-700" },
+  both: { label: "Enlace + contacto", tone: "border-brand-600 text-brand-700" },
+};
+
+/** La prueba solo tiene sentido en lo que llegó por el formulario público. */
+function submissionEvidence(center: AdminCenter): EvidenceKind | null {
+  const fromForm = Boolean(
+    center.verification_url ||
+      center.submitted_by_name ||
+      center.submitted_by_phone ||
+      center.submitted_by_email,
+  );
+  if (!fromForm) return null;
+
+  return evidenceKind({
+    verificationUrl: center.verification_url,
+    contactPhone: center.phone,
+    contactWhatsapp: center.whatsapp,
+    contactEmail: center.email,
+  });
+}
+
+function EvidenceTag({ center }: { center: AdminCenter }) {
+  const kind = submissionEvidence(center);
+  if (!kind) return <span className="text-ink-500">—</span>;
+
+  const { label, tone } = EVIDENCE[kind];
+  return (
+    <span className={`inline-block whitespace-nowrap rounded-full border px-2 py-0.5 text-xs ${tone}`}>
+      {label}
+    </span>
+  );
+}
 
 export default async function AdminPage({
   searchParams,
@@ -35,7 +79,7 @@ export default async function AdminPage({
     .eq("verification_status", active)
     .order("created_at", { ascending: false })) ?? { data: [] };
 
-  const centers = (data ?? []) as CollectionCenter[];
+  const centers = (data ?? []) as AdminCenter[];
 
   const { count: openReports } =
     (await supabase
@@ -94,6 +138,7 @@ export default async function AdminPage({
               <th scope="col" className="px-3 py-2 font-medium">Ciudad</th>
               <th scope="col" className="px-3 py-2 font-medium">Organización</th>
               <th scope="col" className="px-3 py-2 font-medium">Fuente</th>
+              <th scope="col" className="px-3 py-2 font-medium">Prueba</th>
               <th scope="col" className="px-3 py-2 font-medium">Verificado</th>
               <th scope="col" className="px-3 py-2 font-medium">Estado</th>
               <th scope="col" className="px-3 py-2 font-medium">Acciones</th>
@@ -102,7 +147,7 @@ export default async function AdminPage({
           <tbody className="divide-y divide-ink-100">
             {centers.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-3 py-8 text-center text-ink-500">
+                <td colSpan={8} className="px-3 py-8 text-center text-ink-500">
                   No hay centros en este estado.
                 </td>
               </tr>
@@ -133,6 +178,9 @@ export default async function AdminPage({
                   ) : (
                     <span className="text-ink-500">{center.source_name}</span>
                   )}
+                </td>
+                <td className="px-3 py-3">
+                  <EvidenceTag center={center} />
                 </td>
                 <td className="px-3 py-3 text-ink-500">
                   {formatDateTime(center.last_verified_at) ?? "—"}

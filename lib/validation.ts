@@ -58,7 +58,7 @@ export const submissionSchema = z
     acceptedItems: z.array(trimmed(80)).min(1, "Indica al menos qué recibe el centro"),
     scheduleText: trimmed(200).min(3, "Indica el horario de atención"),
 
-    contactName: trimmed(160).min(3, "Indica quién es la persona responsable"),
+    contactName: optionalText(160),
     contactPhone: optionalText(40),
     contactWhatsapp: optionalText(40),
     contactEmail: z
@@ -72,7 +72,14 @@ export const submissionSchema = z
 
     nit: optionalText(40),
 
-    verificationUrl: z.string().trim().url("Debe ser un enlace válido (https://...)").max(500),
+    verificationUrl: z
+      .string()
+      .trim()
+      .url("Debe ser un enlace válido (https://...)")
+      .max(500)
+      .optional()
+      .or(z.literal(""))
+      .transform((v) => (v && v.length > 0 ? v : null)),
     evidenceUrl: optionalText(500),
 
     consent: z.literal(true, {
@@ -88,12 +95,55 @@ export const submissionSchema = z
      */
     website: z.string().max(200).optional(),
   })
-  .refine((data) => data.contactPhone || data.contactWhatsapp || data.contactEmail, {
-    message: "Deja al menos un teléfono, WhatsApp o correo de contacto",
-    path: ["contactPhone"],
-  });
+  /**
+   * Regla de la prueba: AL MENOS UNA forma de comprobar el centro.
+   *
+   * Antes el enlace de verificación era obligatorio, y eso dejaba fuera a quien
+   * ve el acopio con sus propios ojos y no tiene un comunicado de la alcaldía a
+   * mano. La barrera no se elimina: se sustituye por la moneda que la persona sí
+   * tiene. La calidad la sigue protegiendo la moderación —todo envío entra como
+   * `pending` y nunca se publica solo—, no la rigidez del formulario.
+   */
+  .refine(
+    (data) =>
+      Boolean(
+        data.verificationUrl || data.contactPhone || data.contactWhatsapp || data.contactEmail,
+      ),
+    {
+      message:
+        "Necesitamos al menos una forma de comprobar el centro: un enlace de verificación o un teléfono, WhatsApp o correo del centro.",
+      path: ["verificationUrl"],
+    },
+  );
 
 export type SubmissionInput = z.infer<typeof submissionSchema>;
+
+/**
+ * Qué prueba acompañó a un envío.
+ *
+ * Las tres no cuestan lo mismo de verificar: un enlace se revisa en veinte
+ * segundos y un teléfono se resuelve con una llamada —es la prueba más
+ * concluyente cuando contestan—. Guardar cuál llegó permite priorizar la cola
+ * de moderación en lugar de atenderla por orden de llegada.
+ */
+export type EvidenceKind = "url" | "contact" | "both";
+
+type EvidenceSource = {
+  verificationUrl?: string | null;
+  contactPhone?: string | null;
+  contactWhatsapp?: string | null;
+  contactEmail?: string | null;
+};
+
+export function evidenceKind(input: EvidenceSource): EvidenceKind | null {
+  const hasUrl = Boolean(input.verificationUrl);
+  const hasContact = Boolean(input.contactPhone || input.contactWhatsapp || input.contactEmail);
+
+  if (hasUrl && hasContact) return "both";
+  if (hasUrl) return "url";
+  if (hasContact) return "contact";
+  return null;
+}
 
 export const REPORT_REASONS = [
   { value: "closed", label: "El centro está cerrado" },

@@ -95,6 +95,39 @@ test.describe("Buscador de direcciones", () => {
     await expect(alertaDelFormulario(page)).toContainText("Indica al menos qué recibe el centro.");
   });
 
+  test("exige al menos una prueba, y con el contacto del centro basta", async ({ page }) => {
+    /**
+     * La regla central del formulario: ya NO se exige un enlace oficial, pero
+     * tampoco se admite un envío sin nada con qué comprobarlo. Si esta prueba
+     * cae del lado permisivo, entra ruido imposible de moderar; si cae del lado
+     * estricto, volvemos a dejar fuera a quien ve el acopio con sus propios ojos.
+     */
+    await page.route("**/api/geocode", (route) => route.fulfill({ json: RESPUESTA_MUNICIPIO }));
+
+    await page.goto("/registrar");
+    await llenarUbicacion(page);
+    await page.getByRole("button", { name: "Ubicar dirección en el mapa" }).click();
+    await page.getByLabel(/Revisé el mapa y el pin está sobre la entrada/).check();
+    await page.getByRole("button", { name: "Agua", exact: true }).click();
+
+    await expect(page.getByText("Falta la prueba:")).toBeVisible();
+    await page.getByRole("button", { name: "Enviar para revisión" }).click();
+    await expect(alertaDelFormulario(page)).toContainText(
+      "Necesitamos al menos una forma de comprobar el centro",
+    );
+
+    // Un teléfono del centro es prueba suficiente: se confirma con una llamada.
+    await page.getByLabel("Teléfono").fill("604 385 5555");
+    await expect(page.getByText(/con el contacto podemos confirmarlo/)).toBeVisible();
+
+    await page.route("**/api/submissions", (route) => route.fulfill({ json: { ok: true } }));
+    await page.getByRole("button", { name: "Enviar para revisión" }).click();
+
+    await expect(page.getByRole("heading", { name: "Gracias." })).toBeVisible();
+    // Y se invita a seguir aportando, que es el punto de todo el cambio.
+    await expect(page.getByRole("button", { name: "Registrar otro centro" })).toBeVisible();
+  });
+
   test("cuando el buscador no encuentra nada, invita a marcar el punto a mano", async ({ page }) => {
     await page.route("**/api/geocode", (route) => route.fulfill({ json: { found: false } }));
 
