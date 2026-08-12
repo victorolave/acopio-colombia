@@ -10,7 +10,7 @@ Sitio nacional para encontrar **centros de acopio cercanos** tras el terremoto d
 
 Responde en segundos a una sola pregunta: **¿dónde puedo llevar ayuda cerca de mí?**
 
-- 70 centros publicados en 26 departamentos
+- 90 centros publicados en 26 departamentos
 - Cada centro muestra **qué recibe, cuándo se verificó y cuál es la fuente**
 - Nada se publica automáticamente: los envíos de la comunidad quedan `pending` hasta revisión
 
@@ -199,7 +199,7 @@ docs/           sources.md (trazabilidad completa)
 
 Los aportes son bienvenidos. Lee **[CONTRIBUTING.md](CONTRIBUTING.md)** antes de empezar: en este proyecto los aportes de **datos** se revisan con un criterio más estricto que los de **código**, porque una dirección equivocada aquí manda a alguien a conducir dos horas hasta un lugar que no recibe nada.
 
-Lo más útil que puedes hacer ahora mismo: tomar uno de los 33 centros `reported` y confirmarlo contra el canal propio de la entidad. La lista priorizada está en [`docs/sources.md`](docs/sources.md) §7.
+Lo más útil que puedes hacer ahora mismo: tomar uno de los 23 centros `reported` y confirmarlo contra el canal propio de la entidad. La lista priorizada está en [`docs/sources.md`](docs/sources.md) §7.
 
 Las reglas de verificación no son solo documentación: están **como código** en `scripts/validate-seed.ts` y corren en CI en cada pull request. Rechazan automáticamente fuentes anteriores al terremoto, `verified` sin fuente institucional, coordenadas fuera de Colombia y duplicados.
 
@@ -214,12 +214,12 @@ npm run validate:seed
 
 Código bajo [MIT](LICENSE) — © 2026 Victor Olave ([@victorolave](https://github.com/victorolave)).
 
-Los **datos** son otra cosa: ver [DATOS.md](DATOS.md). Resumen — provienen de fuentes públicas de terceros citadas en [`docs/sources.md`](docs/sources.md), de 70 centros publicados, 37 están confirmados en el canal propio de la entidad responsable y 33 provienen de medios que la citan; además, la mayoría de los pines no son exactos. Si reutilizas este proyecto, **verifica los datos antes de publicarlos**.
+Los **datos** son otra cosa: ver [DATOS.md](DATOS.md). Resumen — provienen de fuentes públicas de terceros citadas en [`docs/sources.md`](docs/sources.md), de 90 centros publicados, 67 están confirmados en el canal propio de la entidad responsable y 23 provienen de medios que la citan; además, la mayoría de los pines no son exactos. Si reutilizas este proyecto, **verifica los datos antes de publicarlos**.
 
 ## Estado y pendientes
 
 Ver la sección **«Datos que deben validarse manualmente»** en [`docs/sources.md`](docs/sources.md). Lo más relevante:
 
-- 37 centros están confirmados en el canal propio de la entidad responsable; 33 provienen de medios que la citan.
+- 67 centros están confirmados en el canal propio de la entidad responsable; 23 provienen de medios que la citan.
 - La mayoría de los pines no son exactos y están marcados como tal en la interfaz.
 - 2 registros quedaron en disputa y **no se publican**.
