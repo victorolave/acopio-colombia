@@ -114,6 +114,25 @@ ruptura (`feat!:` o `BREAKING CHANGE:` en el cuerpo), se detiene y falla con un
 aviso. Declarar que se rompió una promesa pública es una decisión humana y tiene
 que escribirse a mano.
 
+### Qué produce el workflow, y por qué en dos piezas
+
+1. **El tag y el release de GitHub, de inmediato.** Sobre un commit que ya pasó
+   el CI. Es lo que importa durante la emergencia: el punto de rollback y las
+   notas públicas existen desde el primer segundo.
+2. **Un pull request con el CHANGELOG y la versión de `package.json`.** Llega
+   aparte y puede esperar a que alguien lo revise, porque el release ya salió.
+
+No es una complicación gratuita. `main` está protegida con comprobaciones de
+estado obligatorias, y eso se queda así: este repositorio acepta aportes
+públicos de datos y esa protección es justo lo que impide que entre algo sin
+validar. `github-actions[bot]` no es administrador y no la salta; un commit
+recién creado no tiene comprobaciones aprobadas todavía —no puede tenerlas—, así
+que empujarlo directo a `main` sería un rechazo garantizado el día que haya
+prisa por cortar un release.
+
+Los tags no están cubiertos por la protección de rama. Por ahí sale el release
+sin pelearse con nada.
+
 ## Marcar una ruptura en un commit
 
 ```
