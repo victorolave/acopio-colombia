@@ -47,6 +47,47 @@ const OFFICIAL_ACCOUNTS = [
       "Tigresas de la Patria — red difundida por la primera dama Ana Lucía Pineda, encargada por el presidente de coordinar la ayuda ciudadana por este terremoto",
     comprobadoPor: "@victorolave, 11 de agosto de 2026",
   },
+  {
+    url: "https://www.instagram.com/somosbelisario",
+    entidad:
+      "Somos Belisario Grupo Empresarial — cadena de restaurantes de Medellín que anunció EN SU PROPIA CUENTA que habilitó tres centros de acopio por este terremoto",
+    comprobadoPor:
+      "@victorolave, 12 de agosto de 2026, sobre verificación asistida de la publicación. PRECEDENTE NUEVO: es la primera cuenta de un negocio privado en esta lista; hasta ahora solo había organizaciones de la respuesta oficial. Se admite porque la publicación es de la propia empresa, con fecha visible posterior al sismo y dirección coincidente con la ficha. Si esta política se quiere acotar, este es el registro que hay que revisar primero.",
+  },
+];
+
+/**
+ * Sitios web aceptados como fuente propia de la entidad responsable.
+ *
+ * ANTES esto era un regex suelto que solo reconocía dominios gubernamentales.
+ * El problema: `docs/sources.md` define `verified` como «el canal propio de la
+ * entidad responsable», y hay entidades responsables que no son el Estado —una
+ * asociación científica, una fundación, una universidad— publicando en su
+ * propio dominio. El regex decía «gubernamental» cuando la regla dice «propio».
+ *
+ * Se convierte en lista blanca por la misma razón que OFFICIAL_ACCOUNTS:
+ * ampliarla debe ser una DECISIÓN CONSCIENTE, visible en el diff del pull
+ * request, con constancia de quién comprobó qué. Un regex permisivo dejaría
+ * entrar cualquier dominio que alguien registre a nombre de una entidad falsa.
+ */
+const OFFICIAL_SITES = [
+  {
+    match: /\.gov\.co|\.gob\.co/,
+    entidad: "Entidades públicas colombianas (alcaldías, gobernaciones, ministerios)",
+    comprobadoPor: "Regla original del proyecto, 10 de agosto de 2026",
+  },
+  {
+    match: /cruzrojacolombiana\.org|defensacivil\.gov\.co/,
+    entidad: "Cruz Roja Colombiana y Defensa Civil — organismos de socorro",
+    comprobadoPor: "Regla original del proyecto, 10 de agosto de 2026",
+  },
+  {
+    match: /sociedadescientificas\.com/,
+    entidad:
+      "Asociación Colombiana de Sociedades Científicas (ACSC) — comunicado del 10 de agosto de 2026 firmado por su presidente, Jaime Alberto González, con las 16 sedes de S.C.A.R.E. habilitadas",
+    comprobadoPor:
+      "@victorolave, 12 de agosto de 2026, sobre verificación asistida: se leyó el PDF del comunicado (3 páginas, imagen escaneada sin capa de texto) y se cotejaron las 16 direcciones y los 16 teléfonos contra el seed, con coincidencia exacta.",
+  },
 ];
 
 /** Colombia continental e insular. */
@@ -182,7 +223,7 @@ for (const center of SEED_CENTERS as SeedCenter[]) {
       );
     }
     const url = center.sourceUrl ?? "";
-    const isInstitutionalSite = /\.gov\.co|\.gob\.co|cruzrojacolombiana\.org|defensacivil\.gov\.co/.test(url);
+    const isInstitutionalSite = OFFICIAL_SITES.some((s) => s.match.test(url));
     // Una cuenta oficial verificada de la entidad responsable ES la entidad
     // publicando en su propio canal, no un tercero citándola. Durante una
     // emergencia suele ser además el canal MÁS rápido. Se admite solo mediante
