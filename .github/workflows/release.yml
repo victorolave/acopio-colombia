@@ -1,0 +1,147 @@
+name: Release
+
+# Un release NO es un deploy. Cada push a `main` ya despliega en Vercel; esto
+# pone un punto con nombre en esa línea continua, para poder responder «qué
+# cambió y cuándo» y para tener un ancla de rollback legible. Las reglas de
+# versionado están en docs/versionado.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tipo:
+        description: "Salto de versión"
+        type: choice
+        required: true
+        default: automatico
+        options:
+          - automatico
+          - patch
+          - minor
+          - major
+      version:
+        description: "Versión exacta (opcional; ignora el salto de arriba)"
+        type: string
+        required: false
+
+  # Corte diario de datos a las 23:00 en Colombia (UTC-5). Los datos son el
+  # producto: si cambiaron en el día, ese día merece quedar registrado aunque
+  # el mantenedor no haya tenido tiempo de cortar el release a mano.
+  schedule:
+    - cron: "0 4 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    name: Cortar release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # `fetch-depth: 0` es obligatorio: sin el historial completo y sin tags,
+      # no hay rango desde el último release y las notas saldrían vacías.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Comprobar si hay algo que publicar
+        id: alcance
+        run: |
+          ultimo=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          rango=${ultimo:+$ultimo..HEAD}
+
+          if [ -z "$(git log --oneline ${rango:-HEAD})" ]; then
+            echo "No hay commits desde ${ultimo:-el inicio}. No se corta nada."
+            echo "continuar=no" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # El corte automático solo se justifica si cambiaron los datos. El
+          # manual siempre procede: el mantenedor ya decidió que vale la pena.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            tocados=$(git diff --name-only ${rango:-HEAD} -- data/ supabase/seed.sql docs/sources.md)
+            if [ -z "$tocados" ]; then
+              echo "Hubo commits, pero ninguno tocó datos. El corte diario no aplica."
+              echo "continuar=no" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          echo "continuar=si" >> "$GITHUB_OUTPUT"
+
+      # Falla a propósito si encuentra un commit marcado como ruptura y el salto
+      # no se pidió como `major` a mano. Declarar que el sitio dejó de cumplir
+      # una promesa pública es una decisión humana, no una deducción.
+      - name: Calcular la versión
+        id: version
+        if: steps.alcance.outputs.continuar == 'si'
+        run: |
+          entrada="${{ inputs.version }}"
+          tipo="${{ inputs.tipo || 'automatico' }}"
+
+          if [ -n "$entrada" ]; then
+            siguiente="${entrada#v}"
+          elif [ "$tipo" = "automatico" ]; then
+            siguiente=$(pnpm run --silent release:bump)
+          else
+            actual=$(node -p "require('./package.json').version")
+            siguiente=$(pnpm dlx semver "$actual" -i "$tipo")
+          fi
+
+          echo "Versión siguiente: $siguiente"
+          echo "valor=$siguiente" >> "$GITHUB_OUTPUT"
+
+      - name: Actualizar CHANGELOG y package.json
+        if: steps.alcance.outputs.continuar == 'si'
+        run: |
+          pnpm run --silent release:notes -- --insertar "${{ steps.version.outputs.valor }}"
+          pnpm version "${{ steps.version.outputs.valor }}" --no-git-tag-version
+
+      - name: Generar las notas del release
+        id: notas
+        if: steps.alcance.outputs.continuar == 'si'
+        run: |
+          {
+            echo "cuerpo<<FIN_DE_NOTAS"
+            pnpm run --silent release:notes
+            echo ""
+            echo "---"
+            echo ""
+            echo "Reglas de versionado: [docs/versionado.md](https://github.com/${{ github.repository }}/blob/main/docs/versionado.md)"
+            echo "FIN_DE_NOTAS"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Publicar el tag y el release
+        if: steps.alcance.outputs.continuar == 'si'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.valor }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add CHANGELOG.md package.json pnpm-lock.yaml
+          git commit -m "chore(release): v$VERSION"
+
+          # El tag apunta al commit del changelog: quien clone por el tag se
+          # lleva el historial ya escrito, no una versión anterior de él.
+          git tag -a "v$VERSION" -m "v$VERSION"
+          git push origin HEAD:main --follow-tags
+
+          gh release create "v$VERSION" \
+            --title "v$VERSION" \
+            --notes "${{ steps.notas.outputs.cuerpo }}"

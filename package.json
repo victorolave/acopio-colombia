@@ -1,6 +1,6 @@
 {
   "name": "acopio-colombia",
-  "version": "0.1.0",
+  "version": "1.5.0",
   "private": true,
   "packageManager": "pnpm@11.21.0",
   "engines": {
@@ -15,7 +15,9 @@
     "seed:build": "tsx scripts/build-seed.ts",
     "validate:seed": "tsx scripts/validate-seed.ts",
     "geocode": "tsx scripts/geocode.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "release:notes": "tsx scripts/release-notes.ts",
+    "release:bump": "tsx scripts/release-notes.ts --bump"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

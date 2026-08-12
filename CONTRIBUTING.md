@@ -131,3 +131,17 @@ Antes de abrir el PR, comprueba que sigue cumpliendo lo que el proyecto promete:
 ## Convenciones
 
 Commits convencionales (`feat:`, `fix:`, `docs:`, `chore:`). Un PR, un tema. Si el mensaje del commit necesita un «y», probablemente son dos PRs.
+
+No es burocracia: las notas de cada release se generan a partir de estos mensajes. Un commit mal etiquetado no aparece donde debe, y en una emergencia eso significa que un cambio de datos pasa desapercibido.
+
+Si tu cambio hace que algo ya publicado deje de cumplirse —un centro `verified` que bajo el criterio nuevo ya no calificaría, un campo del esquema que desaparece, o una de las garantías del sitio— márcalo con `!` y explica en el cuerpo a quién afecta:
+
+```
+feat(validacion)!: exigir comunicado propio para verified
+
+BREAKING CHANGE: una cuenta oficial en redes ya no basta. Los centros
+ascendidos con ese criterio bajan a `reported` hasta encontrar la
+publicación original de la entidad.
+```
+
+Cuándo sube MAJOR, MINOR o PATCH está en **[docs/versionado.md](docs/versionado.md)**. La regla que más se falla: **ampliar un criterio es MINOR, estrecharlo es MAJOR.**
