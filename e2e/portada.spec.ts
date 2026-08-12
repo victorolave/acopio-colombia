@@ -102,6 +102,30 @@ test.describe("Portada", () => {
     await expect(comoLlegar).toHaveAttribute("href", /google\.com\/maps/);
   });
 
+  test("invita a registrar acopios y respeta que la cierren", async ({ page }) => {
+    /**
+     * La invitación tiene que verse en móvil y en escritorio —los CTA del
+     * encabezado son `lg:` y en un teléfono no existen—, pero no puede
+     * convertirse en un peaje: quien viene con el carro cargado a buscar dónde
+     * donar debe poder quitársela de encima para siempre.
+     */
+    await page.goto("/");
+
+    const aviso = page.getByText("Aún nos queda mucho por cubrir");
+    await expect(aviso).toBeVisible();
+
+    const registrar = page.getByRole("link", { name: "Registrar un acopio" });
+    await expect(registrar).toHaveAttribute("href", "/registrar");
+
+    await page.getByRole("button", { name: "Ocultar este mensaje" }).click();
+    await expect(aviso).toBeHidden();
+
+    // Y sigue oculta al volver: si reaparece, es un estorbo, no una invitación.
+    await page.reload();
+    await expect(page.getByRole("button", { name: "Filtros" })).toBeVisible();
+    await expect(aviso).toBeHidden();
+  });
+
   test("no hay desbordamiento horizontal", async ({ page }) => {
     await page.goto("/");
     const desborda = await page.evaluate(
