@@ -1,8 +1,20 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-import { submissionSchema } from "@/lib/validation";
+import { evidenceKind, submissionSchema, type EvidenceKind } from "@/lib/validation";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { slugify } from "@/lib/utils";
+
+/**
+ * Nota de moderación según la prueba que trajo el envío. No son intercambiables:
+ * un enlace se revisa leyendo, un contacto se revisa llamando. Decirlo aquí
+ * ahorra que quien modera lo deduzca centro por centro.
+ */
+const EVIDENCE_NOTE: Record<EvidenceKind, string> = {
+  url: "Enviado desde el formulario público con enlace de verificación. Pendiente de revisar la fuente.",
+  contact:
+    "Enviado desde el formulario público SIN enlace: la única prueba es el contacto del centro. Confirmar por llamada antes de publicar.",
+  both: "Enviado desde el formulario público con enlace y contacto del centro. Pendiente de revisar.",
+};
 
 /**
  * Registro de un centro enviado por la comunidad.
@@ -57,6 +69,9 @@ export async function POST(request: Request) {
   const baseSlug = slugify(`${data.name}-${data.municipality}`);
   const slug = `${baseSlug}-${Date.now().toString(36).slice(-4)}`;
 
+  // El esquema ya garantiza que hay al menos una prueba: aquí nunca es null.
+  const kind = evidenceKind(data) ?? "contact";
+
   const { error } = await supabase.from("collection_centers").insert({
     slug,
     name: data.name,
@@ -79,7 +94,7 @@ export async function POST(request: Request) {
     source_name: "Enviado por la comunidad",
     source_url: data.verificationUrl,
     verification_status: "pending",
-    verification_notes: "Enviado desde el formulario público. Pendiente de revisar la fuente.",
+    verification_notes: EVIDENCE_NOTE[kind],
     submitted_by_name: data.contactName,
     submitted_by_email: data.contactEmail,
     submitted_by_phone: data.contactPhone ?? data.contactWhatsapp,

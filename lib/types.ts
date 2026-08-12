@@ -67,6 +67,20 @@ export type CollectionCenter = {
 /** Centro con la distancia calculada en memoria respecto al visitante. */
 export type CenterWithDistance = CollectionCenter & { distanceKm: number | null };
 
+/**
+ * Centro visto desde el panel, con los campos del envío que NUNCA salen al
+ * público: `lib/centers.ts` selecciona una lista explícita de columnas que los
+ * excluye a propósito. Quien modera sí los necesita.
+ */
+export type AdminCenter = CollectionCenter & {
+  submitted_by_name: string | null;
+  submitted_by_email: string | null;
+  submitted_by_phone: string | null;
+  submitted_nit: string | null;
+  verification_url: string | null;
+  evidence_url: string | null;
+};
+
 export type ReportReason =
   | "closed"
   | "schedule_changed"

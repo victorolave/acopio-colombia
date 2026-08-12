@@ -56,6 +56,12 @@ export default function MetodologiaPage() {
           Los centros enviados por la comunidad son revisados antes de publicarse. Nunca aparecen
           automáticamente.
         </p>
+        <p>
+          Para registrar un centro pedimos al menos una prueba: un enlace donde se anuncie, o un
+          contacto del centro con el que podamos confirmarlo por llamada. No exigimos las dos, porque
+          quien ve un acopio con sus propios ojos rara vez tiene a mano un comunicado oficial. Lo que
+          no se negocia es la revisión posterior: sin ella nada se publica.
+        </p>
       </div>
 
       <h2 className="mt-8 text-xl font-semibold text-ink-900">Estados de verificación</h2>
@@ -98,6 +104,12 @@ export default function MetodologiaPage() {
         realmente. No registramos quién eres, ni tu ubicación, ni lo que escribes en el buscador: de
         cada visita solo se envía la ruta de la página, sin la parte que va después del signo de
         interrogación.
+      </p>
+      <p className="mt-2 text-ink-700">
+        En el formulario de registro medimos además cuántas personas lo abren, cuántas empiezan a
+        llenarlo y cuántas lo envían. Es lo que nos permite saber si el formulario está estorbando en
+        lugar de ayudar. De cada envío guardamos también <em>qué tipo</em> de prueba lo acompañó
+        —enlace, contacto, o ambas—, nunca el enlace ni el contacto en sí.
       </p>
     </div>
   );

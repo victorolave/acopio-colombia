@@ -1,11 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
-import { trackEvent } from "@/lib/analytics";
+import { useEffect, useRef, useState } from "react";
+import { trackEvent, trackSubmitCenter } from "@/lib/analytics";
 import type { GeocodePrecision } from "@/lib/geocoding";
 import { DONATION_CATEGORIES } from "@/lib/items";
-import { DEPARTMENTS } from "@/lib/validation";
+import { DEPARTMENTS, evidenceKind, type EvidenceKind } from "@/lib/validation";
 import { cn } from "@/lib/utils";
 import type { MapFocus } from "@/components/map/location-picker";
 
@@ -46,6 +46,25 @@ const FIELD =
   "mt-1 min-h-12 w-full rounded-xl border border-ink-300 bg-white px-3 py-2.5 text-base text-ink-900 placeholder:text-ink-500";
 const LABEL = "block text-sm font-medium text-ink-700";
 
+const EVIDENCE_NOTE: Record<EvidenceKind, string> = {
+  url: "Listo: con el enlace podemos revisarlo.",
+  contact: "Listo: con el contacto podemos confirmarlo por llamada.",
+  both: "Enlace y contacto. Así se revisa más rápido.",
+};
+
+/** Lee la prueba directamente del DOM: es la fuente autoritativa, sin estado intermedio. */
+function readEvidence(form: HTMLFormElement): EvidenceKind | null {
+  const data = new FormData(form);
+  const read = (key: string) => String(data.get(key) ?? "").trim() || null;
+
+  return evidenceKind({
+    verificationUrl: read("verificationUrl"),
+    contactPhone: read("contactPhone"),
+    contactWhatsapp: read("contactWhatsapp"),
+    contactEmail: read("contactEmail"),
+  });
+}
+
 export function RegisterCenterForm() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [position, setPosition] = useState<Position | null>(null);
@@ -56,17 +75,55 @@ export function RegisterCenterForm() {
   const [items, setItems] = useState<string[]>([]);
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  /** Solo alimenta el indicador en vivo. La decisión de enviar relee el DOM. */
+  const [evidence, setEvidence] = useState<EvidenceKind | null>(null);
 
-  const toggleItem = (label: string) =>
+  /**
+   * El formulario es la única página cuyo embudo nos interesa completo, así que
+   * la visita se mide desde aquí y no desde un componente aparte: este árbol y
+   * la página son lo mismo.
+   */
+  useEffect(() => {
+    trackEvent("view_register");
+  }, []);
+
+  /**
+   * «Empezó a llenarlo» tiene que incluir tocar el mapa o marcar una categoría,
+   * no solo escribir: son botones, y un botón no dispara `input`.
+   */
+  /**
+   * El `nonce` solo tiene que ser distinto del anterior para que el mapa vuelva
+   * a encuadrar. Un contador lo garantiza; `Date.now()` no: dos búsquedas en el
+   * mismo milisegundo daban el mismo valor y el mapa se quedaba quieto.
+   */
+  const focusNonce = useRef(0);
+
+  const startedRef = useRef(false);
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackEvent("start_register");
+  };
+
+  const handleFormInput = () => {
+    markStarted();
+    if (formRef.current) setEvidence(readEvidence(formRef.current));
+  };
+
+  const toggleItem = (label: string) => {
+    markStarted();
     setItems((prev) => (prev.includes(label) ? prev.filter((i) => i !== label) : [...prev, label]));
+  };
 
   /** Tocar el mapa o arrastrar el pin es un acto humano: ya no hace falta confirmarlo. */
   const handlePickPosition = (next: Position) => {
+    markStarted();
     setPosition(next);
     setPinSource("manual");
   };
 
   async function handleLocateAddress() {
+    markStarted();
     const form = formRef.current;
     if (!form) return;
 
@@ -110,7 +167,7 @@ export function RegisterCenterForm() {
         latitude: body.latitude,
         longitude: body.longitude,
         zoom: FOCUS_ZOOM[precision],
-        nonce: Date.now(),
+        nonce: (focusNonce.current += 1),
       });
       setLookup({ status: "found", displayName: body.displayName, precision });
       setError(null);
@@ -138,6 +195,14 @@ export function RegisterCenterForm() {
     }
     if (items.length === 0) {
       setError("Indica al menos qué recibe el centro.");
+      return;
+    }
+
+    const kind = readEvidence(event.currentTarget);
+    if (!kind) {
+      setError(
+        "Necesitamos al menos una forma de comprobar el centro: un enlace donde se anuncie, o un teléfono, WhatsApp o correo del centro.",
+      );
       return;
     }
 
@@ -177,7 +242,7 @@ export function RegisterCenterForm() {
         setStatus("error");
         return;
       }
-      trackEvent("submit_center");
+      trackSubmitCenter(kind);
       setStatus("done");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
@@ -192,15 +257,49 @@ export function RegisterCenterForm() {
         <h2 className="text-xl font-bold text-brand-700">Gracias.</h2>
         <p className="mt-2 text-ink-700">Recibimos la información del centro de acopio.</p>
         <p className="mt-2 text-ink-700">
-          Revisaremos la fuente suministrada antes de publicarlo, para evitar información incorrecta
+          Revisaremos lo que nos indicaste antes de publicarlo, para evitar información incorrecta
           durante la emergencia.
         </p>
+
+        {/* Quien acaba de registrar un centro es, con diferencia, la persona con
+            más probabilidad de conocer otro. Es el momento de pedirlo. */}
+        <div className="mt-4 border-t border-brand-100 pt-4">
+          <p className="font-medium text-ink-900">¿Conoces otro acopio?</p>
+          <p className="mt-1 text-sm text-ink-700">
+            Todavía queda mucho territorio sin cubrir. Si viste otro punto recibiendo donaciones,
+            regístralo también: toma menos que la primera vez.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              startedRef.current = false;
+              setPosition(null);
+              setPinSource("manual");
+              setPinConfirmed(false);
+              setFocus(null);
+              setLookup({ status: "idle" });
+              setItems([]);
+              setEvidence(null);
+              setError(null);
+              setStatus("idle");
+            }}
+            className="mt-3 min-h-12 w-full rounded-xl bg-brand-600 px-4 font-semibold text-white transition-colors hover:bg-brand-700 sm:w-auto"
+          >
+            Registrar otro centro
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="space-y-8" noValidate>
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      onInput={handleFormInput}
+      className="space-y-8"
+      noValidate
+    >
       {/* Información del centro -------------------------------------------- */}
       <fieldset className="space-y-4">
         <legend className="text-lg font-semibold text-ink-900">Información del centro</legend>
@@ -343,77 +442,79 @@ export function RegisterCenterForm() {
         </div>
       </fieldset>
 
-      {/* Contacto ----------------------------------------------------------- */}
+      {/* Cómo lo comprobamos ------------------------------------------------ */}
       <fieldset className="space-y-4">
-        <legend className="text-lg font-semibold text-ink-900">Contacto</legend>
-        <p className="text-sm text-ink-500">
-          Necesitamos al menos un mecanismo de contacto para poder verificar el centro. No pedimos
-          cédula.
+        <legend className="text-lg font-semibold text-ink-900">Cómo lo comprobamos</legend>
+        <p className="rounded-xl border border-ink-100 bg-white p-3 text-sm text-ink-700">
+          Con <span className="font-semibold">una sola</span> de las dos nos alcanza: un enlace donde
+          se anuncie el centro, o un contacto del centro con el que podamos confirmarlo. No hace falta
+          que seas quien lo organiza, y no pedimos tu cédula.
         </p>
 
         <div>
-          <label htmlFor="contactName" className={LABEL}>
-            Nombre de la persona responsable *
-          </label>
-          <input id="contactName" name="contactName" required maxLength={160} className={FIELD} />
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label htmlFor="contactPhone" className={LABEL}>
-              Teléfono
-            </label>
-            <input id="contactPhone" name="contactPhone" type="tel" maxLength={40} className={FIELD} />
-          </div>
-          <div>
-            <label htmlFor="contactWhatsapp" className={LABEL}>
-              WhatsApp
-            </label>
-            <input
-              id="contactWhatsapp"
-              name="contactWhatsapp"
-              type="tel"
-              maxLength={40}
-              className={FIELD}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="contactEmail" className={LABEL}>
-            Correo
-          </label>
-          <input id="contactEmail" name="contactEmail" type="email" maxLength={160} className={FIELD} />
-        </div>
-
-        <div>
-          <label htmlFor="nit" className={LABEL}>
-            NIT de la organización <span className="font-normal text-ink-500">(opcional)</span>
-          </label>
-          <input id="nit" name="nit" maxLength={40} className={FIELD} />
-        </div>
-      </fieldset>
-
-      {/* Validación --------------------------------------------------------- */}
-      <fieldset className="space-y-4">
-        <legend className="text-lg font-semibold text-ink-900">Validación</legend>
-
-        <div>
           <label htmlFor="verificationUrl" className={LABEL}>
-            ¿Dónde podemos verificar que este centro está activo? *
+            Enlace donde se anuncia el centro
           </label>
           <p className="mt-1 text-sm text-ink-500">
-            Enlace de la alcaldía, gobernación, la organización, una publicación oficial o su cuenta
-            verificada de Instagram, Facebook o X.
+            Publicación de la alcaldía, la gobernación, la organización responsable, un comunicado
+            oficial o su cuenta verificada de Instagram, Facebook o X.
           </p>
           <input
             id="verificationUrl"
             name="verificationUrl"
             type="url"
-            required
             placeholder="https://…"
             className={FIELD}
           />
+        </div>
+
+        <div className="flex items-center gap-3" aria-hidden="true">
+          <span className="h-px flex-1 bg-ink-100" />
+          <span className="text-sm font-medium text-ink-500">o</span>
+          <span className="h-px flex-1 bg-ink-100" />
+        </div>
+
+        <div>
+          <span className={LABEL}>Contacto del centro</span>
+          <p className="mt-1 text-sm text-ink-500">
+            Un número al que podamos llamar es la prueba más rápida de todas: en una llamada
+            confirmamos el centro. Estos datos se publican en la ficha, así que déjalos solo si son
+            del centro y puedes compartirlos.
+          </p>
+
+          <div className="mt-2 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="contactPhone" className={LABEL}>
+                Teléfono
+              </label>
+              <input id="contactPhone" name="contactPhone" type="tel" maxLength={40} className={FIELD} />
+            </div>
+            <div>
+              <label htmlFor="contactWhatsapp" className={LABEL}>
+                WhatsApp
+              </label>
+              <input
+                id="contactWhatsapp"
+                name="contactWhatsapp"
+                type="tel"
+                maxLength={40}
+                className={FIELD}
+              />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <label htmlFor="contactEmail" className={LABEL}>
+              Correo
+            </label>
+            <input
+              id="contactEmail"
+              name="contactEmail"
+              type="email"
+              maxLength={160}
+              className={FIELD}
+            />
+          </div>
         </div>
 
         <div>
@@ -427,6 +528,30 @@ export function RegisterCenterForm() {
         </div>
       </fieldset>
 
+      {/* Quién nos lo cuenta -------------------------------------------------- */}
+      <fieldset className="space-y-4">
+        <legend className="text-lg font-semibold text-ink-900">
+          Quién nos lo cuenta <span className="text-base font-normal text-ink-500">(opcional)</span>
+        </legend>
+        <p className="text-sm text-ink-500">
+          Nos sirve para volver a escribirte si algo no cuadra. Nunca se publica.
+        </p>
+
+        <div>
+          <label htmlFor="contactName" className={LABEL}>
+            Tu nombre o el de la persona responsable
+          </label>
+          <input id="contactName" name="contactName" maxLength={160} className={FIELD} />
+        </div>
+
+        <div>
+          <label htmlFor="nit" className={LABEL}>
+            NIT de la organización
+          </label>
+          <input id="nit" name="nit" maxLength={40} className={FIELD} />
+        </div>
+      </fieldset>
+
       {/* Consentimiento ----------------------------------------------------- */}
       <div className="space-y-3 rounded-xl border border-ink-100 bg-white p-4">
         <label className="flex items-start gap-3 text-sm text-ink-700">
@@ -437,14 +562,31 @@ export function RegisterCenterForm() {
             className="mt-0.5 size-5 shrink-0 rounded border-ink-300 accent-brand-600"
           />
           <span>
-            Confirmo que la información suministrada es correcta y que tengo autorización para publicar
-            los datos de contacto del centro. *
+            Confirmo que la información es correcta y que, si dejé datos de contacto del centro, puedo
+            compartirlos para publicarlos. *
           </span>
         </label>
         <p className="rounded-lg bg-caution-50 px-3 py-2 text-sm text-caution-700">
           Los centros enviados por la comunidad son revisados antes de aparecer públicamente.
         </p>
       </div>
+
+      {/*
+        La regla «al menos una prueba» se reparte entre dos campos lejanos entre
+        sí. Sin este resumen es invisible hasta que el envío falla, que es el
+        peor momento para enterarse.
+      */}
+      <p
+        aria-live="polite"
+        className={cn(
+          "rounded-xl px-3 py-2 text-sm",
+          evidence ? "bg-brand-50 text-brand-700" : "bg-ink-100 text-ink-700",
+        )}
+      >
+        {evidence
+          ? EVIDENCE_NOTE[evidence]
+          : "Falta la prueba: añade el enlace donde se anuncia el centro o un contacto del centro."}
+      </p>
 
       {/* Honeypot anti-spam */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 overflow-hidden">
