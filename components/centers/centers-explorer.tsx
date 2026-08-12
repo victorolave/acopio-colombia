@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CenterCard } from "./center-card";
+import { CoverageNudge } from "./coverage-nudge";
 import { useGeolocation } from "./use-geolocation";
 import {
   ActiveFilterChips,
@@ -164,6 +165,8 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
           </div>
         }
       >
+        <CoverageNudge centerCount={centers.length} departmentCount={departments.length} />
+
         {!hasLocation && (
           <div className="mb-3 rounded-xl border border-ink-100 bg-white p-3 lg:bg-ink-50">
             <p className="text-sm font-medium text-ink-900">¿En qué ciudad estás?</p>
