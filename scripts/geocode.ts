@@ -156,6 +156,22 @@ const MANUAL_OVERRIDES: Record<string, Pick<Entry, "latitude" | "longitude" | "p
     why: "El geocodificador devolvió un POI en otra vía; se usa el centro histórico de Santa Marta como aproximación.",
   },
 
+  "usaquen-usaquen-vl0m": {
+    // El QUERY_OVERRIDE de arriba lo rescató del centroide de Bogotá, pero lo
+    // dejó en el centroide de la Calle 161A (Villa Magdala), todavía a 2,4 km
+    // del punto real. En un centro `verified` de la Alcaldía Mayor eso es el
+    // peor modo de fallo del proyecto: sello de alta confianza sobre un pin que
+    // manda a la gente a otro barrio.
+    //
+    // Se fija con la ficha de Google Maps de la dirección exacta que ya
+    // publicamos, «Cl. 161a #7 F 55»: el pin CORROBORA la dirección impresa, así
+    // que se sella `exact` sin que ficha y navegación se contradigan.
+    latitude: 4.737079,
+    longitude: -74.026046,
+    precision: "exact",
+    why: "El pin de Google corrobora la Calle 161A #7F-55; el centroide de la vía quedaba a 2,4 km en un centro verificado.",
+  },
+
   // ---------------------------------------------------------------------------
   // Pines tomados de la lista colaborativa de Google Maps «Puntos de acopio MDE /
   // Compás Urbano» (2026-08-11), extraída del endpoint interno de listas.

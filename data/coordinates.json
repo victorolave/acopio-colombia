@@ -746,9 +746,9 @@
   "usaquen-usaquen-vl0m": {
     "slug": "usaquen-usaquen-vl0m",
     "query": "Calle 161A, Usaquén, Bogotá, Colombia",
-    "latitude": 4.742384,
-    "longitude": -74.047095,
-    "displayName": "Calle 161A, Villa Magdala, UPZs de Bogotá, Localidad Usaquén, Bogotá, Bogotá, Distrito Capital, RAP (Especial) Central, 110131, Colombia",
-    "precision": "approximate"
+    "latitude": 4.737079,
+    "longitude": -74.026046,
+    "displayName": "[corrección manual] El pin de Google corrobora la Calle 161A #7F-55; el centroide de la vía quedaba a 2,4 km en un centro verificado.",
+    "precision": "exact"
   }
 }
