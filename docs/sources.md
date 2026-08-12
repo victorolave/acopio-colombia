@@ -241,6 +241,41 @@ Por eso el proyecto **modela la precisión como dato de primera clase** (`locati
 | `acsc-cucuta` | El centroide administrativo del municipio quedaba ~20 km al norte del casco urbano | Se fijó el centro urbano de Cúcuta |
 | `acsc-santa-marta` | La consulta enganchó un POI («Hotel Monterrey») sobre otra vía | Se fijó el centro histórico de Santa Marta |
 
+### 5.4 Tanda del 12 de agosto — pines afinados con fichas de Google Maps
+
+Nueve centros que **ya estaban en el seed** tenían el pin en el centroide de la vía. Se corrigieron con coordenadas de Google Maps: para Usaquén, con la ficha de la dirección ya publicada; para los ocho del Valle de Aburrá, con los pines de la lista pública «Puntos de acopio MDE / Compás Urbano».
+
+**Límite de alcance, explícito:** esa lista es un tercero que no cita fuente por punto. Se usó **solo como geometría de centros ya sustentados por su propia fuente**, nunca como evidencia de que un centro existe. No movió ningún `verificationStatus` ni dio de alta ningún registro. De los 81 puntos de la lista, **no se incorporó ninguno nuevo**.
+
+**Criterio para sellar `exact`.** No es cosmético: según `lib/maps.ts`, un pin `exact` hace que «Cómo llegar» mande **coordenadas** a Google Maps en vez de la dirección en texto, y eso elimina justo el fallback que compensa la nomenclatura colombiana. Por eso:
+
+- `exact` → el pin **corrobora la dirección que ya publicábamos**, o es un POI con nombre propio a menos de 300 m del punto anterior.
+- `approximate` → POI con nombre propio pero lejos de la dirección impresa. Se mejora la coordenada y se conserva la navegación por texto, para que ficha y navegación no se contradigan.
+
+| Centro | Desfase corregido | Resultado |
+|---|---|---|
+| `usaquen-usaquen-vl0m` | 2,4 km — el anclaje de §3.c lo dejó en el centroide de la Calle 161A, no en el sitio | `approximate` → **`exact`**; el pin corrobora la Calle 161A #7F-55 |
+| `restaurante-belisario-medellin` | 836 m — Nominatim resolvió la Calle 7 en **El Tesoro** | `approximate` → **`exact`**; el pin corrobora la Calle 7 #35-44 |
+| `remanence-medellin` | 773 m | Coordenada mejorada, **sigue `approximate`** (lejos de la dirección impresa) |
+| `fundacion-saciar-medellin` | 619 m | Coordenada mejorada, **sigue `approximate`** (ver §7.5, dirección sin resolver) |
+| `gestion-del-riesgo-envigado` | 385 m | `approximate` → **`exact`**; el pin corrobora la Carrera 40 #39 sur-59 |
+| `udea-afroudea-medellin` | 272 m — apuntaba al centroide del campus | `exact` → `exact`, ahora sobre el bloque 9, que es la sede declarada |
+| `simon-coffee-medellin` | 234 m | `approximate` → **`exact`** (POI con nombre propio) |
+| `fundacion-el-arte-de-los-suenos-medellin` | 179 m | `approximate` → **`exact`** (POI con nombre propio) |
+| `bodega-guayaquiliando-medellin` | 111 m | `approximate` → **`exact`**; el pin corrobora la Avenida 80 #52-88 |
+
+> El de Usaquén es el más grave de los nueve y merece registro: **§3.c dio por corregido un pin que seguía a 2,4 km**, en un centro `verified` de la Alcaldía Mayor. Rescatarlo del centroide de la ciudad se sintió como haberlo arreglado. La lección es que salir de un fallo catastrófico no equivale a llegar al punto correcto, y que la revisión visual que §5 exige hay que hacerla **también sobre las coordenadas ya corregidas**.
+
+**Discrepancias detectadas y NO aplicadas** (la lista sugiere un cambio, pero la evidencia no alcanza):
+
+| Centro | Discrepancia | Por qué no se tocó |
+|---|---|---|
+| `libreria-rodante-delfos-medellin` | La lista lo ubica en **Carrera** 79 #52A-23; el seed dice **Calle** 79 | Resolvería la ambigüedad que §3.c documentó, pero viniendo de un tercero. Pisar esa decisión exige una fuente primaria. Ver §7.12 |
+| `fubam-banco-arquidiocesano-alimentos-medellin` | Pin 711 m al norte, hacia el borde de la Comuna 10 | Deshace el `QUERY_OVERRIDE` que costó meterlo en Guayabal |
+| `la-razon-medellin` | Pin a 1 km, rotulado «La Razón - Parche frente a frente» | No consta que sea el mismo local |
+| `casa-eterna-la-explanada` | Pin coherente con vía Las Palmas | El registro sigue `disputed` y no se publica |
+| `batallon-girardot-medellin` | Pin a 331 m dentro del mismo predio | Sin ganancia real: es un campus, no una puerta |
+
 ---
 
 ## 6. Cobertura territorial
@@ -266,6 +301,7 @@ Por eso el proyecto **modela la precisión como dato de primera clase** (`locati
 9. **Horarios** — la mayoría de las fuentes no los publicó. Al 11 de agosto, sobre los **95 centros publicados en producción** (el seed más lo aprobado desde `/admin`): **28 tienen horario utilizable** y **22 no tienen ni horario ni teléfono**, a los que la aplicación les avisa que no hay forma de confirmar antes de llegar. Ver §10.
 10. **Vigencia de la campaña de Cundinamarca** — declarada del 11 al 23 de agosto de 2026; la aplicación avisa automáticamente cuando pasa la fecha de cierre.
 11. **Los 6 puntos de Medellín de la pieza gráfica ciudadana** — ver §10, hallazgo 2. Siguen publicados como `reported` con su nota de salvedad; ninguna fuente oficial los corrobora.
+12. **Dirección de Librería Rodante Delfos — resolver Calle 79 vs. Carrera 79.** La pieza original escribe «Laureles 79 #52A-23» sin aclarar la vía, y por eso el pin sigue anclado al barrio (§3.c). Una lista ciudadana de Google Maps lo ubica en la **Carrera** 79, a 2,6 km del ancla actual, pero no es fuente suficiente para decidirlo. Basta una llamada o el canal propio de la librería para cerrarlo.
 
 ---
 

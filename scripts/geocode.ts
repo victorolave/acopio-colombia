@@ -155,6 +155,111 @@ const MANUAL_OVERRIDES: Record<string, Pick<Entry, "latitude" | "longitude" | "p
     precision: "approximate",
     why: "El geocodificador devolvió un POI en otra vía; se usa el centro histórico de Santa Marta como aproximación.",
   },
+
+  "usaquen-usaquen-vl0m": {
+    // El QUERY_OVERRIDE de arriba lo rescató del centroide de Bogotá, pero lo
+    // dejó en el centroide de la Calle 161A (Villa Magdala), todavía a 2,4 km
+    // del punto real. En un centro `verified` de la Alcaldía Mayor eso es el
+    // peor modo de fallo del proyecto: sello de alta confianza sobre un pin que
+    // manda a la gente a otro barrio.
+    //
+    // Se fija con la ficha de Google Maps de la dirección exacta que ya
+    // publicamos, «Cl. 161a #7 F 55»: el pin CORROBORA la dirección impresa, así
+    // que se sella `exact` sin que ficha y navegación se contradigan.
+    latitude: 4.737079,
+    longitude: -74.026046,
+    precision: "exact",
+    why: "El pin de Google corrobora la Calle 161A #7F-55; el centroide de la vía quedaba a 2,4 km en un centro verificado.",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Pines tomados de la lista colaborativa de Google Maps «Puntos de acopio MDE /
+  // Compás Urbano» (2026-08-11), extraída del endpoint interno de listas.
+  //
+  // ALCANCE, Y ES UNA LÍNEA QUE NO SE CRUZA: esa lista es un tercero sin fuente
+  // por pin, así que NO sirve para afirmar que un centro existe ni para mover un
+  // `verificationStatus`. Se usa ÚNICAMENTE como GEOMETRÍA de centros que ya
+  // teníamos sustentados por su propia fuente. La pregunta que responde no es
+  // «¿este sitio recibe donaciones?» sino «¿dónde queda el sitio que ya
+  // confirmamos por otro lado?».
+  //
+  // Criterio para el grado de precisión, porque `exact` no es cosmético: según
+  // lib/maps.ts, un pin `exact` hace que «Cómo llegar» mande COORDENADAS a Google
+  // Maps en vez de la dirección en texto, y eso elimina el fallback que hoy salva
+  // a la nomenclatura colombiana. Entonces:
+  //   - `exact`       → el pin corrobora la dirección que YA publicamos, o es un
+  //                     POI con nombre propio a menos de 300 m del punto actual.
+  //   - `approximate` → POI con nombre propio pero lejos de la dirección impresa.
+  //                     Se mejora la coordenada y se conserva el fallback textual,
+  //                     porque ficha y navegación no pueden contradecirse.
+  // ---------------------------------------------------------------------------
+
+  "simon-coffee-medellin": {
+    // Nominatim cayó en el centroide de la Carrera 37. El pin es el POI «Simón
+    // Coffee», a 234 m: mismo nombre propio, marca única en la ciudad.
+    latitude: 6.209586,
+    longitude: -75.566377,
+    precision: "exact",
+    why: "POI con nombre propio en Google Maps; Nominatim solo resolvía el centroide de la Carrera 37.",
+  },
+  "fundacion-el-arte-de-los-suenos-medellin": {
+    // Centroide de la Carrera 48 → POI homónimo a 179 m, dentro del Perpetuo Socorro.
+    latitude: 6.236355,
+    longitude: -75.572418,
+    precision: "exact",
+    why: "POI con nombre propio en Google Maps, coherente con la dirección del Perpetuo Socorro.",
+  },
+  "gestion-del-riesgo-envigado": {
+    // Único centro `verified` del Valle de Aburrá, y hasta ahora con pin de vía.
+    // El pin de la lista es la dirección «Cra. 40 #39» anotada como «Oficina
+    // Gestión del Riesgo de Envigado»: corrobora la dirección que publicamos.
+    latitude: 6.167091,
+    longitude: -75.586845,
+    precision: "exact",
+    why: "El pin corrobora la Carrera 40 #39 sur-59 y nombra la oficina; la nomenclatura «39 sur» no resuelve en OSM.",
+  },
+  "udea-afroudea-medellin": {
+    // Ya era `exact`, pero apuntaba al centroide de Ciudad Universitaria. El pin
+    // es el bloque 9 «Hernán Henao Delgado», que es literalmente lo que dice el
+    // nombre del centro. 272 m de mejora dentro de un campus grande.
+    latitude: 6.265728,
+    longitude: -75.569724,
+    precision: "exact",
+    why: "Se pasa del centroide del campus al bloque 9, que es la sede que declara el centro.",
+  },
+  "restaurante-belisario-medellin": {
+    // Nominatim enganchó la Calle 7 en El Tesoro, a 836 m. La lista trae la
+    // dirección exacta «Cl. 7 #35-44», la misma que publicamos.
+    latitude: 6.206436,
+    longitude: -75.565875,
+    precision: "exact",
+    why: "El pin corrobora la Calle 7 #35-44; Nominatim había resuelto la misma vía en El Tesoro.",
+  },
+  "bodega-guayaquiliando-medellin": {
+    // Centroide de la Avenida 80 → dirección «Av. 80 #52-88», la nuestra, a 111 m.
+    latitude: 6.266046,
+    longitude: -75.595864,
+    precision: "exact",
+    why: "El pin corrobora la Avenida 80 #52-88 con número de vía; antes era el centroide de la avenida.",
+  },
+  "fundacion-saciar-medellin": {
+    // POI «Saciar» a 619 m del centroide de la Carrera 50. Mejora clara del pin,
+    // pero lejos de la dirección impresa (Carrera 50 #25-261): se queda
+    // `approximate` para no romper el enlace por texto de la ficha.
+    latitude: 6.228658,
+    longitude: -75.576720,
+    precision: "approximate",
+    why: "POI de Google a 619 m de la dirección publicada: mejora el pin, pero se conserva la navegación por texto.",
+  },
+  "remanence-medellin": {
+    // POI «Remanence Center Store Medellín» a 773 m del centroide de la Calle 10B.
+    // Mismo caso que Saciar: mejor pin, distancia demasiado grande frente a la
+    // dirección publicada como para sellarlo `exact`.
+    latitude: 6.210096,
+    longitude: -75.565046,
+    precision: "approximate",
+    why: "POI de Google a 773 m de la Calle 10B #35-27: mejora el pin, pero se conserva la navegación por texto.",
+  },
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
