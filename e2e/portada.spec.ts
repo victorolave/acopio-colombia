@@ -157,6 +157,115 @@ test.describe("Hoja inferior (solo móvil)", () => {
     const despues = await page.getByRole("button", { name: /Expandir|Contraer/ }).getAttribute("aria-expanded");
     expect(despues).not.toBe(antes);
   });
+
+});
+
+test.describe("Convocatoria de voluntarios", () => {
+  test("el botón flotante de voluntarios abre el diálogo con el formulario", async ({ page }) => {
+    // El botón flota SOBRE el lienzo de MapLibre. Un elemento encima de un mapa
+    // es justo el sitio donde un `click` se pierde: basta con que el mapa capture
+    // el puntero o con equivocarse en el apilamiento para que quede muerto sin
+    // que el typecheck ni el build se enteren. Por eso se prueba en un navegador.
+    await page.goto("/");
+
+    const flotante = page.getByRole("button", { name: "Ayúdanos a verificar" });
+    await expect(flotante).toBeVisible();
+    await flotante.click();
+
+    const dialogo = page.getByRole("dialog", { name: "Nos faltan manos para verificar" });
+    await expect(dialogo).toBeVisible();
+
+    // Lo que la persona vino a buscar: el enlace al formulario, y que se abra fuera.
+    const enlace = dialogo.getByRole("link", { name: "Quiero ayudar a verificar" });
+    await expect(enlace).toHaveAttribute("target", "_blank");
+    await expect(enlace).toHaveAttribute("rel", /noopener/);
+
+    // REGRESIÓN: el diálogo se renderizaba dentro del contenedor del mapa, que
+    // lleva `z-0` y por tanto abre un contexto de apilamiento. Su `z-50` solo
+    // valía DENTRO de esa caja, así que la hoja inferior (`z-30`, colgada de la
+    // raíz) lo pintaba por encima y lo cortaba a media frase.
+    //
+    // Ni `toBeVisible()` ni `hover()` lo detectan: para CSS el diálogo ESTÁ
+    // visible —era otro elemento el que lo tapaba— y `hover()` desplaza el
+    // contenedor con scroll hasta encontrar un hueco donde sí acierta.
+    //
+    // La única comprobación que distingue «pintado encima» de «pintado debajo»
+    // es preguntarle al navegador qué elemento hay en un punto concreto. Se
+    // muestrea la línea central del panel: si en alguna altura responde algo que
+    // NO cuelga del diálogo, es que hay algo tapándolo.
+    const tapado = await dialogo.evaluate((panel) => {
+      const r = panel.getBoundingClientRect();
+      const x = r.x + r.width / 2;
+      for (let i = 1; i <= 8; i++) {
+        const y = r.y + (r.height * i) / 9;
+        const encima = document.elementFromPoint(x, y);
+        if (encima && !panel.contains(encima)) return `${encima.tagName}.${encima.className}`;
+      }
+      return null;
+    });
+    expect(tapado, "algo se está pintando por encima del diálogo").toBeNull();
+
+    // Las dos promesas explícitas del copy, que son las que desactivan las dos
+    // objeciones reales: «no sabría hacerlo» y «no tengo tiempo». Si alguien
+    // recorta el texto, que sea decidiéndolo y no sin enterarse.
+    await expect(dialogo).toContainText("No es difícil");
+    await expect(dialogo).toContainText("No es un trabajo de horas");
+
+    // Las tres vías. La llamada NO puede ser la única: mucha gente no telefonea
+    // a desconocidos, y ofrecerla como único camino pierde a media convocatoria.
+    await expect(dialogo).toContainText("Una búsqueda en internet");
+    await expect(dialogo).toContainText("Un vistazo a sus redes");
+    await expect(dialogo).toContainText("Una llamada");
+
+    // Lo que el formulario pide DE VERDAD. Prometer aquí algo distinto de lo que
+    // la persona encuentra al abrirlo es la forma más rápida de perderla.
+    await expect(dialogo).toContainText("Solo te pedimos un correo");
+
+    // El alcance es TODO el seed, no solo lo vencido: un centro `verified` es uno
+    // que alguien confirmó en su momento, no uno que siga abierto. Si el copy
+    // vuelve a encabezar con la cifra de vencidos, el resto parece resuelto.
+    await expect(dialogo).toContainText("todos hay que volver a mirarlos");
+  });
+
+  test("el diálogo de voluntarios se cierra con Escape", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Ayúdanos a verificar" }).click();
+
+    const dialogo = page.getByRole("dialog", { name: "Nos faltan manos para verificar" });
+    await expect(dialogo).toBeVisible();
+
+    await page.keyboard.press("Escape");
+    await expect(dialogo).toBeHidden();
+  });
+
+  test("el flotante no tapa el control de zoom del mapa", async ({ page }) => {
+    // Los dos viven sobre el mapa. El zoom de MapLibre se monta arriba a la
+    // derecha (`NavigationControl` en centers-map.tsx); si se solapan, el
+    // usuario se queda sin poder ampliar el mapa.
+    //
+    // Esta prueba YA FALLÓ en CI y encontró una colisión de verdad: el botón
+    // iba arriba en escritorio, compartiendo fila con el zoom. En local
+    // sobraban 62 px, pero el CI corre sobre Linux, el texto renderiza más
+    // ancho y se tocaban. El margen existía solo en la máquina donde se diseñó.
+    await page.goto("/");
+
+    const flotante = page.getByRole("button", { name: "Ayúdanos a verificar" });
+    const zoom = page.locator(".maplibregl-ctrl-zoom-in");
+    await expect(flotante).toBeVisible();
+    await expect(zoom).toBeVisible();
+
+    const a = await flotante.boundingBox();
+    const b = await zoom.boundingBox();
+    expect(a && b).toBeTruthy();
+
+    // Dos rectángulos chocan solo si se solapan en LOS DOS ejes. La primera
+    // versión comprobaba únicamente la X, y eso daba falsos positivos en cuanto
+    // uno de los dos se movía de fila: es justo el arreglo que necesitaba el
+    // botón en escritorio, donde ahora vive abajo.
+    const solapanEnX = a!.x < b!.x + b!.width && b!.x < a!.x + a!.width;
+    const solapanEnY = a!.y < b!.y + b!.height && b!.y < a!.y + a!.height;
+    expect(solapanEnX && solapanEnY, "el flotante se solapa con el control de zoom").toBe(false);
+  });
 });
 
 test.describe("Ficha de centro", () => {

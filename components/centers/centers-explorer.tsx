@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CenterCard } from "./center-card";
 import { CoverageNudge } from "./coverage-nudge";
+import { VolunteerDialog, VolunteerFabButton } from "./volunteer-fab";
+import { VolunteerLink } from "@/components/volunteer-callout";
 import { useGeolocation } from "./use-geolocation";
 import {
   ActiveFilterChips,
@@ -35,9 +37,29 @@ const CentersMap = dynamic(() => import("@/components/map/centers-map"), {
  * lugar de 70, con cada botón duplicado para los lectores de pantalla. Aquí la
  * diferencia entre móvil y escritorio es solo CSS.
  */
-export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
+export function CentersExplorer({
+  centers,
+  staleCount,
+}: {
+  centers: CollectionCenter[];
+  /**
+   * Cuántos centros publicados superaron el umbral de frescura.
+   *
+   * Llega calculado desde el servidor A PROPÓSITO. `isStale()` depende de la
+   * hora actual, así que calcularlo aquí daría un número en el render del
+   * servidor y potencialmente otro en el del cliente, y React marcaría el
+   * desajuste de hidratación. Es exactamente el mismo problema que
+   * `CoverageNudge` resuelve con `useSyncExternalStore`; aquí basta con no
+   * calcularlo dos veces.
+   */
+  staleCount: number;
+}) {
   const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  // Vive aquí, y no dentro del mapa, por la misma razón que `filtersOpen`: el
+  // diálogo tiene que renderizarse en la raíz para escapar del contexto de
+  // apilamiento del contenedor del mapa. Ver la nota en `volunteer-fab.tsx`.
+  const [volunteerOpen, setVolunteerOpen] = useState(false);
   const [snap, setSnap] = useState<SnapPoint>("half");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
@@ -112,7 +134,10 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
 
   return (
     <div className="lg:grid lg:grid-cols-[1.1fr_1fr] lg:gap-5">
-      {/* Mapa: pantalla completa bajo la cabecera en móvil, columna fija en escritorio. */}
+      {/* Mapa: pantalla completa bajo la cabecera en móvil, columna fija en escritorio.
+          Es el contenedor posicionado del que cuelga `VolunteerFab`: por eso el
+          botón puede ser `absolute` y quedarse dentro de la columna en escritorio
+          en lugar de flotar sobre toda la ventana. */}
       <div className="max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-14 max-lg:z-0 lg:sticky lg:top-4 lg:h-[calc(100dvh-7rem)] lg:overflow-hidden lg:rounded-2xl lg:border lg:border-ink-100">
         <CentersMap
           centers={filtered}
@@ -120,6 +145,7 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
           selectedSlug={selectedSlug}
           onSelect={selectFromMap}
         />
+        <VolunteerFabButton open={volunteerOpen} onOpen={() => setVolunteerOpen(true)} />
       </div>
 
       <BottomSheet
@@ -223,13 +249,18 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
           </ul>
         )}
 
-        {/* El pie no es alcanzable en la portada móvil: el aviso vive aquí. */}
+        {/* El pie no es alcanzable en la portada móvil: el aviso vive aquí. Y con
+            él la convocatoria de voluntarios, que si no quedaría fuera del
+            alcance de justo quien más ha mirado la lista. Va al FINAL y en una
+            línea, no arriba y en bloque: `CoverageNudge` ya ocupa ese hueco, y
+            quien llegó hasta aquí abajo es el lector que de verdad se implica. */}
         <p className="py-4 text-center text-xs text-ink-500">
           La información puede cambiar rápidamente. Revisa la fecha de actualización antes de
           desplazarte.{" "}
           <Link href="/metodologia" className="underline underline-offset-2">
             Cómo verificamos
           </Link>
+          <VolunteerLink className="mt-1 block underline underline-offset-2" />
         </p>
       </BottomSheet>
 
@@ -240,6 +271,13 @@ export function CentersExplorer({ centers }: { centers: CollectionCenter[] }) {
         onChange={setFilters}
         departments={departments}
         resultCount={filtered.length}
+      />
+
+      <VolunteerDialog
+        open={volunteerOpen}
+        onClose={() => setVolunteerOpen(false)}
+        staleCount={staleCount}
+        totalCount={centers.length}
       />
     </div>
   );
