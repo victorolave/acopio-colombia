@@ -68,6 +68,21 @@ const VERIFIED_AT_DIA2 = "2026-08-11T12:00:00-05:00";
 const VERIFIED_AT_DIA3 = "2026-08-12T01:00:00-05:00";
 
 /**
+ * Revalidación del día 4 (13 de agosto de 2026).
+ *
+ * Primera pasada cuyo objetivo NO fue ampliar cobertura sino RETIRAR lo que
+ * dejó de operar. Se rastreó cada bloque de centros contra su fuente primaria
+ * buscando cierres, traslados y saturación.
+ *
+ * ALCANCE Y LÍMITE, porque importa para leer las fechas de este archivo: la
+ * revalidación fue DOCUMENTAL, no telefónica. Confirma que la entidad sigue
+ * listando el punto en su canal propio; NO confirma que la bodega esté abierta
+ * ahora mismo. Un punto puede llenarse y cerrar en horas sin que nadie
+ * actualice la página. Ver docs/revalidacion-2026-08-13.md.
+ */
+const REVALIDATED_AT_DIA4 = "2026-08-13T12:00:00-05:00";
+
+/**
  * Boletín propio de la Alcaldía de Medellín, localizado el 12 de agosto de 2026.
  *
  * Hasta ahora los puntos de Medellín colgaban de El Colombiano y El Tiempo, que
@@ -1408,10 +1423,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl:
       "https://www.colombia.com/actualidad/noticias/centros-de-acopio-y-ayudas-humanitarias-habilitadas-en-colombia-tras-temblor-10-de-agosto-595512",
     sourcePublishedAt: "2026-08-10",
-    verificationStatus: "reported",
+    verificationStatus: "inactive",
     verificationNotes:
-      "Jornada de dos días (11 y 12 de agosto de 2026). Reportado por un agregador nacional; no se localizó comunicado de la Alcaldía de Itagüí. Confirmar antes de desplazarse.",
-    lastVerifiedAt: VERIFIED_AT,
+      "CERRADO. Jornada de dos días que terminó el 12 de agosto de 2026. La revalidación del 13 de agosto confirmó en la fuente original que el punto operó únicamente el martes 11 y el miércoles 12 entre las 10:00 a. m. y las 5:00 p. m., coordinado por el Consejo Municipal de Juventudes de Itagüí con la organización afro AfroDhamiri. Ninguna fuente posterior lo relista. Se pasa a `inactive` porque `endsAt` ya venció: no debe aparecer en resultados.",
+    lastVerifiedAt: REVALIDATED_AT_DIA4,
   },
   // ELIMINADO el 12 de agosto de 2026: `terminal-transportes-la-alpujarra-medellin`.
   // Era un registro fantasma. Agrupaba en disputa «Terminal de Transportes» y
@@ -1784,8 +1799,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourcePublishedAt: "2026-08-10",
     verificationStatus: "inactive",
     verificationNotes:
-      "NO PUBLICADO COMO ACTIVO. ABACO informó que la sede de Pereira resultó afectada por el sismo y que se evalúa una ubicación alterna. Volver a consultar con ABACO antes de reactivarlo.",
-    lastVerifiedAt: VERIFIED_AT,
+      "SIGUE SIN PUBLICARSE, pero la revalidación del 13 de agosto encontró una pista concreta que una sola llamada puede cerrar. El Tiempo (11 de agosto, 10:46) lista textualmente «Banco de Alimentos de Pereira, transversal 5 No. 6-30, calle de las Aromas, La Badea, Dosquebradas» y publica el WhatsApp de ABACO 313 245 7978 para donaciones en especie. " +
+      "NO SE REACTIVA porque ese mismo artículo se contradice: junto a la dirección mantiene que «este punto también se encuentra afectado y está en evaluación un sitio alterno». No se puede saber si Dosquebradas ES ya la sede alterna operando o si es la dirección administrativa de una operación todavía suspendida. " +
+      "ACCIÓN: escribir al WhatsApp 313 245 7978 y preguntar si la bodega de La Badea recibe público hoy. Es la reactivación más barata del seed. Ver docs/revalidacion-2026-08-13.md §2.",
+    lastVerifiedAt: REVALIDATED_AT_DIA4,
   },
   // ===========================================================================
   // ENVIADOS DESDE REDES SOCIALES — 11 de agosto de 2026
