@@ -1,11 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { VolunteerCallout } from "@/components/volunteer-callout";
+import { getPublicCenters } from "@/lib/centers";
+import { isStale } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Metodología",
   description:
     "Cómo verificamos los centros de acopio publicados en Acopio Colombia y qué significa cada estado de verificación.",
 };
+
+/**
+ * La página describía el método pero se servía estática, así que no podía
+ * decir cómo va el método HOY. Con revalidación puede citar la brecha real de
+ * frescura, que es justo el argumento de la convocatoria de voluntarios.
+ */
+export const revalidate = 300;
 
 const STATUSES = [
   {
@@ -35,7 +45,10 @@ const STATUSES = [
   },
 ];
 
-export default function MetodologiaPage() {
+export default async function MetodologiaPage() {
+  const centers = await getPublicCenters();
+  const staleCount = centers.filter((c) => isStale(c.last_verified_at)).length;
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="text-2xl font-bold text-ink-900">¿Cómo verificamos los centros?</h1>
@@ -91,6 +104,11 @@ export default function MetodologiaPage() {
         </Link>
         .
       </p>
+
+      {/* Va justo después de «Antes de desplazarte» a propósito: acabamos de
+          admitir que el dato envejece y que hay que confirmar por teléfono.
+          Ese es el momento en que la petición de ayuda se entiende sola. */}
+      <VolunteerCallout staleCount={staleCount} totalCount={centers.length} />
 
       <h2 className="mt-8 text-xl font-semibold text-ink-900">Privacidad</h2>
       <p className="mt-2 text-ink-700">

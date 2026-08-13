@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CentersExplorer } from "@/components/centers/centers-explorer";
 import { getPublicCenters } from "@/lib/centers";
+import { isStale } from "@/lib/format";
 
 export const revalidate = 300;
 
@@ -9,6 +10,9 @@ export default async function HomePage() {
 
   const verified = centers.filter((c) => c.verification_status === "verified").length;
   const departments = new Set(centers.map((c) => c.department)).size;
+  // Se calcula aquí, en el servidor, y baja como prop: ver la nota en
+  // `CentersExplorer` sobre por qué no puede calcularse en el cliente.
+  const staleCount = centers.filter((c) => isStale(c.last_verified_at)).length;
 
   return (
     /**
@@ -47,7 +51,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <CentersExplorer centers={centers} />
+        <CentersExplorer centers={centers} staleCount={staleCount} />
       </div>
     </div>
   );

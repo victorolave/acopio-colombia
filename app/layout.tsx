@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Analytics } from "@/components/analytics";
+import { VolunteerLink } from "@/components/volunteer-callout";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -99,6 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/registrar" className="underline underline-offset-2 hover:text-ink-700">
                 Registrar un centro
               </Link>
+              <VolunteerLink className="underline underline-offset-2 hover:text-ink-700" />
             </nav>
           </div>
         </footer>

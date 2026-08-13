@@ -59,6 +59,17 @@ jobs:
       # sitio en pie si la base de datos falla durante la emergencia.
       - name: Build sin base de datos (modo respaldo)
         run: pnpm run build
+        env:
+          # La convocatoria de voluntarios no se renderiza sin esta variable, y
+          # las pruebas de interacción la necesitan en pantalla. Va aquí porque
+          # `NEXT_PUBLIC_*` se incrusta en tiempo de BUILD, no de arranque.
+          #
+          # Es una URL FALSA a propósito. El CI solo tiene que comprobar que el
+          # componente se monta, que el enlace sale con `target="_blank"` y que
+          # el texto dice lo que prometemos; para nada de eso hace falta el
+          # formulario real, y así la URL de producción no entra al repositorio.
+          # La de verdad vive en las variables de entorno del despliegue.
+          NEXT_PUBLIC_VOLUNTEER_FORM_URL: https://example.com/formulario-de-voluntarios
 
       # Pruebas de interacción real en navegador. Existen porque el rediseño
       # móvil salió con dos botones muertos: el typecheck pasaba, el build
