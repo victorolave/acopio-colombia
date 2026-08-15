@@ -83,6 +83,50 @@ const VERIFIED_AT_DIA3 = "2026-08-12T01:00:00-05:00";
 const REVALIDATED_AT_DIA4 = "2026-08-13T12:00:00-05:00";
 
 /**
+ * Revalidación del día 5 (14 de agosto de 2026) — primera hecha con navegador.
+ *
+ * Las cuatro anteriores usaron `WebFetch`, y eso dejaba fuera todo lo que exige
+ * sesión. `docs/sources.md` §3.d.4 lo tenía anotado como límite de herramienta:
+ * «Contenido no legible sin sesión — Instagram, incluida la cuenta en lista
+ * blanca de Tigresas». Con un navegador con sesión iniciada, el bloque más
+ * grande y menos reverificado del seed —30 centros de Tigresas parados en el 10
+ * de agosto— por fin se pudo releer contra su fuente propia.
+ *
+ * MISMO LÍMITE QUE SIEMPRE: sigue siendo documental, no telefónica. Las dos
+ * excepciones son los dos centros cuya cuenta publicó actividad ESE día
+ * (Guayaquiliando y AfroUdeA), y fueron justo los que trajeron malas noticias.
+ * Ver docs/revalidacion-2026-08-14.md.
+ */
+const REVALIDATED_AT_DIA5 = "2026-08-14T22:00:00-05:00";
+
+/**
+ * La lista viva de la red de Tigresas, localizada el 14 de agosto de 2026.
+ *
+ * `docs/revalidacion-2026-08-13.md` §8 cerró diciendo que la cobertura del seed
+ * era mejor que la de cualquier medio y que, por eso mismo, «solo la cuenta que
+ * la publicó puede decir qué sigue en pie». Esto es esa cuenta diciéndolo: la
+ * historia destacada «📍Puntos» de la cuenta de campaña, con la Red Nacional de
+ * Puntos de Solidaridad departamento por departamento.
+ *
+ * Se actualiza EN CAPAS, y conviene saberlo al leer las fechas: la mayoría de
+ * las diapositivas son del 11 de agosto, Córdoba entró el 12 y Boyacá y
+ * Risaralda el 13. La campaña se está expandiendo, no cerrando.
+ *
+ * El `sourceUrl` apunta al PERFIL de la campaña, no a la destacada. Las
+ * historias destacadas se editan en sitio —esta misma lo hace, por capas— y su
+ * URL no garantiza el contenido: es la lección de `sources.md` §4.8, «citar una
+ * URL no es citar un contenido». El perfil es lo estable y lo que la lista
+ * blanca de `scripts/validate-seed.ts` puede autorizar; la destacada concreta
+ * queda citada en la nota de cada ficha y en docs/revalidacion-2026-08-14.md.
+ */
+const TIGRESAS_HIGHLIGHT_SOURCE = {
+  sourceName:
+    "Tigresas Moviéndose con Corazón — «Red Nacional de Puntos de Solidaridad» (historia destacada «📍Puntos» de la cuenta oficial de la campaña)",
+  sourceUrl: "https://www.instagram.com/tigresasmoviendoseconcorazon",
+  sourcePublishedAt: "2026-08-13",
+};
+
+/**
  * Boletín propio de la Alcaldía de Medellín, localizado el 12 de agosto de 2026.
  *
  * Hasta ahora los puntos de Medellín colgaban de El Colombiano y El Tiempo, que
@@ -386,6 +430,30 @@ const TIGRESAS_ITEMS = [
   "Tapabocas",
 ];
 
+/**
+ * Canasta propia del punto La 80 (Medellín).
+ *
+ * No reutiliza `TIGRESAS_ITEMS` porque la pieza gráfica de este punto SÍ detalla
+ * qué recibe, y no coincide: añade alimento para mascotas, pañitos, leche de
+ * fórmula, colchonetas, linternas, baterías y botiquines. Es el mismo criterio
+ * de `RIONEGRO_ITEMS` — copiar la canasta genérica sobre un punto que publicó la
+ * suya manda gente con lo que no piden y deja fuera lo que sí.
+ */
+const TIGRESAS_LA80_ITEMS = [
+  "Alimentos no perecederos",
+  "Alimentos para mascotas",
+  "Artículos de aseo",
+  "Pañales",
+  "Pañitos húmedos",
+  "Leche de fórmula",
+  "Mantas",
+  "Sábanas",
+  "Colchonetas",
+  "Linternas",
+  "Baterías",
+  "Botiquines",
+];
+
 const TIGRESAS_SOURCE = {
   sourceName:
     "Tigresas de la Patria / «Colombia un solo corazón» — piezas gráficas difundidas por la primera dama Ana Lucía Pineda",
@@ -418,6 +486,31 @@ const TIGRESAS_SOURCE = {
 const TIGRESAS_NOTES =
   "Punto de la Red Nacional de Puntos de Solidaridad publicada por la primera dama Ana Lucía Pineda en los canales oficiales de las Tigresas de la Patria. El presidente le encargó públicamente coordinar la ayuda ciudadana por este terremoto (10 de agosto de 2026). Es la organización responsable publicando su propia red, no un tercero citándola. Ten en cuenta que esta red también operó una campaña por los sismos de Venezuela en junio de 2026: si vas a llevar una carga grande, vale la pena llamar antes para confirmar que el punto sigue recibiendo.";
 
+/**
+ * DEGRADACIÓN DEL BLOQUE DEL CESAR — 14 de agosto de 2026.
+ *
+ * La lista viva de la red (historia destacada «📍Puntos», releída hoy) recorre
+ * 22 departamentos uno por uno. **El Cesar no aparece en ninguna diapositiva.**
+ * No es que falten puntos sueltos: falta la sección entera del departamento.
+ *
+ * Eso NO es prueba de cierre, y el precedente está escrito en `sources.md` §4.8:
+ * tres puntos de la Cruz Roja desaparecieron de `bogota.gov.co` y seguían
+ * operando. Una entidad reorganiza su publicación sin reorganizar su operación,
+ * y ocultar por ausencia manda a la gente a menos puntos de los que existen.
+ *
+ * Lo que sí se perdió es el respaldo del SELLO. `verified` significa «la entidad
+ * responsable lo publica en su propio canal», y hoy la entidad no los publica.
+ * Así que baja el nivel de confianza al que la evidencia sostiene hoy —que es
+ * exactamente para lo que existen los estados— y los cinco siguen publicados
+ * con el aviso «confirma antes de ir».
+ *
+ * Refuerza la cautela un detalle propio del bloque: `sources.md` §3.b registra
+ * que San Diego venía DUPLICADO en dos piezas gráficas distintas. El Cesar entró
+ * por piezas concretas que esta destacada puede simplemente no haber recogido.
+ */
+const CESAR_DEGRADADO_NOTA =
+  "DEGRADADO EL 14 DE AGOSTO DE 2026. La red publicó su lista nacional actualizada y el departamento del Cesar no aparece en ella: ni este punto ni ningún otro del departamento. Eso no significa que haya cerrado —puede seguir recibiendo sin figurar en la pieza—, pero sí que hoy nadie lo respalda desde el canal oficial. Por eso pierde el sello de verificado y conserva su sitio en el mapa. Confirma por teléfono antes de desplazarte.";
+
 function tigresa(
   slug: string,
   name: string,
@@ -447,10 +540,14 @@ function tigresa(
     phone,
     whatsapp: phone,
     email: null,
-    ...TIGRESAS_SOURCE,
+    // Por defecto, la lista viva del 13 de agosto: es la fuente más reciente y
+    // la que reconfirma 28 de los 33 registros de la red (ver
+    // docs/revalidacion-2026-08-14.md §1.1). Los cinco del Cesar, que NO
+    // aparecen en ella, restauran `TIGRESAS_SOURCE` en su propio `extra`.
+    ...TIGRESAS_HIGHLIGHT_SOURCE,
     verificationStatus: "verified",
     verificationNotes: TIGRESAS_NOTES,
-    lastVerifiedAt: VERIFIED_AT,
+    lastVerifiedAt: REVALIDATED_AT_DIA5,
     ...extra,
   };
 }
@@ -835,12 +932,13 @@ export const SEED_CENTERS: SeedCenter[] = [
     municipality: "Bogotá D.C.",
     address: "Calle 63 #59A-06",
     geocodeQuery: "Palacio de los Deportes, Bogotá, Colombia",
+
     latitude: null,
     longitude: null,
     acceptedItems: CRUZ_ROJA_ITEMS,
     urgentNeeds: ["Agua potable embotellada", "Colchonetas", "Pañales", "Alimentos no perecederos"],
     rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
-    scheduleText: null,
+    scheduleText: "8:00 a. m. – 8:00 p. m.",
     startsAt: "2026-08-10",
     endsAt: null,
     phone: null,
@@ -849,11 +947,11 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceName: "Alcaldía Mayor de Bogotá",
     sourceUrl:
       "https://bogota.gov.co/mi-ciudad/seguridad/puntos-de-donacion-en-bogota-para-damnificados-terremoto-en-colombia",
-    sourcePublishedAt: "2026-08-10",
-    verificationStatus: "reported",
+    sourcePublishedAt: "2026-08-14",
+    verificationStatus: "verified",
     verificationNotes:
-      "DEGRADADO A `reported` el 12 de agosto de 2026, y conviene saber por qué. Este punto entró como `verified` el 10 de agosto porque la Alcaldía Mayor de Bogotá lo publicaba en bogota.gov.co. Esa MISMA URL fue actualizada en sitio —sin cambiar la dirección ni la fecha visible— y hoy ya NO lo menciona: el 10 de agosto listaba seis puntos, el 11 cuatro y el 12 cinco, y este no está en la lista vigente (ver §4.8 de docs/sources.md). AUSENCIA DE LA LISTA NO ES PRUEBA DE CIERRE: es una sede propia de la Cruz Roja y puede seguir recibiendo, así que se mantiene PUBLICADO. Lo que ya no se sostiene es el SELLO de verificado, porque la fuente que lo respaldaba dejó de respaldarlo. Queda como `reported`, con el aviso «confirma antes de ir», hasta que la Cruz Roja Seccional Cundinamarca y Bogotá lo confirme por teléfono. Punto de mayor capacidad de los seis habilitados por la Alcaldía Mayor de Bogotá el 10 de agosto de 2026.",
-    lastVerifiedAt: VERIFIED_AT,
+      "VOLVIÓ A `verified` el 14 de agosto de 2026, y la historia completa es la parte útil. Entró como `verified` el 10 de agosto porque la Alcaldía lo publicaba en bogota.gov.co; el 12 se DEGRADÓ a `reported` porque esa misma URL, actualizada en sitio y sin cambiar la fecha visible, había dejado de mencionarlo (§4.8 de docs/sources.md). Hoy la página vuelve a listarlo, con dirección exacta, horario propio de 8:00 a. m. a 8:00 p. m. y un destino declarado: las donaciones recogidas aquí van para el Chocó. La condición que motivó la degradación desapareció, así que recupera el sello. ESTA PÁGINA CAMBIA A DIARIO: 6 puntos el 10 de agosto, 4 el 11, 5 el 12 y 6 el 14, siempre en la misma URL y con la misma fecha visible. No es un incidente, es el comportamiento normal de esta fuente; si el punto vuelve a desaparecer de ella, el estado correcto es `reported`, no `inactive`. Punto de mayor capacidad de los habilitados por la Alcaldía en Bogotá.",
+    lastVerifiedAt: REVALIDATED_AT_DIA5,
   },
   {
     slug: "estadio-el-campin-bogota",
@@ -1758,7 +1856,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     ],
     urgentNeeds: ["Agua", "Alimentos no perecederos"],
     rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
-    scheduleText: "Consultar antes de asistir",
+    // Decía «Consultar antes de asistir», que el clasificador trata como
+    // «horario desconocido». Pero la lista de la red de Tigresas SÍ publica el
+    // horario de esta sede: estábamos degradando un dato que existía.
+    scheduleText: "8:00 a. m. – 12:00 m. y 2:30 – 5:00 p. m.",
     startsAt: "2026-08-10",
     endsAt: null,
     phone: "+57 321 840 2089",
@@ -1865,9 +1966,13 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceName: "Historia de Instagram de @sararamirezmurillo_, recompartida por @isabellab98a",
     sourceUrl: null,
     sourcePublishedAt: "2026-08-11",
-    verificationStatus: "pending",
+    // `inactive`, no `pending`: alineado con la base de producción el 14 de
+    // agosto de 2026. Un moderador lo cerró desde el panel el 13 de agosto, y
+    // reaplicar el seed con `pending` habría revertido esa decisión en silencio.
+    // La fecha le da la razón: su jornada era de un solo día y venció el 11.
+    verificationStatus: "inactive",
     verificationNotes:
-      "NO PUBLICADO. Llegó como captura de una historia de Instagram que a su vez recompartía la de otra cuenta personal: es una publicación copiada, sin enlace localizable y sin organización responsable identificada. Se anuncia como «Comunicado N.º 9» de un grupo de voluntarios, lo que sugiere una operación real y sostenida, pero no se localizó ningún respaldo institucional ni cobertura de prensa. ADEMÁS SU HORARIO ES DE UN SOLO DÍA (4:00 p. m. – 7:30 p. m.): antes de publicarlo hay que confirmar que siga abierto, o corregir el horario. Rechaza medicamentos de forma explícita.",
+      "NO PUBLICADO. Llegó como captura de una historia de Instagram que a su vez recompartía la de otra cuenta personal: es una publicación copiada, sin enlace localizable y sin organización responsable identificada. Se anuncia como «Comunicado N.º 9» de un grupo de voluntarios, lo que sugiere una operación real y sostenida, pero no se localizó ningún respaldo institucional ni cobertura de prensa. SU JORNADA ERA DE UN SOLO DÍA (4:00 p. m. – 7:30 p. m., 11 de agosto) y ya venció, así que pasó a `inactive` desde el panel de moderación el 13 de agosto de 2026. Si el colectivo vuelve a abrir, necesita fuente propia antes de publicarse. Rechaza medicamentos de forma explícita.",
     lastVerifiedAt: null,
   },
   {
@@ -1948,10 +2053,22 @@ export const SEED_CENTERS: SeedCenter[] = [
   // ===========================================================================
   tigresa("tigresas-valledupar", "Centro de Solidaridad Valledupar", "Cesar", "Valledupar",
     "Carrera 23 #4-116, MZ A, Casa 14, Conjunto Residencial Callejas", "+57 311 403 9818",
-    { geocodeQuery: "Carrera 23 # 4-116, Valledupar, Cesar, Colombia" }),
+    {
+      geocodeQuery: "Carrera 23 # 4-116, Valledupar, Cesar, Colombia",
+      ...TIGRESAS_SOURCE,
+      verificationStatus: "reported",
+      verificationNotes: `${TIGRESAS_NOTES} ${CESAR_DEGRADADO_NOTA}`,
+      lastVerifiedAt: REVALIDATED_AT_DIA5,
+    }),
   tigresa("tigresas-pailitas", "Emisora Universal Stereo", "Cesar", "Pailitas",
     "Barrio El Bosque", "+57 314 592 7152",
-    { geocodeQuery: "Pailitas, Cesar, Colombia" }),
+    {
+      geocodeQuery: "Pailitas, Cesar, Colombia",
+      ...TIGRESAS_SOURCE,
+      verificationStatus: "reported",
+      verificationNotes: `${TIGRESAS_NOTES} ${CESAR_DEGRADADO_NOTA}`,
+      lastVerifiedAt: REVALIDATED_AT_DIA5,
+    }),
   tigresa("tigresas-bucaramanga", "Centro de Solidaridad Bucaramanga", "Santander", "Bucaramanga",
     "Calle 54 #21A-07, barrio La Concordia", "+57 316 256 7986",
     { geocodeQuery: "Calle 54 # 21A-07, Bucaramanga, Santander, Colombia" }),
@@ -2011,7 +2128,10 @@ export const SEED_CENTERS: SeedCenter[] = [
     { type: "food", geocodeQuery: "Zona Industrial del Sur, Neiva, Huila, Colombia" }),
   tigresa("tigresas-santa-marta-amor-en-accion", "Iglesia Amor en Acción", "Magdalena", "Santa Marta",
     "Calle 30 #6-69", "+57 317 300 3459",
-    { geocodeQuery: "Calle 30 # 6-69, Santa Marta, Magdalena, Colombia" }),
+    {
+      geocodeQuery: "Calle 30 # 6-69, Santa Marta, Magdalena, Colombia" ,
+      scheduleText: "8:00 a. m. – 12:00 m. y 2:00 – 6:00 p. m.",
+    }),
   tigresa("tigresas-arauca-capital", "Tigresas Arauca Capital", "Arauca", "Arauca",
     "Calle 17 #17-31, barrio Cristo Rey", "+57 314 401 4272",
     { geocodeQuery: "Calle 17 # 17-31, Arauca, Colombia" }),
@@ -2019,20 +2139,34 @@ export const SEED_CENTERS: SeedCenter[] = [
     "Carrera 13 #2F-85, Urbanización Chiriaimo", "+57 301 297 9760",
     {
       geocodeQuery: "San Diego, Cesar, Colombia",
-      verificationNotes: `${TIGRESAS_NOTES} Aparece DUPLICADO en dos piezas distintas de la campaña, con la misma dirección y teléfono; se consolidó en un solo registro.`,
+      ...TIGRESAS_SOURCE,
+      verificationStatus: "reported",
+      verificationNotes: `${TIGRESAS_NOTES} Aparece DUPLICADO en dos piezas distintas de la campaña, con la misma dirección y teléfono; se consolidó en un solo registro. ${CESAR_DEGRADADO_NOTA}`,
+      lastVerifiedAt: REVALIDATED_AT_DIA5,
     }),
   tigresa("tigresas-pereira-alpaca", "Complejo Bodeguero Alpaca — Bodega 01", "Risaralda", "Pereira",
-    "Vía La Romelia – El Pollo, Vereda Santa Ana Baja, a la altura del Hotel Tángara", "+57 310 528 9438",
+    "Vía La Romelia – El Pollo, Vereda Santa Ana Baja, Complejo Bodeguero Alpaca, Bodega 01, a la altura del Hotel Tángara (vía pavimentada)",
+    "+57 310 528 9438",
     {
       geocodeQuery: "La Romelia, Dosquebradas, Risaralda, Colombia",
-      verificationNotes: `${TIGRESAS_NOTES} Aparece en la pieza titulada «Nuevos puntos de solidaridad para apoyar con donaciones a nuestros hermanos afectados por el terremoto», la referencia más explícita a ESTA emergencia de toda la red. Pereira es una de las ciudades más golpeadas. Dirección rural sin nomenclatura urbana: el pin es orientativo, guíate por la referencia del Hotel Tángara.`,
+      scheduleText: "8:00 a. m. – 12:00 m. y 2:00 – 6:00 p. m.",
+      verificationNotes: `${TIGRESAS_NOTES} Aparece en la pieza titulada «Nuevos puntos de solidaridad para apoyar con donaciones a nuestros hermanos afectados por el terremoto», la referencia más explícita a ESTA emergencia de toda la red. Pereira es una de las ciudades más golpeadas. Dirección rural sin nomenclatura urbana: el pin es orientativo, guíate por la referencia del Hotel Tángara. La lista del 13 de agosto añadió el nombre del complejo y la bodega, y precisa que la vía está pavimentada; responsables: Laura Catalina Cardona, Nancy Pita o Nancy Maldonado.`,
     }),
   tigresa("tigresas-el-copey", "Punto de Solidaridad El Copey", "Cesar", "El Copey",
     "Calle 8 #20-22, Barrio San Carlos", "+57 316 454 5452",
-    { geocodeQuery: "El Copey, Cesar, Colombia" }),
+    {
+      geocodeQuery: "El Copey, Cesar, Colombia",
+      ...TIGRESAS_SOURCE,
+      verificationStatus: "reported",
+      verificationNotes: `${TIGRESAS_NOTES} ${CESAR_DEGRADADO_NOTA}`,
+      lastVerifiedAt: REVALIDATED_AT_DIA5,
+    }),
   tigresa("tigresas-chia", "Punto de Solidaridad Chía", "Cundinamarca", "Chía",
     "Carrera 9 #12-41, diagonal al CAM", "+57 311 255 5912",
-    { geocodeQuery: "Carrera 9 # 12-41, Chía, Cundinamarca, Colombia" }),
+    {
+      geocodeQuery: "Carrera 9 # 12-41, Chía, Cundinamarca, Colombia" ,
+      scheduleText: "8:00 a. m. – 7:00 p. m.",
+    }),
   tigresa("tigresas-quibdo", "Punto de Solidaridad Quibdó", "Chocó", "Quibdó",
     "Calle 27A #23-44, Barrio Los Ángeles, sector San Gabriel", "+57 310 805 0535",
     {
@@ -2047,13 +2181,19 @@ export const SEED_CENTERS: SeedCenter[] = [
     { geocodeQuery: "Calle 19 # 21-41, Sincelejo, Sucre, Colombia" }),
   tigresa("tigresas-acacias", "Punto de Solidaridad Acacías", "Meta", "Acacías",
     "Calle 15 #16-43, frente al Banco de Occidente, Barrio Centro", "+57 314 242 6083",
-    { geocodeQuery: "Calle 15 # 16-43, Acacías, Meta, Colombia" }),
+    {
+      geocodeQuery: "Calle 15 # 16-43, Acacías, Meta, Colombia" ,
+      scheduleText: "8:00 a. m. – 12:00 m. y 2:00 – 6:00 p. m.",
+    }),
   tigresa("tigresas-florencia", "Punto de Solidaridad Florencia", "Caquetá", "Florencia",
     "Carrera 10A #7-04, Barrio Avenidas", "+57 317 887 1620",
     { geocodeQuery: "Carrera 10A # 7-04, Florencia, Caquetá, Colombia" }),
   tigresa("tigresas-granada-meta", "Punto de Solidaridad Granada", "Meta", "Granada",
     "Calle 12 #14-115, Barrio Belén", "+57 311 843 6106",
-    { geocodeQuery: "Granada, Meta, Colombia" }),
+    {
+      geocodeQuery: "Granada, Meta, Colombia" ,
+      scheduleText: "8:00 a. m. – 12:00 m. y 2:00 – 6:00 p. m.",
+    }),
   tigresa("tigresas-pacho", "Oficina Orange — Zona Rosa", "Cundinamarca", "Pacho",
     "Calle 6 #16-10, Oficina Orange, Zona Rosa", "+57 302 515 2769",
     { geocodeQuery: "Pacho, Cundinamarca, Colombia" }),
@@ -2062,16 +2202,163 @@ export const SEED_CENTERS: SeedCenter[] = [
     { geocodeQuery: "Calle 9 # 6-14, Mocoa, Putumayo, Colombia" }),
   tigresa("tigresas-bosconia", "Punto de Solidaridad Bosconia", "Cesar", "Bosconia",
     "Carrera 18 #13-78, Barrio San Martín", "+57 313 591 9358",
-    { geocodeQuery: "Bosconia, Cesar, Colombia" }),
+    {
+      geocodeQuery: "Bosconia, Cesar, Colombia",
+      ...TIGRESAS_SOURCE,
+      verificationStatus: "reported",
+      verificationNotes: `${TIGRESAS_NOTES} ${CESAR_DEGRADADO_NOTA}`,
+      lastVerifiedAt: REVALIDATED_AT_DIA5,
+    }),
   tigresa("tigresas-pasto", "Antiguo Pre-ICFES Montilla", "Nariño", "Pasto",
     "Calle 17 #27-59, Barrio Centro", "+57 320 688 6196",
-    { geocodeQuery: "Calle 17 # 27-59, Pasto, Nariño, Colombia" }),
+    {
+      geocodeQuery: "Calle 17 # 27-59, Pasto, Nariño, Colombia" ,
+      scheduleText: "Lunes a viernes, 9:30 a. m. – 12:30 p. m. y 2:30 – 6:00 p. m.; sábados, 10:00 a. m. – 1:00 p. m.",
+    }),
   tigresa("tigresas-cali-yumbo", "Punto de Solidaridad Yumbo", "Valle del Cauca", "Yumbo",
     "Carrera 30 #10-90, Arroyo Hondo", "+57 316 791 2163",
     { geocodeQuery: "Arroyo Hondo, Yumbo, Valle del Cauca, Colombia" }),
   tigresa("tigresas-bogota-122-plaza", "122 Plaza Apartahotel", "Bogotá D.C.", "Bogotá D.C.",
     "Carrera 15A #122-27", null,
-    { geocodeQuery: "Carrera 15A # 122-27, Bogotá, Colombia" }),
+    {
+      geocodeQuery: "Carrera 15A # 122-27, Bogotá, Colombia",
+      // Es un apartahotel: la recepción está siempre atendida. Sin teléfono
+      // publicado, este horario es lo ÚNICO que permite confirmar antes de ir,
+      // y por eso salda el aviso `sin-horario-ni-contacto` del validador.
+      scheduleText: "Recepción 24 horas",
+    }),
+
+  // ===========================================================================
+  // ALTAS DEL 14 DE AGOSTO DE 2026 — 17 puntos de la lista viva de la red.
+  //
+  // La historia destacada «📍Puntos» recorre 22 departamentos. Cotejada contra
+  // el seed, 28 registros se reconfirmaron y estos 17 no existían. Dos
+  // departamentos entran por primera vez al proyecto (Córdoba y Boyacá) y
+  // Antioquia estrena cobertura de la red en la ciudad.
+  //
+  // Ninguno declara fecha de cierre. Ver docs/revalidacion-2026-08-14.md §1.3.
+  // ===========================================================================
+
+  // --- Antioquia -------------------------------------------------------------
+  tigresa("tigresas-medellin-la-80", "Punto de Acopio La 80", "Antioquia", "Medellín",
+    "Carrera 80 #49A-39, frente a Los Verdes de la 80", "+57 322 653 1804",
+    {
+      geocodeQuery: "Carrera 80 # 49A-39, Medellín, Antioquia, Colombia",
+      scheduleText: "8:00 a. m. – 8:00 p. m.",
+      acceptedItems: TIGRESAS_LA80_ITEMS,
+      urgentNeeds: ["Alimentos no perecederos", "Alimentos para mascotas", "Artículos de aseo"],
+      sourceName: "Tigresas de la Patria — publicación propia «COLOMBIA MOVIÉNDOSE CON CORAZÓN»",
+      sourceUrl: "https://www.instagram.com/tigresasdelapatriaoficial/p/Db8Y8VihK9w/",
+      sourcePublishedAt: "2026-08-12",
+      verificationNotes: `${TIGRESAS_NOTES} Es el punto MEJOR EVIDENCIADO de la red: la cuenta oficial lo anunció el 12 de agosto con pieza gráfica, canasta detallada, teléfono y responsables (Esperanza Martínez y Liliana Zapata), y lo repitió en dos publicaciones posteriores. SALVEDAD DE ATADURA: la pieza gráfica NO nombra la ciudad —un comentario público lo señala— y que sea Medellín se establece por el texto de la publicación hermana, «Desde Medellín seguimos trabajando para recibir, organizar y hacer llegar ayudas humanitarias». Es atadura contextual, no literal, igual que la de Rionegro.`,
+    }),
+  tigresa("tigresas-medellin-sur-mayorista", "Centro de acopio Central Mayorista de Antioquia", "Antioquia", "Medellín",
+    "Central Mayorista de Antioquia", "+57 320 691 5374",
+    {
+      geocodeQuery: "Central Mayorista de Antioquia, Itagüí, Antioquia, Colombia",
+      scheduleText: "8:00 a. m. – 5:00 p. m.",
+      verificationNotes: `${TIGRESAS_NOTES} La lista lo rotula «Medellín Sur». La Central Mayorista de Antioquia está administrativamente en ITAGÜÍ, no en Medellín: el municipio se conserva como Medellín porque es el que declara la fuente, pero el pin apunta al recinto real. Si alguien filtra por municipio, este es el registro que conviene revisar.`,
+    }),
+  tigresa("tigresas-medellin-terminal-sur", "Terminal del Sur — Local 015", "Antioquia", "Medellín",
+    "Local 015, Centro Comercial Terminal del Sur", null,
+    {
+      geocodeQuery: "Terminal del Sur, Medellín, Antioquia, Colombia",
+      sourceName: "Tigresas de la Patria — publicación propia (apertura del punto)",
+      sourceUrl: "https://www.instagram.com/tigresasdelapatriaoficial/reel/Db_eOEbhZxy/",
+      sourcePublishedAt: "2026-08-13",
+      verificationNotes: `${TIGRESAS_NOTES} Anunciado por la cuenta oficial: «Hoy abrimos un nuevo punto de acopio en la Terminal del Sur, facilitando soluciones de transporte para nuestros hermanos colombianos». La fuente no publica teléfono ni horario, así que no hay forma de confirmar antes de ir salvo acercarse a la terminal.`,
+    }),
+
+  // --- Bogotá D.C. -----------------------------------------------------------
+  tigresa("tigresas-bogota-park-way", "Punto de Solidaridad Park Way", "Bogotá D.C.", "Bogotá D.C.",
+    "Avenida Carrera 24 #39-29", "+57 310 267 7601",
+    {
+      geocodeQuery: "Avenida Carrera 24 # 39-29, Park Way, Bogotá, Colombia",
+      verificationNotes: `${TIGRESAS_NOTES} La lista indica encargada «Olga Mayorga».`,
+    }),
+
+  // --- Boyacá (departamento nuevo) -------------------------------------------
+  tigresa("tigresas-tunja-defensores", "Defensores de la Patria Boyacá", "Boyacá", "Tunja",
+    "Carrera 12 #21-45, Local 3", "+57 314 442 0954",
+    {
+      geocodeQuery: "Carrera 12 # 21-45, Tunja, Boyacá, Colombia",
+      scheduleText: "9:00 a. m. – 12:00 m. y 2:00 – 6:00 p. m.",
+    }),
+  tigresa("tigresas-tunja-bodega-2", "Tunja — Bodega 2", "Boyacá", "Tunja",
+    "Carrera 2 #58-79", "+57 322 859 4727",
+    {
+      geocodeQuery: "Carrera 2 # 58-79, Tunja, Boyacá, Colombia",
+      scheduleText: "8:00 a. m. – 5:00 p. m.",
+      verificationNotes: `${TIGRESAS_NOTES} La lista indica responsable «Faustino García».`,
+    }),
+
+  // --- Caquetá ---------------------------------------------------------------
+  tigresa("tigresas-florencia-super-mio", "Super Mío Ciudadela", "Caquetá", "Florencia",
+    "Carrera 30B #22-42, La Ciudadela", "+57 317 887 1620",
+    {
+      geocodeQuery: "Carrera 30B # 22-42, Florencia, Caquetá, Colombia",
+      verificationNotes: `${TIGRESAS_NOTES} Segundo punto de Florencia. Comparte responsable (Marisol Arciniegas) y teléfono con el de Carrera 10A: si llamas, confirma a cuál de los dos te refieres.`,
+    }),
+
+  // --- Casanare --------------------------------------------------------------
+  tigresa("tigresas-villanueva-casanare", "Hotel Versalles Tigresa", "Casanare", "Villanueva",
+    "Calle 11 #16-35", "+57 318 544 4431",
+    {
+      geocodeQuery: "Villanueva, Casanare, Colombia",
+      scheduleText: "24 horas",
+      verificationNotes: `${TIGRESAS_NOTES} Responsable «Lucenith Gross». Es el ÚNICO punto de Casanare con municipio identificable: el otro registro del departamento sigue en «disputed» justamente porque la fuente nunca dijo a qué municipio pertenece.`,
+    }),
+
+  // --- Córdoba (departamento nuevo) ------------------------------------------
+  tigresa("tigresas-monteria-centro-solidaridad", "Centro de Solidaridad Montería", "Córdoba", "Montería",
+    "Calle 69 #3-86, barrio El Recreo", null,
+    { geocodeQuery: "Calle 69 # 3-86, Montería, Córdoba, Colombia" }),
+  tigresa("tigresas-monteria-norte-edificio-rio", "Punto de Solidaridad Norte — Edificio Río", "Córdoba", "Montería",
+    "Carrera 1A #62-41, Edificio Río, apartamento 1502", null,
+    { geocodeQuery: "Carrera 1A # 62-41, Montería, Córdoba, Colombia" }),
+  tigresa("tigresas-monteria-norte-calle-69", "Punto de Solidaridad Norte — Calle 69", "Córdoba", "Montería",
+    "Calle 69 #1C-92", null,
+    {
+      geocodeQuery: "Calle 69 # 1C-92, Montería, Córdoba, Colombia",
+      verificationNotes: `${TIGRESAS_NOTES} La lista rotula DOS puntos distintos como «Punto de Solidaridad Norte», con direcciones diferentes; se crean por separado y se distinguen por dirección. Ninguno de los tres de Montería publica teléfono.`,
+    }),
+
+  // --- Meta ------------------------------------------------------------------
+  tigresa("tigresas-villavicencio", "Punto de Solidaridad Villavicencio", "Meta", "Villavicencio",
+    "Carrera 31 #41A-50, contiguo a la Universidad Gran Colombia", "+57 310 734 2742",
+    {
+      geocodeQuery: "Carrera 31 # 41A-50, Villavicencio, Meta, Colombia",
+      verificationNotes: `${TIGRESAS_NOTES} La lista indica tigresa encargada «Aurora Montenegro».`,
+    }),
+
+  // --- Norte de Santander ----------------------------------------------------
+  tigresa("tigresas-cucuta-portal-bocono", "Conjunto Portal Boconó — Local 2", "Norte de Santander", "Cúcuta",
+    "Conjunto Portal Boconó, Local 2, anillo vial antes de Postobón", "+57 312 339 2032",
+    { geocodeQuery: "Anillo Vial Occidental, Cúcuta, Norte de Santander, Colombia" }),
+  tigresa("tigresas-cucuta-zona-industrial", "Punto de Solidaridad Zona Industrial", "Norte de Santander", "Cúcuta",
+    "Calle 17N #4-50, zona industrial", "+57 312 339 3032",
+    {
+      geocodeQuery: "Calle 17N # 4-50, Cúcuta, Norte de Santander, Colombia",
+      scheduleText: "Horario continuo hasta las 7:00 p. m.",
+      verificationNotes: `${TIGRESAS_NOTES} Responsables: Lorena Larrotta, Ángela Andrea Piedrahita y Andrés Hernández. La fuente publica los dos números como WhatsApp; el segundo es +57 320 656 8404.`,
+    }),
+
+  // --- Risaralda -------------------------------------------------------------
+  tigresa("tigresas-pereira-mercasa", "Mercasa Pereira — Bodega ZP-01-02 L6", "Risaralda", "Pereira",
+    "Avenida del Sur (Calle 100 #100-89), Bodega ZP-01-02 L6", "+57 313 550 9707",
+    {
+      geocodeQuery: "Avenida del Sur, Pereira, Risaralda, Colombia",
+      scheduleText: "8:00 a. m. – 6:00 p. m.",
+      verificationNotes: `${TIGRESAS_NOTES} La propia pieza lo rotula «NUEVO PUNTO», así que nace después del 11 de agosto. Responsable «Maria Malcum». Pereira es una de las ciudades más golpeadas y este es el segundo punto de la red allí.`,
+    }),
+
+  // --- Tolima ----------------------------------------------------------------
+  tigresa("tigresas-ibague-plazas-del-bosque", "Centro Comercial Plazas del Bosque", "Tolima", "Ibagué",
+    "Avenida Ambalá 69-80", "+57 321 840 2089",
+    { geocodeQuery: "Avenida Ambalá, Ibagué, Tolima, Colombia" }),
+  tigresa("tigresas-ibague-casa-loma", "Casa Loma", "Tolima", "Ibagué",
+    "Calle 116 #48-49, barrio San Francisco de Aparco", "+57 320 884 1094",
+    { geocodeQuery: "Calle 116 # 48-49, Ibagué, Tolima, Colombia" }),
   {
     slug: "tigresas-casanare",
     name: "Punto de Solidaridad Casanare",
@@ -2344,21 +2631,42 @@ export const SEED_CENTERS: SeedCenter[] = [
     geocodeQuery: "Universidad de Antioquia, Ciudad Universitaria, Medellín, Antioquia, Colombia",
     latitude: null,
     longitude: null,
-    acceptedItems: MEDELLIN_DIA2_ITEMS,
-    urgentNeeds: ["Alimentos no perecederos", "Artículos de aseo"],
-    rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
+    // CANASTA PROPIA, y es importante que no herede la del municipio.
+    //
+    // La campaña de la Alcaldía de Medellín RECHAZA medicamentos, y esta ficha
+    // usaba esa canasta. Pero AfroUdeA los pide «de manera urgente». Estábamos
+    // publicando lo contrario de lo que el centro hace — el mismo error que
+    // `docs/sources.md` §3.d.3 ya corrigió en Belisario. Segunda vez que una
+    // constante compartida contradice al punto que describe.
+    acceptedItems: [
+      "Utensilios de cocina",
+      "Medicamentos",
+      "Colchonetas",
+      "Materiales para construcción",
+      "Alimentos no perecederos",
+      "Artículos de aseo",
+    ],
+    urgentNeeds: [
+      "Utensilios de cocina",
+      "Medicamentos",
+      "Colchonetas",
+      "Materiales para construcción",
+    ],
+    rejectedItems: ["Productos vencidos", "Alimentos perecederos"],
     scheduleText: "Lunes a viernes, 9:00 a. m. – 5:00 p. m.",
     startsAt: "2026-08-11",
-    endsAt: null,
+    // ÚLTIMO DÍA ANUNCIADO POR LA PROPIA ENTIDAD.
+    endsAt: "2026-08-14",
     phone: "+57 311 450 5940",
     whatsapp: null,
     email: null,
-    sourceName: PIEZA_CIUDADANA_MEDELLIN,
-    sourceUrl: null,
-    sourcePublishedAt: "2026-08-11",
+    sourceName: "AfroUdeA — publicación propia del colectivo",
+    sourceUrl: "https://www.instagram.com/p/DcBuTjXRUTq/",
+    sourcePublishedAt: "2026-08-14",
     verificationStatus: "reported",
-    verificationNotes: `${PIEZA_CIUDADANA_NOTA} La pieza no da dirección del bloque 9: se usó Ciudad Universitaria. Tiene teléfono publicado, que es la vía más rápida para confirmarlo. El acceso al campus puede requerir identificación.`,
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    verificationNotes:
+      "ÚLTIMO DÍA DE RECOLECCIÓN: 14 DE AGOSTO DE 2026. Lo anunció el propio colectivo esa mañana: «Último día de recolección de ayudas en la @udea. Necesitamos el mayor apoyo. Se requieren de manera urgente utensilios de cocina, medicamentos, colchonetas, materiales para la construcción. Estaremos todo el día en el Bloque 9». PUEDE REABRIR: en los comentarios de esa misma publicación dos personas preguntan si el cierre es definitivo —«último día POR AHORA, ¿sí?»— y la cuenta no respondió en el hilo. El anuncio de la entidad es explícito; su permanencia, no. Si vuelve a abrir, quítale la fecha de cierre. LA CANASTA CAMBIÓ: pide medicamentos, que la campaña general de Medellín rechaza; esta ficha ya no hereda esa lista. La fuente no da dirección del bloque 9: se usó Ciudad Universitaria. El acceso al campus puede requerir identificación.",
+    lastVerifiedAt: REVALIDATED_AT_DIA5,
   },
   {
     slug: "simon-coffee-medellin",
@@ -2384,8 +2692,8 @@ export const SEED_CENTERS: SeedCenter[] = [
     sourceUrl: null,
     sourcePublishedAt: "2026-08-11",
     verificationStatus: "reported",
-    verificationNotes: `${PIEZA_CIUDADANA_NOTA} Negocio privado sumado a la iniciativa: sin horario publicado y puede dejar de recibir sin aviso. Llamar o pasar a confirmar antes de llevar carga.`,
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    verificationNotes: `${PIEZA_CIUDADANA_NOTA} Negocio privado sumado a la iniciativa: sin horario publicado y puede dejar de recibir sin aviso. Llamar o pasar a confirmar antes de llevar carga. SEÑAL EN CONTRA, anotada el 14 de agosto de 2026: se localizó su cuenta oficial (@simoncoffeemedellin), está activa y publica con regularidad, pero en sus doce publicaciones más recientes NO menciona el acopio, ni donaciones, ni el terremoto. Eso no prueba que no reciba —un negocio pequeño puede hacerlo sin publicarlo—, pero los otros cuatro puntos localizables de esta misma pieza sí lo publican, y con insistencia. Es el único cuyo canal propio guarda silencio. Ya no es «no hay dónde consultar»: hay cuenta, y no dice nada. ES LA PRIMERA LLAMADA DEL BLOQUE.`,
+    lastVerifiedAt: REVALIDATED_AT_DIA5,
   },
   {
     slug: "restaurante-belisario-medellin",
@@ -2456,25 +2764,34 @@ export const SEED_CENTERS: SeedCenter[] = [
     type: "general",
     department: "Antioquia",
     municipality: "Medellín",
-    address: "Avenida 80 #52-88",
-    geocodeQuery: "Avenida 80 # 52-88, Medellín, Antioquia, Colombia",
+    // SE MUDÓ EL 12 DE AGOSTO. La dirección anterior era «Avenida 80 #52-88» y
+    // se publicó durante dos días después de que el punto dejara de operar allí.
+    address: "Carrera 81 #33AA-08, al lado del restaurante 7 Mesas, cerca de la iglesia de Santa Gema",
+    geocodeQuery: "Carrera 81 # 33AA-08, Medellín, Antioquia, Colombia",
     latitude: null,
     longitude: null,
     acceptedItems: MEDELLIN_DIA2_ITEMS,
-    urgentNeeds: ["Alimentos no perecederos"],
+    urgentNeeds: [
+      "Cajas de cartón",
+      "Alimentos no perecederos",
+      "Artículos de aseo personal",
+      "Comida para bebés",
+      "Insumos médicos",
+    ],
     rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
-    scheduleText: null,
+    scheduleText: "10:00 a. m. – 8:00 p. m.",
     startsAt: "2026-08-11",
     endsAt: null,
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: PIEZA_CIUDADANA_MEDELLIN,
-    sourceUrl: null,
-    sourcePublishedAt: "2026-08-11",
+    sourceName: "Guayaquiliando — publicación propia de la cuenta que opera el punto",
+    sourceUrl: "https://www.instagram.com/p/Db8k6QDxYux/",
+    sourcePublishedAt: "2026-08-12",
     verificationStatus: "reported",
-    verificationNotes: `${PIEZA_CIUDADANA_NOTA} Iniciativa privada, sin horario publicado.`,
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    verificationNotes:
+      "TRASLADO CONFIRMADO POR LA PROPIA CUENTA. El 12 de agosto @guayaquiliando publicó: «NUEVA UBICACIÓN DE RECOLECCIÓN. Ya no podemos recibir NADA en la que estábamos, así que POR FAVOR DIFUNDIR», con la dirección actual y el horario. Si llegaste aquí buscando la Avenida 80 #52-88, esa bodega ya no recibe. El punto está operando: la cuenta documenta despachos a Manizales, Cali, Pereira, Buenaventura y Quimbaya, y más de 120 toneladas en tres días. Sigue como «reported» y no como «verified» porque quien lo opera es una cuenta de divulgación, no la entidad responsable de la respuesta oficial. DISCREPANCIA MENOR: una publicación anterior del mismo día da «Carrera 81 #33AA-39»; ambas citan la misma referencia (7 Mesas / iglesia de Santa Gema), así que es la misma cuadra. Se usa la del anuncio de traslado.",
+    lastVerifiedAt: REVALIDATED_AT_DIA5,
   },
   {
     slug: "libreria-rodante-delfos-medellin",
@@ -2483,25 +2800,28 @@ export const SEED_CENTERS: SeedCenter[] = [
     type: "general",
     department: "Antioquia",
     municipality: "Medellín",
-    address: "Laureles, Calle 79 #52A-23",
-    geocodeQuery: "Calle 79 # 52A-23, Laureles, Medellín, Antioquia, Colombia",
+    // NUEVA SEDE. La anterior se anotó como «Laureles, Calle 79 #52A-23», con la
+    // ambigüedad Calle/Carrera sin resolver. La cuenta la resolvió: es CARRERA.
+    address: "Carrera 79 #52A-34, barrio Los Colores",
+    geocodeQuery: "Carrera 79 # 52A-34, Los Colores, Medellín, Antioquia, Colombia",
     latitude: null,
     longitude: null,
     acceptedItems: MEDELLIN_DIA2_ITEMS,
     urgentNeeds: ["Alimentos no perecederos"],
     rejectedItems: MEDELLIN_DIA2_RECHAZADOS,
-    scheduleText: null,
+    scheduleText: "Jueves, viernes y sábados",
     startsAt: "2026-08-11",
     endsAt: null,
     phone: null,
     whatsapp: null,
     email: null,
-    sourceName: PIEZA_CIUDADANA_MEDELLIN,
-    sourceUrl: null,
-    sourcePublishedAt: "2026-08-11",
+    sourceName: "Librería Rodante Delfos — publicación propia",
+    sourceUrl: "https://www.instagram.com/libreriadelfos1/",
+    sourcePublishedAt: "2026-08-13",
     verificationStatus: "reported",
-    verificationNotes: `${PIEZA_CIUDADANA_NOTA} AMBIGÜEDAD DE DIRECCIÓN: la pieza escribe «Laureles 79 #52A-23», que puede leerse como Calle 79 o como Carrera 79 (ambas existen en Laureles). Se interpretó Calle 79. VALIDAR PIN antes de promover.`,
-    lastVerifiedAt: VERIFIED_AT_DIA2,
+    verificationNotes:
+      "SEDE NUEVA Y AMBIGÜEDAD RESUELTA. La ficha anterior dudaba entre Calle 79 y Carrera 79 porque la pieza ciudadana escribía «Laureles 79 #52A-23»; la propia librería publicó «¡Ahora tenemos nueva sede en el barrio Los Colores de Medellín! (Carrera 79 #52A-34)», así que era CARRERA, y además cambió de sede y de barrio. El pin anterior estaba anclado a Laureles. ATIENDE SOLO JUEVES, VIERNES Y SÁBADOS: «¡Abrimos nuestras puertas para recibirles jueves, viernes y sábados en la sede de Los Colores!». Sigue operando: canaliza donaciones hacia el Chocó junto a la Red de Derechos Humanos del Pacífico, con registro de entregas en Quibdó. Sale de la lista de excepciones sin enlace: ahora tiene canal propio comprobable.",
+    lastVerifiedAt: REVALIDATED_AT_DIA5,
   },
   {
     slug: "fundacion-el-arte-de-los-suenos-medellin",
