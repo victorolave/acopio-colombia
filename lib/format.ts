@@ -23,9 +23,31 @@ export function formatDateTime(iso: string | null): string | null {
   return dateTimeFormatter.format(date).replace(",", " ·");
 }
 
+/** `2026-08-14` sí; `2026-08-14T10:00:00Z` no. */
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Formatea una fecha para mostrarla. Con fechas SIN hora hay una trampa.
+ *
+ * `new Date("2026-08-14")` se parsea como medianoche UTC, y al formatearla en
+ * `America/Bogota` (UTC-5) retrocede cinco horas: 13 de agosto, 19:00. El sitio
+ * mostraba TODAS sus fechas un día antes —`starts_at`, `ends_at` y
+ * `source_published_at`— y el caso peor era el que más importa: el día en que un
+ * centro deja de recibir se anunciaba con un día de antelación.
+ *
+ * Es especialmente traicionero porque `hasEnded()` NO tiene el fallo: construye
+ * `${endsAt}T23:59:59-05:00` a mano, así que el filtro retiraba el centro en el
+ * momento correcto mientras la ficha decía otra cosa. Un centro en su último día
+ * seguía publicado —bien— y a la vez anunciaba que había cerrado ayer —mal—, que
+ * es justo el día en que había que ir.
+ *
+ * Las fechas del seed son civiles colombianas, no instantes UTC: se anclan al
+ * mediodía de Bogotá, lo bastante lejos de los dos bordes del día como para que
+ * ningún desfase las mueva de fecha.
+ */
 export function formatDate(iso: string | null): string | null {
   if (!iso) return null;
-  const date = new Date(iso);
+  const date = new Date(DATE_ONLY.test(iso) ? `${iso}T12:00:00-05:00` : iso);
   if (Number.isNaN(date.getTime())) return null;
   return dateFormatter.format(date);
 }
