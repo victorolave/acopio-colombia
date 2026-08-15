@@ -102,6 +102,19 @@ summary {
   }
 }
 
+/* Escritorio: la lista se desplaza dentro de su propio panel, así que la barra
+   de scroll queda a media pantalla en lugar de en el borde de la ventana. Una
+   barra fina y en el gris del sistema de color evita que compita con las
+   tarjetas; se reserva el hueco (`stable`) para que la lista no se desplace
+   lateralmente al aparecer y desaparecer entre filtros. */
+@media (min-width: 1024px) {
+  [data-list-scroll] {
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    scrollbar-color: var(--color-ink-300) transparent;
+  }
+}
+
 .maplibregl-popup-content {
   padding: 0;
   border-radius: 12px;

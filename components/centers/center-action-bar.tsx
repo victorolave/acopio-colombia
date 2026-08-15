@@ -34,7 +34,7 @@ export function CenterActionBar({ center }: { center: CollectionCenter }) {
           <button
             type="button"
             onClick={() => setRouteOpen(true)}
-            className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 font-semibold text-white active:bg-brand-700"
+            className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 font-semibold text-white transition-colors hover:bg-brand-700 active:bg-brand-700"
           >
             <IconRoute className="size-5" />
             Cómo llegar
@@ -47,7 +47,7 @@ export function CenterActionBar({ center }: { center: CollectionCenter }) {
               rel="noopener noreferrer"
               onClick={() => trackEvent("click_whatsapp", center.slug)}
               aria-label={`Escribir por WhatsApp a ${center.name}`}
-              className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-ink-300 text-ink-700 active:bg-ink-50"
+              className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-ink-300 text-ink-700 transition-colors hover:bg-ink-50 active:bg-ink-50"
             >
               <IconChat />
             </a>
@@ -56,7 +56,7 @@ export function CenterActionBar({ center }: { center: CollectionCenter }) {
             <a
               href={telUrl(center.phone)}
               aria-label={`Llamar a ${center.name} al ${center.phone}`}
-              className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-ink-300 text-ink-700 active:bg-ink-50"
+              className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-ink-300 text-ink-700 transition-colors hover:bg-ink-50 active:bg-ink-50"
             >
               <IconPhone />
             </a>
@@ -86,7 +86,7 @@ export function CenterActionBar({ center }: { center: CollectionCenter }) {
                 type="button"
                 onClick={() => setRouteOpen(false)}
                 aria-label="Cerrar"
-                className="grid size-11 place-items-center rounded-lg text-ink-500 active:bg-ink-50"
+                className="grid size-11 place-items-center rounded-lg text-ink-500 transition-colors hover:bg-ink-50 active:bg-ink-50"
               >
                 <IconClose />
               </button>
@@ -98,7 +98,7 @@ export function CenterActionBar({ center }: { center: CollectionCenter }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackEvent("click_directions", center.slug)}
-                className="flex min-h-12 items-center rounded-xl border border-ink-300 px-4 font-medium text-ink-900 active:bg-ink-50"
+                className="flex min-h-12 items-center rounded-xl border border-ink-300 px-4 font-medium text-ink-900 transition-colors hover:bg-ink-50 active:bg-ink-50"
               >
                 Google Maps
               </a>
@@ -107,7 +107,7 @@ export function CenterActionBar({ center }: { center: CollectionCenter }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackEvent("click_directions", center.slug)}
-                className="flex min-h-12 items-center rounded-xl border border-ink-300 px-4 font-medium text-ink-900 active:bg-ink-50"
+                className="flex min-h-12 items-center rounded-xl border border-ink-300 px-4 font-medium text-ink-900 transition-colors hover:bg-ink-50 active:bg-ink-50"
               >
                 Waze
               </a>

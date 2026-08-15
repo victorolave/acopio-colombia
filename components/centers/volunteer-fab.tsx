@@ -139,7 +139,7 @@ export function VolunteerDialog({
             type="button"
             onClick={onClose}
             aria-label="Cerrar"
-            className="grid size-11 shrink-0 place-items-center rounded-lg text-ink-500 active:bg-ink-50"
+            className="grid size-11 shrink-0 place-items-center rounded-lg text-ink-500 transition-colors hover:bg-ink-50 active:bg-ink-50"
           >
             <IconClose />
           </button>

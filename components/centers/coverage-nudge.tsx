@@ -83,7 +83,7 @@ export function CoverageNudge({
           type="button"
           onClick={dismiss}
           aria-label="Ocultar este mensaje"
-          className="-m-1 grid size-9 shrink-0 place-items-center rounded-lg text-ink-500 active:bg-white/60"
+          className="-m-1 grid size-9 shrink-0 place-items-center rounded-lg text-ink-500 transition-colors hover:bg-white/60 active:bg-white/60"
         >
           <IconClose className="size-4" />
         </button>
@@ -105,7 +105,7 @@ export function CoverageNudge({
 
       <Link
         href="/registrar"
-        className="mt-2.5 inline-flex min-h-11 items-center rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white active:bg-brand-700"
+        className="mt-2.5 inline-flex min-h-11 items-center rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-700 active:bg-brand-700"
       >
         Registrar un acopio
       </Link>
