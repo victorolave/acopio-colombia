@@ -48,6 +48,13 @@ const OFFICIAL_ACCOUNTS = [
     comprobadoPor: "@victorolave, 11 de agosto de 2026",
   },
   {
+    url: "https://www.instagram.com/tigresasmoviendoseconcorazon",
+    entidad:
+      "Tigresas Moviéndose con Corazón — cuenta de la campaña «Colombia un solo corazón», la misma red que @tigresasdelapatriaoficial. Es la que mantiene la «Red Nacional de Puntos de Solidaridad» al día en su historia destacada «📍Puntos», departamento por departamento.",
+    comprobadoPor:
+      "@victorolave, 14 de agosto de 2026, mediante lectura asistida con navegador con sesión iniciada (ver docs/revalidacion-2026-08-14.md). Es la segunda cuenta de la MISMA organización que ya estaba en la lista: la cuenta principal difunde la campaña y esta la opera. Se comprobó que ambas se etiquetan mutuamente y que la primera dama (@analu_pineda) publica desde las dos. NO amplía qué cuenta como entidad responsable —a diferencia del precedente de @somosbelisario—, solo reconoce el canal donde esta red mantiene su lista viva.",
+  },
+  {
     url: "https://www.instagram.com/somosbelisario",
     entidad:
       "Somos Belisario Grupo Empresarial — cadena de restaurantes de Medellín que anunció EN SU PROPIA CUENTA que habilitó tres centros de acopio por este terremoto",
@@ -115,16 +122,27 @@ const SIN_ENLACE_APROBADOS = new Set<string>([
   // la publicación original con URL estable. Se publican como `reported`, con
   // la salvedad en `verificationNotes` de cada ficha.
   // REVISAR: sustituir por `sourceUrl` en cuanto aparezca el post original.
-  "udea-afroudea-medellin",
   "simon-coffee-medellin",
   "remanence-medellin",
-  // RESUELTO el 12 de agosto de 2026: `restaurante-belisario-medellin` salió de
-  // esta lista porque su propia cuenta publicó el punto con URL estable.
-  "bodega-guayaquiliando-medellin",
-  "libreria-rodante-delfos-medellin",
   "fundacion-el-arte-de-los-suenos-medellin",
   "la-razon-medellin",
   "batallon-girardot-medellin",
+  // RESUELTO el 12 de agosto de 2026: `restaurante-belisario-medellin` salió de
+  // esta lista porque su propia cuenta publicó el punto con URL estable.
+  //
+  // RESUELTOS el 14 de agosto de 2026 — `bodega-guayaquiliando-medellin`,
+  // `libreria-rodante-delfos-medellin` y `udea-afroudea-medellin` también
+  // salieron: las tres cuentas publican sus puntos con URL estable.
+  //
+  // Conviene decir por qué aparecieron ahora y no antes, porque cambia cómo se
+  // lee esta lista. `docs/revalidacion-2026-08-13.md` §6 concluyó, tras
+  // buscarlos uno por uno, que «ninguna búsqueda en internet los va a validar
+  // nunca». Era falso: las búsquedas se hicieron sin sesión de Instagram, y
+  // cinco de los ocho aparecieron al primer intento en cuanto la hubo. Lo que se
+  // había escrito como un hecho del mundo era un límite de herramienta.
+  //
+  // Quedan cinco. Que sigan aquí NO significa que no existan ni que no tengan
+  // canal: significa que todavía no se ha dado con él.
 ]);
 
 /**

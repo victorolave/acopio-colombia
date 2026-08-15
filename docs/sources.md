@@ -3,7 +3,9 @@
 **Emergencia:** terremoto de magnitud 7,4 del **10 de agosto de 2026**, 7:34 a. m., epicentro en **San José del Palmar (Chocó)**, profundidad ~82 km. Ciudades más golpeadas: Quibdó, Pereira, Manizales y Cali. Balance preliminar del día: 111 fallecidos (elevado a 132 según Asocapitales en el transcurso de la jornada), más de 570 heridos, ~1.575 viviendas afectadas y 61 edificaciones colapsadas. El Gobierno declaró desastre nacional.
 
 **Fecha de la investigación:** 10 de agosto de 2026. **Ampliada:** 11 de agosto de 2026 (dos tandas: red de Tigresas y día 2 de la emergencia) y 12 de agosto de 2026 (rastreo de fuentes primarias, §3.d; reintento de dominios cerrados, §3.e; alta de Rionegro, §3.f). **Aporte externo:** tanda «ciudades golpeadas» de @Garzu96 (§11).
-**Consolidado:** 111 registros · **102 publicables** (69 verificados + 33 reportados) · 3 en disputa · 3 inactivos · 3 pendientes · **26 departamentos y 40 municipios**.
+**Ampliada de nuevo:** 13 de agosto de 2026 (revalidación documental para RETIRAR lo cerrado, [`revalidacion-2026-08-13.md`](revalidacion-2026-08-13.md)) y **14 de agosto de 2026** (primera pasada con navegador con sesión, [`revalidacion-2026-08-14.md`](revalidacion-2026-08-14.md): se releyó por fin la red de Tigresas, entraron 17 puntos y aparecieron dos traslados que llevábamos días publicando mal).
+
+**Consolidado:** 128 registros · **118 publicables** (82 verificados + 36 reportados) · 3 en disputa · 4 inactivos · 3 pendientes · **28 departamentos**.
 
 ---
 
@@ -293,7 +295,17 @@ Horario de los tres: 7:30 a. m. – 4:30 p. m.
 
 ---
 
-### 3.g Aviso sobre `scripts/geocode.ts` ⚠️
+### 3.g Aviso sobre `scripts/geocode.ts` — ✅ RESUELTO el 14 de agosto de 2026
+
+> **Este aviso ya no aplica, y se conserva porque explica por qué el script es como es.**
+>
+> Lo que pedía —«o se convierten esas 6 correcciones en `QUERY_OVERRIDES` reproducibles, o se les añade un campo que el script respete y no pise»— **está hecho**: existe `MANUAL_OVERRIDES`, se aplica DESPUÉS de resolver, y ya cubre los seis pines afinados a mano y algunos más. Una pasada completa ya no los deshace.
+>
+> El 14 de agosto se añadió además `--only <slugs>` y `--missing`, por un motivo distinto del original: la pasada completa tarda ~4 minutos por la política de uso de Nominatim, y sobre todo **obliga a revisar 128 líneas a mano**. La revisión visual es la salvaguarda real de este proyecto, y una revisión que no se hace es una revisión que miente.
+>
+> Lo que sigue es el texto original.
+
+
 
 **Correr `npx tsx scripts/geocode.ts` regeocodifica los 101 centros, no solo los nuevos, y sobrescribe `data/coordinates.json` entero.**
 

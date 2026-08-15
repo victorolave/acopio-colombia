@@ -657,18 +657,18 @@
   },
   "bodega-guayaquiliando-medellin": {
     "slug": "bodega-guayaquiliando-medellin",
-    "query": "Avenida 80 # 52-88, Medellín, Antioquia, Colombia",
-    "latitude": 6.266046,
-    "longitude": -75.595864,
-    "displayName": "[corrección manual] El pin corrobora la Avenida 80 #52-88 con número de vía; antes era el centroide de la avenida.",
-    "precision": "exact"
+    "query": "Carrera 81, Santa Gema, Medellín, Antioquia, Colombia",
+    "latitude": 6.238727,
+    "longitude": -75.602998,
+    "displayName": "Rotonda Santa Gema, La Castellana, Comuna 11 - Laureles-Estadio, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050032, Colombia",
+    "precision": "approximate"
   },
   "libreria-rodante-delfos-medellin": {
     "slug": "libreria-rodante-delfos-medellin",
-    "query": "Laureles, Medellín, Antioquia, Colombia",
-    "latitude": 6.242,
-    "longitude": -75.595833,
-    "displayName": "Laureles, Comuna 11 - Laureles-Estadio, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050031, Colombia",
+    "query": "Carrera 79, Los Colores, Medellín, Antioquia, Colombia",
+    "latitude": 6.270114,
+    "longitude": -75.594103,
+    "displayName": "Carrera 79, Los Colores, Comuna 11 - Laureles-Estadio, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050034, Colombia",
     "precision": "approximate"
   },
   "fundacion-el-arte-de-los-suenos-medellin": {
@@ -862,5 +862,149 @@
     "longitude": -75.380249,
     "displayName": "San Antonio de Pereira, Rionegro, Oriente, Antioquia, RAP del Agua y la Montaña, 054048, Colombia",
     "precision": "municipality"
+  },
+  "tigresas-medellin-la-80": {
+    "slug": "tigresas-medellin-la-80",
+    "query": "Carrera 80 # 49A-39, Medellín, Antioquia, Colombia",
+    "latitude": 6.244548,
+    "longitude": -75.600078,
+    "displayName": "Carrera 80, Lorena, Comuna 11 - Laureles-Estadio, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050032, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-medellin-sur-mayorista": {
+    "slug": "tigresas-medellin-sur-mayorista",
+    "query": "Central Mayorista de Antioquia, Itagüí, Antioquia, Colombia",
+    "latitude": 6.186815,
+    "longitude": -75.591423,
+    "displayName": "Central Mayorista de Antioquia, Itagüí, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 055411, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-medellin-terminal-sur": {
+    "slug": "tigresas-medellin-terminal-sur",
+    "query": "Terminal del Sur, Medellín, Antioquia, Colombia",
+    "latitude": 6.21652,
+    "longitude": -75.587203,
+    "displayName": "Terminal de Transportes del Sur, Calle 8B, Campo Amor, Comuna 15 - Guayabal, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050024, Colombia",
+    "precision": "exact"
+  },
+  "tigresas-bogota-park-way": {
+    "slug": "tigresas-bogota-park-way",
+    "query": "Park Way, Teusaquillo, Bogotá, Colombia",
+    "latitude": 4.63202,
+    "longitude": -74.075035,
+    "displayName": "[corrección manual] El resultado es el polígono de la UPZ Park Way, no la dirección: orienta bien pero no corrobora la nomenclatura. La navegación va por dirección en texto.",
+    "precision": "approximate"
+  },
+  "tigresas-tunja-defensores": {
+    "slug": "tigresas-tunja-defensores",
+    "query": "Carrera 12 # 21-45, Tunja, Boyacá, Colombia",
+    "latitude": 5.539383,
+    "longitude": -73.362435,
+    "displayName": "Carrera 12, Las Nieves, Tunja, Centro, Boyacá, RAP (Especial) Central, 150002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-tunja-bodega-2": {
+    "slug": "tigresas-tunja-bodega-2",
+    "query": "Carrera 2 # 58-79, Tunja, Boyacá, Colombia",
+    "latitude": 5.563951,
+    "longitude": -73.342815,
+    "displayName": "Carrera 2, Los Muiscas, Tunja, Centro, Boyacá, RAP (Especial) Central, 150004, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-florencia-super-mio": {
+    "slug": "tigresas-florencia-super-mio",
+    "query": "Carrera 30B # 22-42, Florencia, Caquetá, Colombia",
+    "latitude": 1.623878,
+    "longitude": -75.634481,
+    "displayName": "Carrera 30B, Comuna Norte, Perímetro Urbano Florencia, Florencia, Caquetá, RAP Amazonía, 180001, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-villanueva-casanare": {
+    "slug": "tigresas-villanueva-casanare",
+    "query": "Villanueva, Casanare, Colombia",
+    "latitude": 4.614787,
+    "longitude": -72.925383,
+    "displayName": "Villanueva, Villanueva City - Administrative Border, Casanare, RAP Llanos, 855030, Colombia",
+    "precision": "municipality"
+  },
+  "tigresas-monteria-centro-solidaridad": {
+    "slug": "tigresas-monteria-centro-solidaridad",
+    "query": "Calle 69 # 3-86, Montería, Córdoba, Colombia",
+    "latitude": 8.781495,
+    "longitude": -75.867421,
+    "displayName": "Calle 69, El Recreo, Comuna 8, Perímetro Urbano Montería, Centro, Córdoba, RAP Caribe, 230002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-monteria-norte-edificio-rio": {
+    "slug": "tigresas-monteria-norte-edificio-rio",
+    "query": "Carrera 1A # 62-41, Montería, Córdoba, Colombia",
+    "latitude": 8.747576,
+    "longitude": -75.899935,
+    "displayName": "Carrera 1A, Brisas del Sinú, Comuna 3, Perímetro Urbano Montería, Centro, Córdoba, RAP Caribe, 230004, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-monteria-norte-calle-69": {
+    "slug": "tigresas-monteria-norte-calle-69",
+    "query": "Carrera 1C, Montería, Córdoba, Colombia",
+    "latitude": 8.788017,
+    "longitude": -75.866072,
+    "displayName": "Carrera 1C, El Recreo, Comuna 8, Perímetro Urbano Montería, Centro, Córdoba, RAP Caribe, 230002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-villavicencio": {
+    "slug": "tigresas-villavicencio",
+    "query": "Carrera 31, Villavicencio, Meta, Colombia",
+    "latitude": 4.143851,
+    "longitude": -73.632349,
+    "displayName": "Carrera 31, El Porvenir, Comuna 3, Perímetro Urbano Villavicencio, Villavicencio, Meta, RAP (Especial) Central, 500010, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-cucuta-portal-bocono": {
+    "slug": "tigresas-cucuta-portal-bocono",
+    "query": "Anillo Vial Occidental, Cúcuta, Norte de Santander, Colombia",
+    "latitude": 7.894258,
+    "longitude": -72.547026,
+    "displayName": "Anillo Vial Occidental, Sabana Verde, Comuna 8 - Occidental, Perímetro Urbano Cúcuta, Cúcuta, Oriental, Norte de Santander, RAP Gran Santander, 540013, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-cucuta-zona-industrial": {
+    "slug": "tigresas-cucuta-zona-industrial",
+    "query": "Calle 17N, Cúcuta, Norte de Santander, Colombia",
+    "latitude": 7.918153,
+    "longitude": -72.509249,
+    "displayName": "Calle 17A N, Las Américas, Comuna 6 - Norte, Perímetro Urbano Cúcuta, Cúcuta, Oriental, Norte de Santander, RAP Gran Santander, 540002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-pereira-mercasa": {
+    "slug": "tigresas-pereira-mercasa",
+    "query": "Mercasa, Pereira, Risaralda, Colombia",
+    "latitude": 4.812781,
+    "longitude": -75.767217,
+    "displayName": "Glorieta Mercasa, Ferrocarril, Perimetro Urbano Pereira, Pereira, Risaralda, RAP Eje Cafetero, 660006, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-ibague-plazas-del-bosque": {
+    "slug": "tigresas-ibague-plazas-del-bosque",
+    "query": "Avenida Ambalá, Ibagué, Tolima, Colombia",
+    "latitude": 4.447799,
+    "longitude": -75.19976,
+    "displayName": "Avenida Ambalá, Urbano El Encanto, Comuna 6 - Vergel, Perímetro Urbano Ibagué, Ibagué, Centro, Tolima, RAP (Especial) Central, 730002, Colombia",
+    "precision": "approximate"
+  },
+  "tigresas-ibague-casa-loma": {
+    "slug": "tigresas-ibague-casa-loma",
+    "query": "Calle 116 # 48-49, Ibagué, Tolima, Colombia",
+    "latitude": 4.441397,
+    "longitude": -75.162752,
+    "displayName": "Calle 116, Protecho-II, Comuna 8 - Ciudadela, Perímetro Urbano Ibagué, Ibagué, Centro, Tolima, RAP (Especial) Central, 730005, Colombia",
+    "precision": "approximate"
+  },
+  "coliseo-menor-manizales": {
+    "slug": "coliseo-menor-manizales",
+    "query": "Coliseo Menor, Manizales, Colombia",
+    "latitude": 5.055962,
+    "longitude": -75.488616,
+    "displayName": "Coliseo Menor, Avenida Lindsay, Guayacanes, Comuna Palogrande, Perímetro Urbano Manizales, Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",
+    "precision": "exact"
   }
 }

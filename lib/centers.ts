@@ -2,12 +2,33 @@ import "server-only";
 
 import { SEED_CENTERS } from "@/data/centers";
 import COORDINATES from "@/data/coordinates.json";
+import { hasEnded } from "./format";
 import { canConfirmBeforeGoing } from "./schedule";
 import { createSupabasePublicClient } from "./supabase/public";
 import type { CollectionCenter, LocationPrecision, VerificationStatus } from "./types";
 
 /** Estados que se muestran al público. `pending` y `disputed` nunca salen. */
 export const PUBLIC_STATUSES: VerificationStatus[] = ["verified", "reported"];
+
+/**
+ * Un centro entra en listas, mapa y búsqueda si su estado es publicable **y**
+ * su fecha de cierre no ha pasado.
+ *
+ * Lo segundo faltaba. `getPublicCenters()` filtraba solo por
+ * `verification_status`, así que `parque-principal-itagui` —con `endsAt` del 12
+ * de agosto puesto desde el primer día— se sirvió durante todo el 13 en lista,
+ * mapa y resultados de búsqueda. El aviso de cierre existía, pero vivía en la
+ * ficha de detalle: justo la página que quien escanea la lista no llega a abrir.
+ *
+ * Se filtra en memoria a propósito, en vez de añadir un `.or(...)` a la consulta
+ * de Supabase: `hasEnded()` resuelve el vencimiento a las 23:59:59 de Colombia y
+ * duplicar esa regla en SQL abre la puerta a que las dos rutas —Supabase y seed
+ * estático— discrepen en el borde del día. Una sola definición, aplicada a las
+ * dos.
+ */
+function isPubliclyListable(center: CollectionCenter, now = new Date()): boolean {
+  return PUBLIC_STATUSES.includes(center.verification_status) && !hasEnded(center.ends_at, now);
+}
 
 const COLUMNS =
   "id, slug, name, organization, type, department, municipality, address, latitude, longitude, location_precision, accepted_items, urgent_needs, rejected_items, schedule_text, starts_at, ends_at, phone, whatsapp, email, source_name, source_url, source_published_at, verification_status, verification_notes, last_verified_at, created_at, updated_at";
@@ -106,16 +127,27 @@ export async function getPublicCenters(): Promise<CollectionCenter[]> {
       .in("verification_status", PUBLIC_STATUSES)
       .order("name", { ascending: true });
 
-    if (!error && data) return (data as CollectionCenter[]).sort(byDefaultRelevance);
+    if (!error && data)
+      return (data as CollectionCenter[]).filter((c) => isPubliclyListable(c)).sort(byDefaultRelevance);
     // Si Supabase falla durante una emergencia, es mejor servir el seed que una página en blanco.
     console.error("[centers] Supabase no respondió, usando seed estático:", error?.message);
   }
 
   return staticCenters()
-    .filter((c) => PUBLIC_STATUSES.includes(c.verification_status))
+    .filter((c) => isPubliclyListable(c))
     .sort(byDefaultRelevance);
 }
 
+/**
+ * Asimetría deliberada con `getPublicCenters()`: aquí **no** se filtra por
+ * `ends_at`.
+ *
+ * Un centro vencido sale de listas, mapa y búsqueda porque ahí nadie lee la
+ * letra pequeña. Pero quien llega a la ficha por un enlace guardado o
+ * compartido merece leer «este punto cerró el 12 de agosto», no un 404: la
+ * respuesta a la pregunta que traía es el aviso, no el vacío.
+ * `app/centros/[slug]/page.tsx` ya consulta `hasEnded()` para mostrarlo.
+ */
 export async function getCenterBySlug(slug: string): Promise<CollectionCenter | null> {
   const supabase = createSupabasePublicClient();
 

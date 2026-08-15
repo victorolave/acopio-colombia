@@ -1,11 +1,24 @@
 /**
- * Geocodifica UNA SOLA VEZ los centros del seed usando Nominatim (OpenStreetMap).
+ * Geocodifica los centros del seed usando Nominatim (OpenStreetMap).
  *
- *   npx tsx scripts/geocode.ts
+ *   npx tsx scripts/geocode.ts                      → TODOS los centros
+ *   npx tsx scripts/geocode.ts --only slug-a,slug-b → solo esos
+ *   npx tsx scripts/geocode.ts --missing            → solo los que no tienen coordenada
  *
- * Escribe data/coordinates.json. El resultado se revisa VISUALMENTE antes de
- * publicar: Nominatim no siempre resuelve la nomenclatura colombiana
- * (carrera/calle/diagonal) y puede caer en el centroide del municipio.
+ * Escribe data/coordinates.json fusionando sobre lo existente: los slugs que no
+ * entran en esta pasada conservan su entrada intacta.
+ *
+ * POR QUÉ EXISTEN `--only` Y `--missing`. La pasada completa reescribe las 100+
+ * entradas, y `docs/sources.md` §3.g documenta el riesgo: varios pines se
+ * afinaron a mano y una pasada ciega los devolvía a la posición equivocada. Hoy
+ * `MANUAL_OVERRIDES` los protege, pero sigue habiendo dos motivos para acotar:
+ * cada centro cuesta ~2 segundos de espera por la política de uso de Nominatim,
+ * y el resultado se revisa a mano uno por uno —revisar 17 líneas es viable,
+ * revisar 128 no lo es, y una revisión que no se hace es una revisión que miente.
+ *
+ * El resultado se revisa VISUALMENTE antes de publicar: Nominatim no siempre
+ * resuelve la nomenclatura colombiana (carrera/calle/diagonal) y puede caer en
+ * el centroide del municipio.
  *
  * Nunca se geocodifica desde el cliente ni en cada build.
  */
@@ -64,13 +77,30 @@ const QUERY_OVERRIDES: Record<string, string[]> = {
     "Calle 161, Usaquén, Bogotá, Colombia",
     "Usaquén, Bogotá, Colombia",
   ],
-  // Cayó primero en el centroide de Medellín. Al forzar «Calle 79, Laureles»
-  // enganchó un POI llamado «Ginger Cocina» en la CALLE 35 y lo etiquetó
-  // `exact`: pin equivocado con sello de alta confianza, el mismo fallo que
-  // hubo con la iglesia de Santa Marta. La pieza escribe «Laureles 79 #52A-23»
-  // sin aclarar si el 79 es calle o carrera, así que NO se le da una vía: se
-  // ancla al barrio y se acepta la precisión baja, que es lo honesto.
-  "libreria-rodante-delfos-medellin": ["Laureles, Medellín, Antioquia, Colombia"],
+  // AMBIGÜEDAD RESUELTA Y SEDE NUEVA — 14 de agosto de 2026.
+  //
+  // Historia previa: cayó en el centroide de Medellín; al forzar «Calle 79,
+  // Laureles» enganchó un POI llamado «Ginger Cocina» en la CALLE 35 y lo selló
+  // `exact` —pin equivocado con alta confianza, el fallo de la iglesia de Santa
+  // Marta—. Como la pieza escribía «Laureles 79 #52A-23» sin aclarar si el 79
+  // era calle o carrera, se ancló al barrio y se aceptó precisión baja.
+  //
+  // La propia librería resolvió las dos cosas: era CARRERA 79, y se mudó al
+  // barrio LOS COLORES (Carrera 79 #52A-34). Anclar a Laureles ya no solo es
+  // impreciso: apunta al barrio equivocado.
+  "libreria-rodante-delfos-medellin": [
+    "Carrera 79, Los Colores, Medellín, Antioquia, Colombia",
+    "Los Colores, Medellín, Antioquia, Colombia",
+  ],
+  // TRASLADO — 14 de agosto de 2026. «Carrera 81 # 33AA-08» no resuelve y cae en
+  // el centroide de Medellín. La referencia que publica la propia cuenta —la
+  // iglesia de Santa Gema— sí es un POI localizable, y el barrio Santa Gema
+  // acota bastante más que la ciudad.
+  "bodega-guayaquiliando-medellin": [
+    "Carrera 81, Santa Gema, Medellín, Antioquia, Colombia",
+    "Iglesia Santa Gema, Medellín, Antioquia, Colombia",
+    "Santa Gema, Medellín, Antioquia, Colombia",
+  ],
   // Cayó en Ciudad Bolívar (Carrera 24 existe en varias localidades). La sede está en Barrios Unidos.
   "sede-administrativa-cruz-roja-bogota": [
     "Cruz Roja Colombiana Seccional Cundinamarca y Bogotá, Bogotá, Colombia",
@@ -126,6 +156,37 @@ const QUERY_OVERRIDES: Record<string, string[]> = {
   // "Calle 16" y "Calle 24" resolvieron a la zona turística sur (Gaira/Rodadero), no al centro.
   "ogricc-santa-marta": ["Calle 16, Centro, Santa Marta, Magdalena, Colombia"],
   "acsc-santa-marta": ["Calle 24, Centro, Santa Marta, Magdalena, Colombia"],
+
+  // --- Altas del 14 de agosto de 2026 ---------------------------------------
+  // Los cinco que fallaron la revisión visual de la primera pasada.
+
+  // «Avenida Carrera 24 # 39-29» cayó en el centroide de Bogotá. El Park Way es
+  // un eje conocido de Teusaquillo y OSM sí lo tiene por nombre.
+  "tigresas-bogota-park-way": [
+    "Park Way, Teusaquillo, Bogotá, Colombia",
+    "Avenida Carrera 24, Teusaquillo, Bogotá, Colombia",
+  ],
+  // «Carrera 31 # 41A-50» cayó en el centroide del municipio.
+  "tigresas-villavicencio": ["Carrera 31, Villavicencio, Meta, Colombia"],
+  // Mismo fallo que `acsc-cucuta` (§5.3): el centroide del municipio de Cúcuta
+  // incluye zona rural y queda ~20 km al norte del casco urbano.
+  "tigresas-cucuta-zona-industrial": [
+    "Calle 17N, Cúcuta, Norte de Santander, Colombia",
+    "Zona Industrial, Cúcuta, Norte de Santander, Colombia",
+  ],
+  // Cayó en el centroide de Pereira; la Avenida del Sur es un eje identificable.
+  "tigresas-pereira-mercasa": [
+    "Mercasa, Pereira, Risaralda, Colombia",
+    "Avenida del Sur, Pereira, Risaralda, Colombia",
+  ],
+  // Resolvía al MISMO punto de «Calle 69, El Recreo» que
+  // `tigresas-monteria-centro-solidaridad`, dejando dos pines apilados — el
+  // problema que ya hubo que corregir en Cartagena. La nomenclatura «#1C-92»
+  // sitúa este en el cruce con la Carrera 1C, junto al Sinú.
+  "tigresas-monteria-norte-calle-69": [
+    "Calle 69 con Carrera 1C, Montería, Córdoba, Colombia",
+    "Carrera 1C, Montería, Córdoba, Colombia",
+  ],
 };
 
 /**
@@ -133,6 +194,21 @@ const QUERY_OVERRIDES: Record<string, string[]> = {
  * Cada entrada explica por qué el geocodificador falló. Se aplican siempre.
  */
 const MANUAL_OVERRIDES: Record<string, Pick<Entry, "latitude" | "longitude" | "precision"> & { why: string }> = {
+  "tigresas-bogota-park-way": {
+    // El QUERY_OVERRIDE lo rescató del centroide de Bogotá y cayó bien: dentro
+    // del Park Way, Teusaquillo. Pero Nominatim devolvió el POLÍGONO DE LA UPZ
+    // con nombre propio, y el clasificador lo selló `exact`.
+    //
+    // Es el modo de fallo de §5.4 —pin con etiqueta de confianza más alta que la
+    // evidencia—, el mismo que ya mordió en la iglesia de Santa Marta y en
+    // Delfos. El área es correcta; el número de la casa (Av. Carrera 24 #39-29)
+    // NO está corroborado por este resultado. Subir el sello de un centro no es
+    // motivo para subir la precisión de su pin: son dos ejes distintos.
+    latitude: 4.63202,
+    longitude: -74.075035,
+    precision: "approximate",
+    why: "El resultado es el polígono de la UPZ Park Way, no la dirección: orienta bien pero no corrobora la nomenclatura. La navegación va por dirección en texto.",
+  },
   "acsc-cucuta": {
     // Nominatim devuelve el centroide del MUNICIPIO de Cúcuta, que incluye zona rural
     // y queda ~20 km al norte del casco urbano. Se fija el centro urbano.
@@ -238,13 +314,16 @@ const MANUAL_OVERRIDES: Record<string, Pick<Entry, "latitude" | "longitude" | "p
     precision: "exact",
     why: "El pin corrobora la Calle 7 #35-44; Nominatim había resuelto la misma vía en El Tesoro.",
   },
-  "bodega-guayaquiliando-medellin": {
-    // Centroide de la Avenida 80 → dirección «Av. 80 #52-88», la nuestra, a 111 m.
-    latitude: 6.266046,
-    longitude: -75.595864,
-    precision: "exact",
-    why: "El pin corrobora la Avenida 80 #52-88 con número de vía; antes era el centroide de la avenida.",
-  },
+  // `bodega-guayaquiliando-medellin` TENÍA una corrección manual aquí, fijada a
+  // 6.266046, -75.595864 y sellada `exact` porque corroboraba «Avenida 80
+  // #52-88». Se retiró el 14 de agosto de 2026: **el punto se mudó**. La cuenta
+  // que lo opera anunció el 12 de agosto que esa bodega ya no recibe nada.
+  //
+  // Se anota en vez de borrarse en silencio, por el mismo criterio de §4.6 de
+  // `docs/sources.md`: un pin afinado a mano que desaparece sin rastro es un pin
+  // que alguien va a volver a «arreglar» hacia atrás. La dirección nueva se
+  // geocodifica normal y su precisión sale de la revisión visual, no de aquí.
+
   "fundacion-saciar-medellin": {
     // POI «Saciar» a 619 m del centroide de la Carrera 50. Mejora clara del pin,
     // pero lejos de la dirección impresa (Carrera 50 #25-261): se queda
@@ -272,7 +351,45 @@ async function main() {
     ? JSON.parse(readFileSync(OUT, "utf8"))
     : {};
 
-  const targets = SEED_CENTERS.filter((c) => c.geocodeQuery !== null);
+  const onlyArg = process.argv.find((a) => a.startsWith("--only"));
+  const onlySlugs = onlyArg
+    ? new Set(
+        (onlyArg.includes("=") ? onlyArg.split("=")[1] : process.argv[process.argv.indexOf(onlyArg) + 1])
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+      )
+    : null;
+  const onlyMissing = process.argv.includes("--missing");
+
+  let targets = SEED_CENTERS.filter((c) => c.geocodeQuery !== null);
+
+  if (onlySlugs) {
+    const known = new Set(SEED_CENTERS.map((c) => c.slug));
+    const desconocidos = [...onlySlugs].filter((s) => !known.has(s));
+    if (desconocidos.length) {
+      // Un slug mal escrito produciría una pasada silenciosamente vacía, y el
+      // operador creería que geocodificó algo. Mejor romper aquí.
+      console.error(`Slugs que no existen en el seed: ${desconocidos.join(", ")}`);
+      process.exit(1);
+    }
+    targets = targets.filter((c) => onlySlugs.has(c.slug));
+  }
+
+  if (onlyMissing) {
+    targets = targets.filter((c) => {
+      const e = existing[c.slug];
+      return !e || e.latitude === null || e.longitude === null || e.precision === "failed";
+    });
+  }
+
+  const alcance = onlySlugs ? "--only" : onlyMissing ? "--missing" : "TODOS";
+  console.log(`Alcance: ${alcance} → ${targets.length} de ${SEED_CENTERS.length} centros\n`);
+
+  if (!targets.length) {
+    console.log("Nada que geocodificar.");
+    return;
+  }
 
   for (const center of targets) {
     const candidates = [
