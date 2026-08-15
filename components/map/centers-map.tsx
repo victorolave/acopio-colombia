@@ -84,7 +84,6 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
       // que alguien toque el centro equivocado.
       const el = document.createElement("button");
       el.type = "button";
-      el.setAttribute("aria-label", `${center.name}, ${center.municipality}`);
       el.dataset.slug = center.slug;
       el.style.cssText = [
         "width:44px",
@@ -122,6 +121,13 @@ export default function CentersMap({ centers, userPosition, selectedSlug, onSele
       const marker = new maplibregl.Marker({ element: el })
         .setLngLat([center.longitude, center.latitude])
         .addTo(map);
+
+      // El `aria-label` se pone DESPUÉS de construir el marcador, no antes.
+      // MapLibre escribe el suyo —«Map marker», idéntico para todos— sobre el
+      // elemento que se le pasa, así que ponerlo arriba no servía de nada: los
+      // 118 marcadores se anunciaban igual y un lector de pantalla no podía
+      // distinguir un acopio de otro.
+      el.setAttribute("aria-label", `${center.name}, ${center.municipality}`);
 
       markersRef.current.set(center.slug, marker);
     }
