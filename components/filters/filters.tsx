@@ -66,14 +66,14 @@ export function FiltersBar({
           placeholder="Buscar ciudad o centro"
           value={value.query}
           onChange={(e) => onChange({ ...value, query: e.target.value })}
-          className="h-11 w-full rounded-xl border border-ink-300 bg-white pl-9 pr-3 text-base text-ink-900 placeholder:text-ink-500"
+          className="h-11 w-full rounded-xl border border-ink-300 bg-white pl-9 pr-3 text-base text-ink-900 transition-colors placeholder:text-ink-500 hover:border-ink-500"
         />
       </div>
 
       <button
         type="button"
         onClick={onOpenFilters}
-        className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-xl border border-ink-300 bg-white px-3 text-sm font-medium text-ink-700 active:bg-ink-50"
+        className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-xl border border-ink-300 bg-white px-3 text-sm font-medium text-ink-700 transition-colors hover:bg-ink-50 active:bg-ink-50"
       >
         <IconFilter className="size-4" />
         Filtros
@@ -137,7 +137,7 @@ export function ActiveFilterChips({
           <button
             type="button"
             onClick={chip.clear}
-            className="inline-flex min-h-9 items-center gap-1 rounded-full bg-brand-50 py-1 pl-3 pr-2 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-100"
+            className="inline-flex min-h-9 items-center gap-1 rounded-full bg-brand-50 py-1 pl-3 pr-2 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-100 transition-colors hover:bg-brand-100"
           >
             {chip.label}
             <IconClose className="size-3.5" />
@@ -219,7 +219,7 @@ export function FiltersSheet({
             type="button"
             onClick={onClose}
             aria-label="Cerrar filtros"
-            className="grid size-11 place-items-center rounded-lg text-ink-500 active:bg-ink-50"
+            className="grid size-11 place-items-center rounded-lg text-ink-500 transition-colors hover:bg-ink-50 active:bg-ink-50"
           >
             <IconClose />
           </button>
@@ -243,8 +243,8 @@ export function FiltersSheet({
                     className={cn(
                       "min-h-11 rounded-xl border px-3.5 text-sm transition-colors",
                       isActive
-                        ? "border-brand-600 bg-brand-600 font-medium text-white"
-                        : "border-ink-300 bg-white text-ink-700 active:bg-ink-50",
+                        ? "border-brand-600 bg-brand-600 font-medium text-white hover:border-brand-700 hover:bg-brand-700"
+                        : "border-ink-300 bg-white text-ink-700 hover:border-ink-500 hover:bg-ink-50 active:bg-ink-50",
                     )}
                   >
                     {category.label}
@@ -319,14 +319,14 @@ export function FiltersSheet({
           <button
             type="button"
             onClick={() => onChange(EMPTY_FILTERS)}
-            className="min-h-12 rounded-xl border border-ink-300 px-4 text-sm font-medium text-ink-700 active:bg-ink-50"
+            className="min-h-12 rounded-xl border border-ink-300 px-4 text-sm font-medium text-ink-700 transition-colors hover:bg-ink-50 active:bg-ink-50"
           >
             Limpiar
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="min-h-12 flex-1 rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white active:bg-brand-700"
+            className="min-h-12 flex-1 rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-700 active:bg-brand-700"
           >
             Ver {resultCount} {resultCount === 1 ? "centro" : "centros"}
           </button>

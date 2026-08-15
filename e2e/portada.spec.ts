@@ -126,6 +126,43 @@ test.describe("Portada", () => {
     await expect(aviso).toBeHidden();
   });
 
+  test("en escritorio el mapa se queda con la mayor parte del ancho", async ({ page, isMobile }) => {
+    // REGRESIÓN, y de las caras: durante semanas el mapa midió 129 px de ancho
+    // en TODA pantalla grande. La rejilla era `grid-cols-[1.1fr_1fr]`, que
+    // compila a `minmax(auto, 1.1fr)`; ese `auto` impide bajar del min-content
+    // de la pista, y la columna de la lista contiene direcciones con `truncate`
+    // —o sea `white-space: nowrap`—, cuyo min-content es la cadena entera: 941 px
+    // en el peor centro. La lista se quedaba 971 px y el mapa 129.
+    //
+    // Ninguna prueba lo vio. La de desbordamiento horizontal pasaba —nada se
+    // salía, el mapa se encogía— y el typecheck y el build no tienen forma de
+    // saber qué ancho reparte una rejilla. Solo mirándolo en un navegador.
+    test.skip(!!isMobile, "En móvil el mapa es el fondo a pantalla completa.");
+    await page.goto("/");
+
+    const mapa = page.getByRole("application", { name: "Mapa de centros de acopio" });
+    await expect(mapa).toBeVisible();
+
+    const caja = await mapa.boundingBox();
+    const ancho = page.viewportSize()!.width;
+    expect(caja!.width, "el mapa se quedó sin ancho: revisa el minmax(0,…) de la rejilla").
+      toBeGreaterThan(ancho * 0.5);
+  });
+
+  test("en escritorio la portada no desplaza el documento", async ({ page, isMobile }) => {
+    // La lista se desplaza DENTRO de su panel. Si el documento vuelve a crecer con
+    // las 118 tarjetas, la cabecera con el contador y los filtros se va de la
+    // pantalla justo mientras se recorre la lista, que es cuando se consulta.
+    test.skip(!!isMobile, "En móvil ya era así: el mapa es fijo y la hoja se desplaza.");
+    await page.goto("/");
+    await expect(page.locator("li[data-slug]").first()).toBeVisible();
+
+    const desborda = await page.evaluate(
+      () => document.documentElement.scrollHeight > document.documentElement.clientHeight + 1,
+    );
+    expect(desborda, "la portada volvió a crecer con la lista").toBe(false);
+  });
+
   test("no hay desbordamiento horizontal", async ({ page }) => {
     await page.goto("/");
     const desborda = await page.evaluate(

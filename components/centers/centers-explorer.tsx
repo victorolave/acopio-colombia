@@ -62,6 +62,16 @@ export function CentersExplorer({
   const [volunteerOpen, setVolunteerOpen] = useState(false);
   const [snap, setSnap] = useState<SnapPoint>("half");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  /**
+   * Qué tarjeta tiene el puntero encima. Solo existe para el ratón: una lista
+   * junto a un mapa sin ningún vínculo visible entre las dos obliga a leer el
+   * nombre en la tarjeta y buscarlo a ojo entre 118 chinchetas. Al pasar por
+   * encima, su marcador crece.
+   *
+   * A diferencia de `selectedSlug`, NO mueve el mapa. Encuadrar de nuevo cada
+   * vez que el ratón cruza la lista sería mareante, y además impredecible.
+   */
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
   const geo = useGeolocation();
 
@@ -133,16 +143,35 @@ export function CentersExplorer({
   const hasLocation = geo.status === "granted";
 
   return (
-    <div className="lg:grid lg:grid-cols-[1.1fr_1fr] lg:gap-5">
+    /**
+     * `minmax(0, …)` NO es decorativo, es EL arreglo.
+     *
+     * `grid-cols-[1.1fr_1fr]` compila a `minmax(auto, 1.1fr)`, y ese `auto`
+     * significa «no bajes del min-content de la columna». La columna de la lista
+     * contiene direcciones con `truncate` —o sea `white-space: nowrap`—, cuyo
+     * min-content es la cadena ENTERA: 941 px en el peor centro. Resultado
+     * medido en el navegador: la lista se quedaba 971 px y el mapa 129. El mapa
+     * de un buscador con mapa era una tira de 129 px en TODA pantalla grande.
+     *
+     * Con `minmax(0, …)` la pista puede encogerse por debajo de su contenido y
+     * el `truncate` hace por fin su trabajo. La lista se fija en un ancho de
+     * lectura cómodo y el mapa se queda con todo lo demás, que es el reparto que
+     * pide la tarea: el texto no mejora al estirarse, el mapa sí.
+     */
+    <div className="lg:grid lg:min-h-0 lg:flex-1 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-4 xl:grid-cols-[minmax(0,1fr)_420px] xl:gap-5">
       {/* Mapa: pantalla completa bajo la cabecera en móvil, columna fija en escritorio.
           Es el contenedor posicionado del que cuelga `VolunteerFab`: por eso el
           botón puede ser `absolute` y quedarse dentro de la columna en escritorio
-          en lugar de flotar sobre toda la ventana. */}
-      <div className="max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-14 max-lg:z-0 lg:sticky lg:top-4 lg:h-[calc(100dvh-7rem)] lg:overflow-hidden lg:rounded-2xl lg:border lg:border-ink-100">
+          en lugar de flotar sobre toda la ventana. En escritorio el posicionado
+          lo da `lg:relative` —antes lo daba `lg:sticky`, que ya no hace falta
+          porque la página no se desplaza— y sin `z-index`, para NO abrir un
+          contexto de apilamiento que vuelva a encerrar el diálogo de voluntarios. */}
+      <div className="max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-14 max-lg:z-0 lg:relative lg:h-full lg:overflow-hidden lg:rounded-2xl lg:border lg:border-ink-100">
         <CentersMap
           centers={filtered}
           userPosition={geo.position}
           selectedSlug={selectedSlug}
+          highlightedSlug={hoveredSlug}
           onSelect={selectFromMap}
         />
         <VolunteerFabButton open={volunteerOpen} onOpen={() => setVolunteerOpen(true)} />
@@ -159,7 +188,7 @@ export function CentersExplorer({
                 type="button"
                 onClick={geo.request}
                 disabled={locating}
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 font-semibold text-white active:bg-brand-700 disabled:opacity-70 lg:w-auto"
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 font-semibold text-white transition-colors hover:bg-brand-700 active:bg-brand-700 disabled:opacity-70 lg:w-auto"
               >
                 <IconCrosshair className="size-5" />
                 {locating ? "Buscando tu ubicación…" : "Ver centros cerca de mí"}
@@ -175,7 +204,7 @@ export function CentersExplorer({
                 <button
                   type="button"
                   onClick={() => setFilters(EMPTY_FILTERS)}
-                  className="min-h-9 text-xs font-medium text-brand-700"
+                  className="min-h-9 text-xs font-medium text-brand-700 hover:underline"
                 >
                   Limpiar filtros
                 </button>
@@ -205,7 +234,7 @@ export function CentersExplorer({
                   key={city}
                   type="button"
                   onClick={() => setFilters({ ...filters, query: city })}
-                  className="min-h-9 rounded-full border border-ink-300 bg-white px-3 text-xs font-medium text-ink-700 active:bg-ink-50"
+                  className="min-h-9 rounded-full border border-ink-300 bg-white px-3 text-xs font-medium text-ink-700 transition-colors hover:border-ink-500 hover:bg-ink-50 active:bg-ink-50"
                 >
                   {city}
                 </button>
@@ -236,31 +265,39 @@ export function CentersExplorer({
             </p>
           </div>
         ) : (
-          <ul ref={listRef} className="space-y-2.5">
+          <ul ref={listRef} className="space-y-2.5" onMouseLeave={() => setHoveredSlug(null)}>
             {filtered.map((center) => (
               <li key={center.slug} data-slug={center.slug}>
                 <CenterCard
                   center={center}
                   selected={center.slug === selectedSlug}
                   onSelect={setSelectedSlug}
+                  onHover={setHoveredSlug}
                 />
               </li>
             ))}
           </ul>
         )}
 
-        {/* El pie no es alcanzable en la portada móvil: el aviso vive aquí. Y con
-            él la convocatoria de voluntarios, que si no quedaría fuera del
-            alcance de justo quien más ha mirado la lista. Va al FINAL y en una
-            línea, no arriba y en bloque: `CoverageNudge` ya ocupa ese hueco, y
-            quien llegó hasta aquí abajo es el lector que de verdad se implica. */}
+        {/* El pie de página no es alcanzable en la portada —ni en móvil ni en
+            escritorio, porque ninguna de las dos hace scroll—, así que el aviso
+            vive aquí. Y con él la convocatoria de voluntarios, que si no quedaría
+            fuera del alcance de justo quien más ha mirado la lista. Va al FINAL y
+            en una línea, no arriba y en bloque: `CoverageNudge` ya ocupa ese
+            hueco, y quien llegó hasta aquí abajo es el lector que de verdad se
+            implica. */}
         <p className="py-4 text-center text-xs text-ink-500">
           La información puede cambiar rápidamente. Revisa la fecha de actualización antes de
           desplazarte.{" "}
-          <Link href="/metodologia" className="underline underline-offset-2">
+          <Link href="/metodologia" className="underline underline-offset-2 hover:text-ink-700">
             Cómo verificamos
           </Link>
-          <VolunteerLink className="mt-1 block underline underline-offset-2" />
+          <VolunteerLink className="mt-1 block underline underline-offset-2 hover:text-ink-700" />
+          {/* Solo en escritorio: en móvil esta línea ya la lleva el pie de las
+              demás páginas y aquí robaría espacio a la lista. */}
+          <span className="mt-1 hidden lg:block">
+            Proyecto ciudadano independiente. No representa a ninguna entidad gubernamental.
+          </span>
         </p>
       </BottomSheet>
 
