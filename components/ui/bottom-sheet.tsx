@@ -135,8 +135,11 @@ export function BottomSheet({ snap, onSnapChange, header, children, label }: Pro
       className={cn(
         "fixed inset-x-0 bottom-0 z-30 flex h-[92dvh] flex-col rounded-t-2xl bg-white shadow-[0_-8px_30px_-12px_rgb(15_23_42/0.25)]",
         "translate-y-[var(--sheet-y)]",
-        // En escritorio deja de ser una hoja y se comporta como columna.
-        "lg:static lg:h-auto lg:translate-y-0 lg:rounded-none lg:bg-transparent lg:shadow-none",
+        // En escritorio deja de ser una hoja y se comporta como columna: ocupa
+        // el alto de la rejilla y se desplaza POR DENTRO. Antes era `h-auto` y
+        // el scroll lo ponía el documento, así que la cabecera con el contador y
+        // los filtros se iba de la pantalla en cuanto se recorría la lista.
+        "lg:static lg:h-full lg:min-h-0 lg:translate-y-0 lg:rounded-none lg:bg-transparent lg:shadow-none",
         dragTranslate === null && "transition-transform duration-300 ease-out motion-reduce:transition-none",
       )}
       style={{ "--sheet-y": `${translate}%` } as React.CSSProperties}
@@ -169,9 +172,10 @@ export function BottomSheet({ snap, onSnapChange, header, children, label }: Pro
       </div>
 
       <div
+        data-list-scroll
         className={cn(
           "min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,env(safe-area-inset-bottom))]",
-          "lg:overflow-visible lg:px-0 lg:pb-8",
+          "lg:px-0 lg:pb-4",
           // Sin scroll interno cuando la hoja está abajo: evita desplazar
           // contenido que no se ve. Con clase, no en línea, para que la regla
           // de escritorio pueda ganarle.

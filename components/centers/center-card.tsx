@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { memo } from "react";
 import { IconCheck, IconAlert, IconClock, IconPhone, IconRoute } from "@/components/ui/icons";
 import { trackEvent } from "@/lib/analytics";
 import { formatDistance } from "@/lib/distance";
@@ -14,6 +15,8 @@ type Props = {
   center: CenterWithDistance;
   selected?: boolean;
   onSelect?: (slug: string) => void;
+  /** Puntero encima: solo resalta el marcador en el mapa. Ver `CentersExplorer`. */
+  onHover?: (slug: string | null) => void;
 };
 
 /**
@@ -28,7 +31,7 @@ type Props = {
  * Las acciones van EN la tarjeta: quien ya decidió no debería tener que entrar
  * al detalle solo para tocar «Cómo llegar».
  */
-export function CenterCard({ center, selected, onSelect }: Props) {
+function CenterCardImpl({ center, selected, onSelect, onHover }: Props) {
   const distance = formatDistance(center.distanceKm);
   const updated = relativeTime(center.last_verified_at);
   const advisory = tripAdvisory(center);
@@ -39,9 +42,13 @@ export function CenterCard({ center, selected, onSelect }: Props) {
   return (
     <article
       onClick={() => onSelect?.(center.slug)}
+      onMouseEnter={() => onHover?.(center.slug)}
+      onMouseLeave={() => onHover?.(null)}
       className={cn(
-        "rounded-xl border bg-white transition-colors",
-        selected ? "border-brand-600 ring-1 ring-brand-600" : "border-ink-100",
+        "cursor-pointer rounded-xl border bg-white transition-colors",
+        selected
+          ? "border-brand-600 ring-1 ring-brand-600"
+          : "border-ink-100 hover:border-ink-300 hover:shadow-sm",
       )}
     >
       <div className="p-3.5">
@@ -112,7 +119,7 @@ export function CenterCard({ center, selected, onSelect }: Props) {
             e.stopPropagation();
             trackEvent("click_directions", center.slug);
           }}
-          className="flex min-h-11 flex-1 items-center justify-center gap-1.5 text-brand-700 active:bg-brand-50"
+          className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-bl-xl text-brand-700 transition-colors hover:bg-brand-50 active:bg-brand-50"
         >
           <IconRoute className="size-4" />
           Cómo llegar
@@ -121,7 +128,7 @@ export function CenterCard({ center, selected, onSelect }: Props) {
           <a
             href={telUrl(center.phone)}
             onClick={(e) => e.stopPropagation()}
-            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 border-l border-ink-100 text-ink-700 active:bg-ink-50"
+            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 border-l border-ink-100 text-ink-700 transition-colors hover:bg-ink-50 active:bg-ink-50"
           >
             <IconPhone className="size-4" />
             Llamar
@@ -130,7 +137,7 @@ export function CenterCard({ center, selected, onSelect }: Props) {
         <Link
           href={`/centros/${center.slug}`}
           onClick={(e) => e.stopPropagation()}
-          className="flex min-h-11 flex-1 items-center justify-center border-l border-ink-100 text-ink-700 active:bg-ink-50"
+          className="flex min-h-11 flex-1 items-center justify-center rounded-br-xl border-l border-ink-100 text-ink-700 transition-colors hover:bg-ink-50 active:bg-ink-50"
         >
           Detalles
         </Link>
@@ -138,3 +145,12 @@ export function CenterCard({ center, selected, onSelect }: Props) {
     </article>
   );
 }
+
+/**
+ * Memoizada A PROPÓSITO. El explorador vuelve a renderizar cada vez que el ratón
+ * entra o sale de una tarjeta —eso es lo que alimenta el resalte del marcador—,
+ * y sin `memo` cada uno de esos eventos reconciliaría las 118 tarjetas de la
+ * lista. Las props son estables: `filtered` está memoizado y los dos callbacks
+ * son `setState`, así que la comparación superficial acierta.
+ */
+export const CenterCard = memo(CenterCardImpl);

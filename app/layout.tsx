@@ -48,7 +48,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
 
         <header className="sticky top-0 z-40 h-14 shrink-0 border-b border-ink-100 bg-white">
-          <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-4 px-4">
+          {/* A ancho completo en escritorio para alinearse con la portada, que
+              ahí es una app de mapa a pantalla completa. Con la cabecera centrada
+              a 1152 px, en un monitor de 1920 el logo flotaba a 384 px del borde
+              mientras el mapa empezaba a 24: parecían dos páginas distintas. */}
+          <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-4 px-4 lg:max-w-none lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold text-ink-900">
               <span
                 aria-hidden="true"
@@ -79,10 +83,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
 
-        {/* En las pantallas que ocupan todo el alto en móvil (la portada con mapa) el
-            pie no es alcanzable, así que se oculta ahí y su aviso se muestra dentro de
-            la hoja inferior. En escritorio y en el resto de páginas se comporta normal. */}
-        <footer className="mt-8 border-t border-ink-100 bg-white max-lg:[body:has([data-fullscreen])_&]:hidden">
+        {/* En las pantallas que ocupan todo el alto (la portada con mapa) el pie no
+            es alcanzable en ningún tamaño, así que se oculta ahí y su aviso se
+            muestra dentro del panel de la lista. En el resto de páginas se
+            comporta normal. */}
+        <footer className="mt-8 border-t border-ink-100 bg-white [body:has([data-fullscreen])_&]:hidden">
           <div className="mx-auto max-w-6xl space-y-3 px-4 py-8 text-sm text-ink-500">
             <p className="rounded-lg bg-caution-50 px-3 py-2 text-caution-700">
               La información puede cambiar rápidamente durante la emergencia. Revisa la fecha de última
