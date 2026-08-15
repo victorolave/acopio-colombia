@@ -78,10 +78,35 @@ function git(...args: string[]): string {
   return execFileSync("git", args, { encoding: "utf8" }).trim();
 }
 
-/** El tag más reciente alcanzable desde HEAD, o null si aún no hay ninguno. */
+/**
+ * El tag más reciente ANTERIOR a HEAD, o null si aún no hay ninguno.
+ *
+ * POR QUÉ «ANTERIOR» Y NO SIMPLEMENTE «EL ÚLTIMO»
+ *
+ * Esto no es una precaución teórica: rompió los releases v1.6.0 y v1.7.0, que
+ * salieron publicados pero sin CHANGELOG.
+ *
+ * El workflow de release publica el tag ANTES de escribir el CHANGELOG, y lo
+ * hace a propósito —el tag sale de inmediato sobre un commit que ya pasó el CI,
+ * ver la nota en `.github/workflows/release.yml`—. Pero eso significa que cuando
+ * el último paso llama a `--insertar`, el tag más reciente es el que se acaba de
+ * crear y apunta EXACTAMENTE a HEAD. El rango `vX..HEAD` quedaba vacío, el
+ * script se detenía con «No hay commits nuevos» y salía con código 1.
+ *
+ * El tag se envenenaba a sí mismo. Desde aquí se resuelve de una vez y para
+ * cualquier orden de ejecución: si el candidato apunta a HEAD, es el del release
+ * en curso y lo que se busca es el de antes.
+ */
 function ultimoTag(): string | null {
   try {
-    return git("describe", "--tags", "--abbrev=0");
+    const candidato = git("describe", "--tags", "--abbrev=0");
+    if (git("rev-list", "-n", "1", candidato) !== git("rev-parse", "HEAD")) {
+      return candidato;
+    }
+    // Apunta a HEAD: es el del release en curso. Si no hay ninguno antes, el
+    // `describe` de abajo lanza y el `catch` devuelve null, que es lo correcto
+    // para el primer release del repositorio.
+    return git("describe", "--tags", "--abbrev=0", `${candidato}^`);
   } catch {
     return null;
   }
