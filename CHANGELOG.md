@@ -13,6 +13,13 @@ en esa línea.
 
 <!-- release-notes:inicio -->
 
+## [1.8.0] — 2026-08-15
+
+### Código
+
+- **portada:** Devolver al mapa su ancho en escritorio (#23) (30ba387)
+- **releases:** Que el tag recien creado no deje el CHANGELOG sin escribir (#24) (71bffc6)
+
 ## [1.5.0] — 2026-08-12
 
 La jornada de mayor movimiento de datos hasta ahora: se amplió el criterio de
@@ -162,6 +169,7 @@ Los enlaces `#N` apuntan a los pull requests del repositorio.
 [#6]: https://github.com/victorolave/acopio-colombia/pull/6
 [#7]: https://github.com/victorolave/acopio-colombia/pull/7
 [#13]: https://github.com/victorolave/acopio-colombia/pull/13
+[1.8.0]: https://github.com/victorolave/acopio-colombia/compare/v1.7.0...v1.8.0
 [1.5.0]: https://github.com/victorolave/acopio-colombia/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/victorolave/acopio-colombia/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/victorolave/acopio-colombia/compare/v1.2.0...v1.3.0

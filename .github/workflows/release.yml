@@ -164,8 +164,18 @@ jobs:
           rama="chore/changelog-v$VERSION"
           git checkout -b "$rama"
 
-          pnpm run --silent release:notes -- --insertar "$VERSION"
+          # EL ORDEN IMPORTA, y costó un release descubrirlo.
+          #
+          # `pnpm version` comprueba que el árbol esté limpio antes de tocar
+          # nada, incluso con `--no-git-tag-version`. Al revés que aquí —que es
+          # como estaba— el paso anterior acababa de reescribir CHANGELOG.md, así
+          # que pnpm se plantaba con ERR_PNPM_UNCLEAN_WORKING_TREE.
+          #
+          # Estuvo tapado detrás del fallo de `ultimoTag()`, que cortaba la
+          # ejecución antes de llegar hasta aquí. En cuanto se arregló aquel,
+          # v1.8.0 destapó este: dos bugs apilados en el mismo paso.
           pnpm version "$VERSION" --no-git-tag-version
+          pnpm run --silent release:notes -- --insertar "$VERSION"
 
           git add CHANGELOG.md package.json
           git commit -m "chore(release): registrar v$VERSION en el CHANGELOG"
